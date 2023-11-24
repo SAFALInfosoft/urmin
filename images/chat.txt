@@ -1,0 +1,466 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import firebase from "firebase";
+
+
+import ls from 'localstorage-slim';
+import { User } from 'app/auth/models/user';
+import moment from 'moment';
+import { ErrorlogdetailsService } from 'app/auth/service/errorlogdetails.service';
+import { AuthenticationService } from 'app/auth/service';
+import { GlobalConstants } from 'app/global-constants';
+@Injectable()
+export class ChatService {
+  public contacts: any[];
+  public chats: any[];
+  public userProfile;
+  public isChatOpen: Boolean;
+  public chatUsers: any[];
+  public selectedChat;
+  public selectedChatUser;
+
+  public onContactsChange: BehaviorSubject<any>;
+  public onChatsChange: BehaviorSubject<any>;
+  public onSelectedChatChange: BehaviorSubject<any>;
+  public onSelectedChatUserChange: BehaviorSubject<any>;
+  public onChatUsersChange: BehaviorSubject<any>;
+  public onChatOpenChange: BehaviorSubject<Boolean>;
+  public onUserProfileChange: BehaviorSubject<any>;
+
+  constructor(
+    private _httpClient: HttpClient,
+    //private firestore:FireStore
+    private _errorlogservice: ErrorlogdetailsService,
+    public _authservice: AuthenticationService,) {
+    this.isChatOpen = false;
+
+    this.onContactsChange = new BehaviorSubject([]);
+    this.onChatsChange = new BehaviorSubject([]);
+    this.onSelectedChatChange = new BehaviorSubject([]);
+    this.onSelectedChatUserChange = new BehaviorSubject([]);
+    this.onChatUsersChange = new BehaviorSubject([]);
+    this.onChatOpenChange = new BehaviorSubject(false);
+    this.onUserProfileChange = new BehaviorSubject([]);
+    this.getGloballocalStorageValue();
+    this.database_name=this._authservice.get_databsase_name();
+  }
+
+  /**
+   * Resolver
+   *
+   * @param {ActivatedRouteSnapshot} route
+   * @param {RouterStateSnapshot} state
+   * @returns {Observable<any> | Promise<any> | any}
+   */
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
+    return new Promise<void>((resolve, reject) => {
+      Promise.all([
+        //this.getContacts(),
+        //this.getChats(),
+        //this.getUserProfile(),
+        //this.getActiveChats(),
+        //this.getChatUsers()
+        
+      ]).then(() => {
+        resolve();
+      }, reject);
+    });
+  }
+
+  /**
+   * Get Contacts
+   */
+  getContacts(): Promise<any[]> {
+    this.getGloballocalStorageValue();
+    var formData: any = new FormData();
+    formData.append("Co_Code", this.co_code);
+    formData.append("userid", this.userid);
+    formData.append("Access_Token", this.accesstoken);
+    return new Promise((resolve, reject) => {
+      this._httpClient
+        .post(
+          this._authservice.getbaseurl() + "Chat/GetAllUserForChat",
+          formData
+        )
+        .subscribe(
+          (response: any) => {
+            var messagevariable;
+
+            if (response.settings["success"] == "0") {
+              messagevariable = response["message"];
+              if (messagevariable == "User Id or Token is Invalid.") {
+                //console.log('error comes code');
+                this._authservice.Logout_when_Token_Unavailable();
+                //this._router.navigate(['/pages/authentication/login-v2']);
+                //console.log('response to verify==',response);
+              } else {
+                this.contacts = response["message"];
+                this.onContactsChange.next(this.contacts);
+                //this.onTagsChange.next(this.tags);
+              }
+            } else {
+              this.contacts = response["message"];
+              this.onContactsChange.next(this.contacts);
+              // this.onTagsChange.next(this.tags);
+            }
+            resolve(this.contacts);
+          },
+          (err) => 
+          {
+            var action = "While getting All USer For chat";
+            console.log("this.error", err);
+            this._errorlogservice.saveUserErrorLog(
+              "Chat",
+              action,
+              err,
+              "",
+              "",
+              "",
+              ""
+            );
+          },
+          reject
+        );
+    });
+  }
+
+  /**
+   * Get Chats
+   */
+  getChats(): Promise<any[]> {
+    return new Promise((resolve, reject) => 
+    {
+      firebase
+        .database()
+        //.ref("chats/")
+        .ref(this.database_name+"chats/")
+        .on(
+          "value",
+          (resp) => {
+            this.chats = [];
+            this.chats = this.snapshotToArray(resp);
+            //console.log("this.chats", this.chats);
+            resolve(this.chats);
+          },
+          reject
+        );
+    });
+  }
+
+  /**
+   * Get User Profile
+   */
+  getUserProfile(): Promise<any[]> {
+    const url = `api/chat-profileUser`;
+
+    return new Promise((resolve, reject) => {
+      this._httpClient.get(url).subscribe((response: any) => {
+        this.userProfile = response;
+        this.onUserProfileChange.next(this.userProfile);
+        resolve(this.userProfile);
+      }, reject);
+    });
+  }
+
+  /**
+   * Get Selected Chat User
+   *
+   * @param userId
+   */
+  getSelectedChatUser(userId) {
+    this.selectedChatUser = userId;
+    this.onSelectedChatUserChange.next(this.selectedChatUser);
+  }
+
+  /**
+   * Get Active Chats
+   */
+  getActiveChats() {
+    const chatArr = this.chats.filter(chat => {
+      return this.contacts.some(contact => {
+        return contact.id === chat.userId;
+      });
+    });
+  }
+  public datafromjson;
+  public currentUser: User;
+  public jsonparse: any;
+  public userid: any;
+  public accesstoken: any;
+  public ImagePath: any;
+  public UserName: any;
+  public email: any;
+  public co_code="";
+  public fyear="";
+  getGloballocalStorageValue() {
+    //this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    var cu = ls.get("currentUser", { decrypt: true });
+    var currentUserGet = cu["Class"];
+    this.datafromjson = currentUserGet;
+    //this.datafromjson = localStorage.getItem("currentUser");
+    if (this.datafromjson != null) {
+      this.jsonparse = JSON.parse(this.datafromjson);
+      this.ImagePath = this.jsonparse[0]["profile"];
+      this.UserName = this.jsonparse[0]["fullname"];
+      this.userid = this.jsonparse[0]["id"];
+      this.accesstoken = this.jsonparse[0]["accesstoken"];
+      this.email = this.jsonparse[0]["email"];
+      this.co_code = this.jsonparse[0]["cocode"];
+      this.fyear=this.jsonparse[0]["fyear"];
+    }
+  }
+  /**
+   * Get Chat Users
+   */
+  getChatUsers() {
+    // this.getContacts();
+    // const contactArr = this.contacts.filter((contact) => {
+    //   return this.chats.some((chat) => {
+    //     return chat.receiverId === contact.User_Id;
+    //   });
+    // });
+    // this.chatUsers = contactArr;
+    // this.onChatUsersChange.next(this.chatUsers);
+  }
+
+  /**
+   * Selected Chats
+   *
+   * @param id
+   */
+  public arrayofspecific=[];
+  public usertopenid="";
+  public to_ur;
+  selectedChats(userid: any): Promise<any[]> 
+  {
+    console.log('user id received======',userid.length);
+    if(userid.length==undefined)
+    {
+        this.arrayofspecific = [];
+        this.database_name=this._authservice.get_databsase_name();
+        //console.log("userId.databaseId", userid.databaseid);
+        this.usertopenid = userid.User_Id;
+        var datafromjson = this.datafromjson;
+          var jsonparse = JSON.parse(datafromjson);
+          var userid2 = jsonparse[0]["id"];
+          userid2 = parseInt(userid2);
+          var tosend = userid.User_Id;
+          tosend = parseInt(tosend);
+          userid2 = userid2.toString();
+          tosend = tosend.toString();
+        return new Promise((resolve, reject) => {
+          firebase
+            .database()
+            //.ref("chats/")
+            .ref(this.database_name+"chats/")
+            .on(
+              "value",
+              (resp) => {
+                this.chats = [];
+                this.chats = this.snapshotToArray(resp);
+                //console.log('snap shor value===',resp.val());
+                var keys=Object.keys(resp.val());
+                //console.log('keys====',keys);
+                let chatKey="";
+                for(var i=0;i<=keys.length-1;i++)
+                {
+                  chatKey = keys[i];
+                  console.log('resp valu===',resp.val()[chatKey].chat[0]);
+                  if(resp.val()[chatKey].chat[0].receiverId==userid2 && resp.val()[chatKey].chat[0].senderId==this.usertopenid)
+                  {
+                    console.log('here confirm comes');
+                    firebase
+                    .database()
+                    .ref(this.database_name + "chats/" + chatKey+"/chat/"+"0/seen_or_not")
+                    .set(true)
+                    .then(() => 
+                    {
+                    })
+                  }
+                }
+                resolve(this.chats);
+              },
+              reject
+            );
+          for (var i in this.chats) {
+            if (
+              (this.chats[i].chat[0].receiverId === userid2 ||
+                this.chats[i].chat[0].senderId === userid2) &&
+              (this.chats[i].chat[0].receiverId === this.usertopenid ||
+                this.chats[i].chat[0].senderId === this.usertopenid)
+            ) {
+              this.arrayofspecific.push(this.chats[i]);
+            }
+          }
+          this.to_ur = userid.User_Id;
+          if (this.chats != undefined) {
+            this.selectedChat = this.arrayofspecific["chat"];
+            this.onSelectedChatChange.next(this.arrayofspecific);
+            this.getSelectedChatUser(userid);
+          }
+          // Else Create New Chat
+          else {
+            const newChat = {
+              userId: userid,
+              unseenMsgs: 0,
+            };
+            this.onSelectedChatChange.next(newChat);
+            this.getSelectedChatUser(userid);
+          }
+        });
+      }
+      else
+      {
+        this.getSelectedChatUser(userid);
+      }
+  }
+
+  /**
+   * Create New Chat
+   *
+   * @param id
+   * @param chat
+   */
+  snapshotToArray(snapshot) {
+    const returnArr = [];
+
+    snapshot.forEach((childSnapshot: any) => {
+      const item = childSnapshot.val();
+      item.key = childSnapshot.key;
+      returnArr.push(item);
+      // console.log('item', item, 'item.key', item.key, 'returnArr', returnArr);
+    });
+
+    return returnArr;
+  }
+  createNewChatfromAttachment(userid: any, chat) {
+    var userstatus = this.selectedChatUser.status;
+    const newChat = {
+      chat: [chat],
+    };
+    this.database_name=this._authservice.get_databsase_name();
+    //console.log('chat content is===',chat.receiverId);
+
+    return new Promise<void>((resolve, reject) => {
+      let rootRef = firebase.database().ref();
+      //const newMessage = firebase.database().ref("chats/").push();
+      const newMessage = firebase.database().ref(this.database_name+"chats/").push();
+      newMessage.set(newChat);
+      var formData: any = new FormData();
+        formData.append("userid", chat.senderId);
+        formData.append("chat_To", chat.receiverId);
+        formData.append("chat_From", chat.senderId);
+        formData.append("chat_Message", chat.message);
+        formData.append("Access_Token", this.accesstoken);
+        formData.append("CO_CODE", this.co_code);
+        formData.append("Fyear", this.fyear);
+
+      this.getChats();
+      this.getChatUsers();
+      this.getSelectedChatUser(userid);
+      this.openChat(userid);
+      resolve();
+      reject();
+    });
+  }
+  database_name="";
+  createNewChat(userid: any, chat) 
+  {
+    this.database_name=this._authservice.get_databsase_name();
+    var userstatus = this.selectedChatUser.status;
+    const newChat = {
+      chat: [chat],
+    };
+    if (chat.message != "") {
+      return new Promise<void>((resolve, reject) => 
+      {
+        let rootRef = firebase.database().ref();
+        //const newMessage = firebase.database().ref("chats/").push();
+        const newMessage = firebase.database().ref(this.database_name+"chats/").push();
+        newMessage.set(newChat);
+        var formData: any = new FormData();
+        formData.append("userid", chat.senderId);
+        formData.append("chat_To", chat.receiverId);
+        formData.append("chat_From", chat.senderId);
+        formData.append("chat_Message", chat.message);
+        formData.append("Access_Token", this.accesstoken);
+        formData.append("CO_CODE", this.co_code);
+        formData.append("Fyear", this.fyear);
+        let messagevariable;
+        this._httpClient
+          .post<any>(this._authservice.getbaseurl() + "chat/InsertChatThreadData",formData)
+          .subscribe((response:any) =>
+          {
+            //console.log("response of insert chat data", response);
+            if(response.settings['success']=="0")
+            {
+                messagevariable=response['message'];
+                if(messagevariable == "User Id or Token is Invalid.")
+                {
+                  this._authservice.Logout_when_Token_Unavailable();
+                }
+                else
+                {
+                  this._errorlogservice.saveUserErrorLog("Chat","While adding chat",messagevariable,"","","",""
+                  );
+                }
+            }
+            else
+            {
+
+            }
+           });
+        this.getChats();
+        this.getChatUsers();
+        this.getSelectedChatUser(userid);
+        this.openChat(userid);
+        resolve();
+        reject();
+      });
+    }
+  }
+
+  /**
+   * Open Chat
+   *
+   * @param id
+   */
+  openChat(id) {
+    this.isChatOpen = true;
+    this.onChatOpenChange.next(this.isChatOpen);
+    this.selectedChats(id);
+  }
+  removeuser()
+  {
+    this.isChatOpen=false;
+    this.onChatOpenChange.next(this.isChatOpen);
+    this.selectedChats([]);
+  }
+  /**
+   * Update Chat
+   *
+   * @param chats
+   */
+  updateChat(chats) {
+    return new Promise<void>((resolve, reject) => {
+      this._httpClient.post('api/chat-chats/' + chats.id, { ...chats }).subscribe(() => {
+        this.getChats();
+        resolve();
+      }, reject);
+    });
+  }
+
+  /**
+   * Update User Profile
+   *
+   * @param userProfileRef
+   */
+  updateUserProfile(userProfileRef) {
+    this.userProfile = userProfileRef;
+    this.onUserProfileChange.next(this.userProfile);
+  }
+}
