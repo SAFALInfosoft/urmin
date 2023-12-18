@@ -61,7 +61,7 @@ class _INVENTORY_MANAGEMNET_MENUState extends State<INVENTORY_MANAGEMNET_MENU> {
                     elevation: 2.0,
                     child: GestureDetector(
                       onTap: () {
-                         HomePage().launch(context);
+                       //  HomePage().launch(context);
                       },
                       child: Container(
                         width: context.width(),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../../constant.dart';
+import '../PendingGRN/summeryScreen.dart';
 
 class addNewOrderForPo extends StatefulWidget {
   const addNewOrderForPo({Key? key}) : super(key: key);
@@ -297,6 +298,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                             child: Text('Place Order \u{20B9} 100',
                                 style: TextStyle(fontSize: 20)),
                             onPressed: () {
+                              showSummaryDialog();
                               // Navigator.push(context, MaterialPageRoute(builder: (context) => afterCheckinMainPage(),));
                             },
                             style: ButtonStyle(
@@ -310,5 +312,12 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
         ],
       ),
     );
+  }
+  void showSummaryDialog() async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) => OrderSummaryScreen(
+
+        ));
   }
 }

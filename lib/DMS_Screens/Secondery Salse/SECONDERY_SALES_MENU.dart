@@ -109,37 +109,7 @@ class _SECONDERY_SALES_MENUState extends State<SECONDERY_SALES_MENU> {
                         },
                         leading: const Image(image: AssetImage('images/ordertobill.png'),height: 40,width: 40,),
                         title: Text(
-                          'Order to Bill',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ),const SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF4CCEFA),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () {
-                         // const pendingGRNMainScreen().launch(context);
-                        },
-                        leading: const Image(image: AssetImage('images/reverse.png'),height: 40,width: 40,),
-                        title: Text(
-                          'Sales Return',
+                          'Retailer Order',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),

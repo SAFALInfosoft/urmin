@@ -383,6 +383,234 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                   const SizedBox(
                     height: 10.0,
                   ),
+                  Material(
+                    elevation: 2,
+                    child: Container(
+                      width: context.width(),
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            color: Color(0xFF4CE364),
+                            width: 3.0,
+                          ),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'D M S',
+                                style: kTextStyle,
+                              ),
+                              const Spacer(),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: '30 May, 2021 ',
+                                      style: kTextStyle.copyWith(
+                                        color: kGreyTextColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                    decoration: BoxDecoration(
+                                      border: const Border(
+                                          top: BorderSide(
+                                            color: kMainColor,
+                                          )),
+                                      color: kMainColor.withOpacity(0.1),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '18982',
+                                          style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Total Purchase Order',
+                                          style: kTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                    decoration: BoxDecoration(
+                                      border: const Border(
+                                          top: BorderSide(
+                                            color: Color(0xFF4CE364),
+                                          )),
+                                      color: const Color(0xFF4CE364).withOpacity(0.1),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '2',
+                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Pending Purchase Order',
+                                          style: kTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                    decoration: BoxDecoration(
+                                      border: const Border(
+                                          top: BorderSide(
+                                            color: Color(0xFFFD72AF),
+                                          )),
+                                      color: const Color(0xFFFD72AF).withOpacity(0.1),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '2',
+                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Pending Purchase Order',
+                                          style: kTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                    decoration: BoxDecoration(
+                                      border: const Border(
+                                          top: BorderSide(
+                                            color: kMainColor,
+                                          )),
+                                      color: kMainColor.withOpacity(0.1),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '18982',
+                                          style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Total GRN',
+                                          style: kTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                    decoration: BoxDecoration(
+                                      border: const Border(
+                                          top: BorderSide(
+                                            color: Color(0xFF4CE364),
+                                          )),
+                                      color: const Color(0xFF4CE364).withOpacity(0.1),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '2',
+                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Pending GRN',
+                                          style: kTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                    decoration: BoxDecoration(
+                                      border: const Border(
+                                          top: BorderSide(
+                                            color: Color(0xFFFD72AF),
+                                          )),
+                                      color: const Color(0xFFFD72AF).withOpacity(0.1),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '2',
+                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Pending GRN',
+                                          style: kTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -540,6 +768,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                       style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                                     ),
                                   ),
+
                                 ],
                               ),
                             ),
@@ -548,7 +777,37 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                       ),
                     ],
                   ),
-
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Material(
+                    elevation: 2.0,
+                    child: Container(
+                      width: context.width(),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            color: Color(0xFF4CCEFA),
+                            width: 3.0,
+                          ),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          // const pendingGRNMainScreen().launch(context);
+                        },
+                        leading: const Image(image: AssetImage('images/ordertobill.png'),height: 40,width: 40,),
+                        title: Text(
+                          'Retailer Order',
+                          maxLines: 2,
+                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

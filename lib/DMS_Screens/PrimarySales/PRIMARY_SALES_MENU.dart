@@ -14,6 +14,7 @@ import '../../Screens/Expense Management/empty_expense.dart';
 
 import 'PO/purchaseOrderMainScreen.dart';
 import 'PendingGRN/pendingGRNMainScreen.dart';
+import 'Salse Return/SalseReturnMainScreen.dart';
 
 
 class PRIMARY_SALES_MENU extends StatefulWidget {
@@ -119,7 +120,37 @@ class _PRIMARY_SALES_MENUState extends State<PRIMARY_SALES_MENU> {
                       ),
                     ),
                   ),
-
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  Material(
+                    elevation: 2.0,
+                    child: Container(
+                      width: context.width(),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            color: Color(0xFF4CCEFA),
+                            width: 3.0,
+                          ),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          const SalseReturnMainScreen().launch(context);
+                        },
+                        leading: const Image(image: AssetImage('images/reverse.png'),height: 40,width: 40,),
+                        title: Text(
+                          'Sales Return',
+                          maxLines: 2,
+                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
