@@ -36,7 +36,7 @@ class _UserFormState extends State<UserForm> {
                 leading: Icon(Icons.verified_user),
                 elevation: 0,
                 title: Text('User Details'),
-                backgroundColor: Theme.of(context).accentColor,
+              //  backgroundColor: Theme.of(context).accentColor,
                 centerTitle: true,
                 actions: <Widget>[
                   IconButton(

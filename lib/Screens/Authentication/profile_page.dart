@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:maan_hrm/json/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 

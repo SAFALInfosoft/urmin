@@ -43,8 +43,10 @@ dependencies:
   nb_utils:
   url_launcher:
   connectivity_plus:
-  flutter_map: ^0.14.0
-  flutter_slidable: ^3.0.1
+  flutter_map:
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  flutter_slidable:
 
 
   share_plus:
@@ -52,13 +54,17 @@ dependencies:
   lottie:
   multiselect:
   fl_chart:
-  flutter_icons:
   toggle_switch:
   flutter_advanced_segment:
   dropdown_button2: ^1.7.1
   google_maps_flutter: ^2.1.8
+  path_provider: ^2.0.11
+  dio: ^5.4.0
+
 
 dev_dependencies:
+  hive_generator: ^2.0.0
+  build_runner: ^2.3.3
   flutter_test:
     sdk: flutter
 

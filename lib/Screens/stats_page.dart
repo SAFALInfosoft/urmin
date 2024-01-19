@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:maan_hrm/constant.dart';
 
 import 'dart:math';
@@ -104,7 +103,7 @@ class _StatsPageState extends State<StatsPage> {
                               fontWeight: FontWeight.bold,
                               color: black),
                         ),
-                        Icon(AntDesign.search1)
+                      Icon(Icons.search_sharp)
                       ],
                     ),
                     SizedBox(
