@@ -6,7 +6,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hive/hive.dart';
 import 'package:maan_hrm/GlobalComponents/button_global.dart';
 import 'package:maan_hrm/Screens/Authentication/forgot_password.dart';
 import 'package:maan_hrm/Screens/Authentication/phone_verification.dart';
@@ -42,6 +44,8 @@ class _SignInState extends State<SignIn> {
   var selectionItems;
 
   TextEditingController compneyNameController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
 
   var reportSelected;
 
@@ -49,11 +53,10 @@ class _SignInState extends State<SignIn> {
 
   void ErpMainDataFetch() async {
     // Replace with your actual API URL
-    String apiUrl = 'http://111.93.85.179:5984/fcustomer/_find';
+    String apiUrl = 'http://api.urmingroup.co.in/fcustomer/_find';
 
     // Replace with your actual authorization key
-    String authorizationKey =
-        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';
+    String authorizationKey = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';
 
     // Replace with your actual request payload
     Map<String, dynamic> requestPayload = {
@@ -76,7 +79,19 @@ class _SignInState extends State<SignIn> {
         Map<String, dynamic> responseBody = json.decode(response.body);
         //ErpApiMainDataResponse =responseBody;
         // Do something with the response data
-        print(responseBody);
+        debugPrint("responseBody $responseBody");
+        final body = jsonDecode(response.body);
+        debugPrint("responseBody ${body}");
+        var box = Hive.box('erpApiMainData');
+        box.put('erpApiMainData', body);
+        await Hive.openBox('erpApiMainData');
+        Map<String, dynamic>  bookmark=box.get('erpApiMainData');
+        bookmark.forEach((key, value) {
+          if(key=='bookmark')  {
+            debugPrint("bookmark $value");
+          }
+        });
+
       } else {
         // Handle error
         print('API call failed with status code: ${response.statusCode}');
@@ -134,17 +149,25 @@ class _SignInState extends State<SignIn> {
           RoleType=value;
       print(value);
 
-      clientUrl="https://demo.datanote.co.in/urminapi/";
+    //  clientUrl="https://demo.datanote.co.in/urminapi/";
+    }));
+    PreferenceManager.instance
+        .getStringValue("ClintUrl")
+        .then((value) => setState(() {
+      clientUrl=value;
+      print(value);
+      //clientUrl="https://demo.datanote.co.in/urminapi/";
     }));
 setState(() {
 
+
 });
-    ErpMainDataFetch();
-    CallApiForCompneyName();
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
+   codeController.text="+91";
+    var _formKey = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,
@@ -182,120 +205,194 @@ setState(() {
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  SizedBox(
-                    height: 60.0,
-                    child: AppTextField(
-                      textFieldType: TextFieldType.PHONE,
-                      controller: TextEditingController(),
-                      enabled: true,
-                      decoration: InputDecoration(
-                        labelText: 'Phone Number',
-                        hintText: '+91 11111 11111',
-                        labelStyle: kTextStyle,
-
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        border: const OutlineInputBorder(),
-                        // prefixIcon: CountryCodePicker(
-                        //   padding: EdgeInsets.zero,
-                        //   onChanged: print,
-                        //   initialSelection: 'BD',
-                        //   showFlag: true,
-                        //   showDropDownButton: true,
-                        //   alignLeft: false,
-                        // ),
-                      ),
+              child: Form(
+key: _formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20.0,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Visibility(
-                    visible:selectionItems==""?false:true,
-                    child: SizedBox(
-                      height: 60.0,
-                      child:  Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  label: Text("Select Company"),
-
-                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                              style: const TextStyle(fontSize: 15, color: Colors.black),
-                              controller: compneyNameController,
-                              // decoration: InputDecoration(
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 60.0,
+                          width: 70,
+                          child: TextFormField(
+                            keyboardType: TextInputType.phone,
+                            controller: codeController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter some text';
+                              }
+                              // You can add more custom validation logic here if needed
+                              return null;
+                            },
+                            maxLength: 4,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              labelText: 'Phone Number',
+                              hintText: '11111 11111',
+                              labelStyle: kTextStyle,
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              counter: SizedBox.shrink(),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              // prefixIcon: CountryCodePicker(
+                              //   padding: EdgeInsets.zero,
+                              //   onChanged: print,
+                              //   initialSelection: 'BD',
+                              //   showFlag: true,
+                              //   showDropDownButton: true,
+                              //   alignLeft: false,
+                              // ),
                             ),
                           ),
-                          PopupMenuButton(
-                            icon: const Icon(Icons.arrow_drop_down),
-                            onSelected: (value) {
-                              setState(() {
-                                var selectedItem = selectionItems.firstWhere(
-                                      (item) => item["Select_Value"] == value,
-                                );
-                                compneyNameController.text = value.toString();
-                                selectedCode = selectedItem["Select_Value_Code"];
-                                log(selectedCode);
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            height: 60.0,
+                            child: TextFormField(
+                              keyboardType: TextInputType.phone,
+                              controller: mobileController,
+                              maxLength: 10,
+                              validator: (value) {
+                                if (value == null || value.isEmpty||value.length!=10) {
+                                  return 'Please Check mobile number';
+                                }else if(value.length==10){
+                                  return null;
+                                }
+                                // You can add more custom validation logic here if needed
 
-                              });
-                            },
-                            itemBuilder: (BuildContext context) {
-                              return selectionItems.map<PopupMenuItem>((value) {
-                                return PopupMenuItem(
-                                    height: 50,
-                                    value: value["Select_Value"],
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 8.0),
-                                          child:
-                                          Text(value["Select_Value"], style: const TextStyle(fontSize: 12)),
-                                        ),
-                                      ],
-                                    ));
-                              }).toList();
-                            },
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r"[0-9]"),
+                                )
+                              ],
+                              enabled: true,
+
+                              decoration: InputDecoration(
+                                labelText: 'Phone Number',
+                                hintText: '11111 11111',
+                                counter: SizedBox.shrink(),
+                                labelStyle: kTextStyle,
+                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+
+                                // prefixIcon: CountryCodePicker(
+                                //   padding: EdgeInsets.zero,
+                                //   onChanged: print,
+                                //   initialSelection: 'BD',
+                                //   showFlag: true,
+                                //   showDropDownButton: true,
+                                //   alignLeft: false,
+                                // ),
+                              ),
+                            ),
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    Visibility(
+                      visible:false,
+                      child: SizedBox(
+                        height: 60.0,
+                        child:  Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    label: Text("Select Company"),
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+                                style: const TextStyle(fontSize: 15, color: Colors.black),
+                                controller: compneyNameController,
+                                // decoration: InputDecoration(
+                              ),
+                            ),
+                            PopupMenuButton(
+                              icon: const Icon(Icons.arrow_drop_down),
+                              onSelected: (value) {
+                                setState(() {
+                                  var selectedItem = selectionItems.firstWhere(
+                                        (item) => item["Select_Value"] == value,
+                                  );
+                                  compneyNameController.text = value.toString();
+                                  selectedCode = selectedItem["Select_Value_Code"];
+                                  log(selectedCode);
+                                  PreferenceManager.instance.setStringValue(
+                                      "companyName", value.toString());
+                                  PreferenceManager.instance.setStringValue(
+                                      "companyCode", selectedCode.toString());
+                                });
+                              },
+                              itemBuilder: (BuildContext context) {
+                                return selectionItems.map<PopupMenuItem>((value) {
+                                  return PopupMenuItem(
+                                      height: 50,
+                                      value: value["Select_Value"],
+                                      child: Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 8.0),
+                                            child:
+                                            Text(value["Select_Value"], style: const TextStyle(fontSize: 12)),
+                                          ),
+                                        ],
+                                      ));
+                                }).toList();
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  /*SizedBox(
-                    height: 60.0,
-                    child: FormField(
-                      builder: (FormFieldState<dynamic> field) {
-                        return InputDecorator(
-                          decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                              labelText: 'Select Company',
-                              labelStyle: kTextStyle,
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                          child: DropdownButtonHideUnderline(child: getCompany()),
-                        );
-                      },
+                    // const SizedBox(
+                    //   height: 20.0,
+                    // ),
+                    Visibility(
+                      visible:selectionItems==""?false:true,
+                      child: ButtonGlobal(
+                        buttontext: 'Process',
+                        buttonDecoration: kButtonDecoration.copyWith(color: kMainColor,borderRadius: BorderRadius.all(Radius.circular(50))),
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            var mob="${codeController.text}${mobileController.text}";
+                            log(mob.toString());
+                            PreferenceManager.instance.setStringValue(
+                                "Mobile", mob.toString());
+                            setState(() {
+                              CallApiForCompneyName(mob);
+                            });
+
+                          }else{
+                            Fluttertoast.showToast(
+                                msg: "Please Fill Data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                          }
+
+
+                        //  const HomeScreen().launch(context);
+                        },
+                      ),
                     ),
-                  ),*/
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Visibility(
-                    visible:selectionItems==""?false:true,
-                    child: ButtonGlobal(
-                      buttontext: 'Get Otp',
-                      buttonDecoration: kButtonDecoration.copyWith(color: kMainColor,borderRadius: BorderRadius.all(Radius.circular(50))),
-                      onPressed: () {
-                        PhoneVerification().launch(context);
-                      //  const HomeScreen().launch(context);
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -304,8 +401,8 @@ setState(() {
     );
   }
 
-  Future<void> CallApiForCompneyName() async {
-    clientUrl="https://demo.datanote.co.in/urminapi/";
+  Future<void> CallApiForCompneyName(mob) async {
+    //clientUrl="https://demo.datanote.co.in/urminapi/";
     /*   isLoading = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     uId = prefs.getString("uId").toString();
@@ -315,7 +412,7 @@ setState(() {
 
     var dio = Dio();
     Map<String, dynamic> payload = {
-      "Mobile_No":"+916353100160",
+      "Mobile_No": mob,
     };
 
     print(clientUrl+"LogIn/MOB_Login_Company_List$payload");
@@ -334,10 +431,128 @@ setState(() {
     if (res.statusCode == 200) {
       /*     isLoading = false;*/
       var json = jsonDecode(res.data);
+      log(json['settings']['success'].toString());
+
       selectionItems = json['message'];
+      log(json);
+     if (json['settings']['success'].toString()=="1"){
+       showDialog(
+         context: context,
+         builder: (BuildContext context) {
+           return AlertDialog(
+             title: Text('Select Company'),
+             content: SizedBox(
+               height: 60.0,
+               child:  Row(
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Expanded(
+                     child: TextField(
+                       decoration: InputDecoration(
+                           label: Text("Select Company"),
+                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+                       style: const TextStyle(fontSize: 15, color: Colors.black),
+                       controller: compneyNameController,
+                       // decoration: InputDecoration(
+                     ),
+                   ),
+                   PopupMenuButton(
+                     icon: const Icon(Icons.arrow_drop_down),
+                     onSelected: (value) {
+                       setState(() {
+                         var selectedItem = selectionItems.firstWhere(
+                               (item) => item["Select_Value"] == value,
+                         );
+                         compneyNameController.text = value.toString();
+                         selectedCode = selectedItem["Select_Value_Code"];
+                         log(selectedCode);
+                         PreferenceManager.instance.setStringValue(
+                             "companyName", value.toString());
+                         PreferenceManager.instance.setStringValue(
+                             "companyCode", selectedCode.toString());
+                       });
+                     },
+                     itemBuilder: (BuildContext context) {
+                       return selectionItems.map<PopupMenuItem>((value) {
+                         return PopupMenuItem(
+                             height: 50,
+                             value: value["Select_Value"],
+                             child: Row(
+                               children: [
+                                 Padding(
+                                   padding: const EdgeInsets.only(left: 8.0),
+                                   child:
+                                   Text(value["Select_Value"], style: const TextStyle(fontSize: 12)),
+                                 ),
+                               ],
+                             ));
+                       }).toList();
+                     },
+                   ),
+                 ],
+               ),
+             ),
+             actions: [
+               ButtonGlobal(
+                 buttontext: 'Get Otp',
+                 buttonDecoration: kButtonDecoration.copyWith(color: kMainColor,borderRadius: BorderRadius.all(Radius.circular(50))),
+                 onPressed: () {
+                     compneyNameController.text==""?Fluttertoast.showToast(
+                         msg: "Please Select Company",
+                         toastLength: Toast.LENGTH_SHORT,
+                         gravity: ToastGravity.BOTTOM,
+                         timeInSecForIosWeb: 1,
+                         textColor: Colors.white,
+                         fontSize: 16.0
+                     ): PhoneVerification().launch(context);
+                   //  const HomeScreen().launch(context);
+                 },
+               )
+             ],
+           );
+         },
+       );
+     }
+     else {
+       Fluttertoast.showToast(
+           msg: "Please Check Mobile!",
+           toastLength: Toast.LENGTH_LONG,
+           gravity: ToastGravity.BOTTOM,
+           backgroundColor: Colors.red,
+           timeInSecForIosWeb: 1,
+           textColor: Colors.white,
+           fontSize: 16.0);
+     }
     } else {
       // show error
       print("Try Again");
     }
   }
+}
+extension extString on String {
+  bool get isValidEmail {
+    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    return emailRegExp.hasMatch(this);
+  }
+
+  bool get isValidName{
+    final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+    return nameRegExp.hasMatch(this);
+  }
+
+  bool get isValidPassword{
+    final passwordRegExp =
+    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\><*~]).{8,}/pre>');
+    return passwordRegExp.hasMatch(this);
+  }
+
+  bool get isNotNull{
+    return this!=null;
+  }
+
+  bool get isValidPhone{
+    final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
+    return phoneRegExp.hasMatch(this);
+  }
+
 }

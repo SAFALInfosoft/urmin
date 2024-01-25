@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../DMS_Screens/DMS_DashBoard.dart';
+import '../../GlobalComponents/PreferenceManager.dart';
 import '../../GlobalComponents/button_global.dart';
 import '../../GlobalComponents/purchase_model.dart';
 import '../../constant.dart';
@@ -20,10 +22,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool? Login;
+
   @override
   void initState() {
     super.initState();
-    init();
+    PreferenceManager.instance.setStringValue(
+        "ClintUrl", "https://demo.datanote.co.in/urminapi/");
+    PreferenceManager.instance
+        .getBooleanValue("Login")
+        .then((value) => setState(() {
+      Login=value;
+      print(value);
+      init();
+    }));
   }
 
   Future<void> init() async {
@@ -34,10 +46,12 @@ class _SplashScreenState extends State<SplashScreen> {
     bool isValid = await PurchaseModel().isActiveBuyer();
     if(isValid){
       finish(context);
-      Navigator.push(
+      Login!?Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const SignIn()),
-      );
+        MaterialPageRoute(builder: (context) => const Dms_HomeScreen()),
+      ):Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const SignIn()));
       //const SignIn().launch(context);
     } else{
       showLicense(context: context);

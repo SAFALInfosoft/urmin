@@ -48,6 +48,10 @@ class Dms_HomeScreen extends StatefulWidget {
 class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
   String? RoleType;
 
+  String? token;
+
+  String? distributorName;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -56,760 +60,771 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
         .then((value) => setState(() {
       RoleType=value;
       print(value);
+    }));PreferenceManager.instance
+        .getStringValue("distributorName")
+        .then((value) => setState(() {
+      distributorName=value;
+      print("distributorName"+value);
+    }));
+
+    PreferenceManager.instance
+        .getStringValue("accessToken")
+        .then((value) => setState(() {
+      token=value;
+      print(value);
     }));
     super.initState();
   }
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
+
     //DateTime today = DateTime.now();
     //String dateStr = "${today.day}-${today.month}-${today.year}";
     DateTime now = DateTime.now();
     String dateStr = DateFormat.yMMMEd().format(now);
-    print(dateStr);
-    return SafeArea(
-      child: WillPopScope(
-        onWillPop: () {
-          confirmationDialog(context);
-          return Future.value(false);
-        },
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
+
+    return WillPopScope(
+      onWillPop: () {
+        confirmationDialog(context);
+        return Future.value(false);
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: kMainColor,
+        appBar: AppBar(
           backgroundColor: kMainColor,
-          appBar: AppBar(
-            backgroundColor: kMainColor,
-            elevation: 0.0,
-            titleSpacing: 0.0,
-            iconTheme: const IconThemeData(color: Colors.white),
-            title: Text(
-              '${RoleType??'Dms'} Management',
-              maxLines: 2,
-              style: kTextStyle.copyWith(color: Colors.white, fontSize: 16.0),
+          elevation: 0.0,
+          titleSpacing: 0.0,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: Text(
+            'Urmin DMS',
+            maxLines: 2,
+            style: kTextStyle.copyWith(color: Colors.white, fontSize: 16.0),
+          ),
+          actions:  [
+            InkWell(
+              onTap: () {
+                const NotificationScreen().launch(context);
+              },
+              child: const Padding(
+                padding: EdgeInsets.only(right: 10.0),
+                child: Image(
+                  height: 30,
+                  width: 30,
+                  image: AssetImage('images/notificationicon.png'),
+                ),
+              ),
             ),
-            actions:  [
-              InkWell(
+          ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              Container(
+                height: context.height() / 3,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
+                  color: kMainColor,
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: context.height() / 4,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
+                        color: Colors.white,
+                      ),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            const CircleAvatar(
+                              radius: 60.0,
+                              backgroundColor: kMainColor,
+                              backgroundImage: AssetImage(
+                                'images/Pro.png',
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            Text(
+                              distributorName.toString(),
+                              style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            // Text(
+                            //   'Admin',
+                            //   style: kTextStyle.copyWith(color: kGreyTextColor),
+                            // ),
+                          ],
+                        ).onTap(() {
+                          const ProfileScreen().launch(context);
+                        }),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              '27',
+                              style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Orders',
+                              style: kTextStyle.copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              '12',
+                              style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Clients',
+                              style: kTextStyle.copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              '50,000',
+                              style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Total Collection',
+                              style: kTextStyle.copyWith(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              ListTile(
                 onTap: () {
-                  const NotificationScreen().launch(context);
+                  const ProfileScreen().launch(context);
                 },
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 10.0),
-                  child: Image(
-                    height: 30,
-                    width: 30,
-                    image: AssetImage('images/notificationicon.png'),
-                  ),
+                leading: const Icon(
+                  Icons.person,
+                  color: kGreyTextColor,
+                ),
+                title: Text(
+                  'Profile',
+                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: kGreyTextColor,
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  LeaderBoard().launch(context);
+                },
+                leading: const Icon(
+                  Icons.score,
+                  color: kGreyTextColor,
+                ),
+                title: Text(
+                  'Leader Board',
+                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: kGreyTextColor,
+                ),
+              ),
+              // ListTile(
+              //   onTap: () {
+              //     const PricingScreen().launch(context);
+              //   },
+              //   leading: const Icon(
+              //     FontAwesomeIcons.medal,
+              //     color: kGreyTextColor,
+              //   ),
+              //   title: Text(
+              //     'Premium Version   (Pro)',
+              //     style: kTextStyle.copyWith(color: kGreyTextColor),
+              //   ),
+              //   trailing: const Icon(
+              //     Icons.arrow_forward_ios,
+              //     color: kGreyTextColor,
+              //   ),
+              // ),
+              // ListTile(
+              //   onTap: () {
+              //     const EmptyHoliday().launch(context);
+              //   },
+              //   leading: const Icon(
+              //     FontAwesomeIcons.coffee,
+              //     color: kGreyTextColor,
+              //   ),
+              //   title: Text(
+              //     'Holiday',
+              //     style: kTextStyle.copyWith(color: kGreyTextColor),
+              //   ),
+              //   trailing: const Icon(
+              //     Icons.arrow_forward_ios,
+              //     color: kGreyTextColor,
+              //   ),
+              // ),
+              // ListTile(
+              //   onTap: () {
+              //     const EmptyHoliday().launch(context);
+              //   },
+              //   leading: const Icon(
+              //     FontAwesomeIcons.lock,
+              //     color: kGreyTextColor,
+              //   ),
+              //   title: Text(
+              //     'App Lock',
+              //     style: kTextStyle.copyWith(color: kGreyTextColor),
+              //   ),
+              //   trailing: Transform.scale(
+              //     scale: 0.6,
+              //     child: CupertinoSwitch(
+              //       value: isChecked,
+              //       thumbColor: kGreyTextColor,
+              //       onChanged: (bool value) {
+              //         setState(() {
+              //           isChecked = value;
+              //         });
+              //       },
+              //     ),
+              //   ),
+              // ),
+              // ListTile(
+              //   onTap: () {
+              //     setState(() {
+              //       Share.share('check out This Awesome HRM');
+              //     });
+              //   },
+              //   leading: const Icon(
+              //     FontAwesomeIcons.userFriends,
+              //     color: kGreyTextColor,
+              //   ),
+              //   title: Text(
+              //     'Share With Friends',
+              //     style: kTextStyle.copyWith(color: kGreyTextColor),
+              //   ),
+              //   trailing: const Icon(
+              //     Icons.arrow_forward_ios,
+              //     color: kGreyTextColor,
+              //   ),
+              // ),
+              // ListTile(
+              //   onTap: () {
+              //     const TermsOfServices().launch(context);
+              //   },
+              //   leading: const Icon(
+              //     FontAwesomeIcons.infoCircle,
+              //     color: kGreyTextColor,
+              //   ),
+              //   title: Text(
+              //     'Terms of Services',
+              //     style: kTextStyle.copyWith(color: kGreyTextColor),
+              //   ),
+              //   trailing: const Icon(
+              //     Icons.arrow_forward_ios,
+              //     color: kGreyTextColor,
+              //   ),
+              // ),
+              // ListTile(
+              //   onTap: () {
+              //    // const PrivacyPolicy().launch(context);
+              //   },
+              //   leading: const Icon(
+              //     Icons.dangerous_sharp,
+              //     color: kGreyTextColor,
+              //   ),
+              //   title: Text(
+              //     'Privacy Policy',
+              //     style: kTextStyle.copyWith(color: kGreyTextColor),
+              //   ),
+              //   trailing: const Icon(
+              //     Icons.arrow_forward_ios,
+              //     color: kGreyTextColor,
+              //   ),
+              // ),
+              ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SignIn()),
+                  );
+                },
+                leading: const Icon(
+                  FontAwesomeIcons.signOutAlt,
+                  color: kGreyTextColor,
+                ),
+                title: Text(
+                  'Logout',
+                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: kGreyTextColor,
                 ),
               ),
             ],
           ),
-          drawer: Drawer(
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Container(
+            height: context.height(),
+            padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+              color: Colors.white,
+            ),
             child: ListView(
+              physics: const ClampingScrollPhysics(),
               children: [
-                Container(
-                  height: context.height() / 3,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
-                    color: kMainColor,
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: context.height() / 4,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
-                          color: Colors.white,
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Material(
+                  elevation: 2,
+                  child: Container(
+                    width: context.width(),
+                    padding: const EdgeInsets.all(10),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: Color(0xFF4CE364),
+                          width: 3.0,
                         ),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 10.0,
+                      ),
+                      color: Colors.white,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'D M S',
+                              style: kTextStyle,
+                            ),
+                            const Spacer(),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '30 May, 2021 ',
+                                    style: kTextStyle.copyWith(
+                                      color: kGreyTextColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const CircleAvatar(
-                                radius: 60.0,
-                                backgroundColor: kMainColor,
-                                backgroundImage: AssetImage(
-                                  'images/Pro.png',
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  decoration: BoxDecoration(
+                                    border: const Border(
+                                        top: BorderSide(
+                                          color: kMainColor,
+                                        )),
+                                    color: kMainColor.withOpacity(0.1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '18982',
+                                        style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Total Purchase Order',
+                                        style: kTextStyle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 10.0,
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  decoration: BoxDecoration(
+                                    border: const Border(
+                                        top: BorderSide(
+                                          color: Color(0xFF4CE364),
+                                        )),
+                                    color: const Color(0xFF4CE364).withOpacity(0.1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '2',
+                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Pending Purchase Order',
+                                        style: kTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              Text(
-                                'Nakul Parmar',
-                                style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  decoration: BoxDecoration(
+                                    border: const Border(
+                                        top: BorderSide(
+                                          color: Color(0xFFFD72AF),
+                                        )),
+                                    color: const Color(0xFFFD72AF).withOpacity(0.1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '2',
+                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Pending Purchase Order',
+                                        style: kTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              Text(
-                                'Admin',
-                                style: kTextStyle.copyWith(color: kGreyTextColor),
-                              ),
-                            ],
-                          ).onTap(() {
-                            const ProfileScreen().launch(context);
-                          }),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                '27',
-                                style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  decoration: BoxDecoration(
+                                    border: const Border(
+                                        top: BorderSide(
+                                          color: kMainColor,
+                                        )),
+                                    color: kMainColor.withOpacity(0.1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '18982',
+                                        style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Total GRN',
+                                        style: kTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              Text(
-                                'Orders',
-                                style: kTextStyle.copyWith(color: Colors.white),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  decoration: BoxDecoration(
+                                    border: const Border(
+                                        top: BorderSide(
+                                          color: Color(0xFF4CE364),
+                                        )),
+                                    color: const Color(0xFF4CE364).withOpacity(0.1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '2',
+                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Pending GRN',
+                                        style: kTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                '12',
-                                style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  decoration: BoxDecoration(
+                                    border: const Border(
+                                        top: BorderSide(
+                                          color: Color(0xFFFD72AF),
+                                        )),
+                                    color: const Color(0xFFFD72AF).withOpacity(0.1),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '2',
+                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        'Pending GRN',
+                                        style: kTextStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
-                              Text(
-                                'Clients',
-                                style: kTextStyle.copyWith(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                '50,000',
-                                style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Total Collection',
-                                style: kTextStyle.copyWith(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 20.0,
                 ),
-                ListTile(
-                  onTap: () {
-                    const ProfileScreen().launch(context);
-                  },
-                  leading: const Icon(
-                    Icons.person,
-                    color: kGreyTextColor,
-                  ),
-                  title: Text(
-                    'Profile',
-                    style: kTextStyle.copyWith(color: kGreyTextColor),
-                  ),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: kGreyTextColor,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Material(
+                        elevation: 2.0,
+                        child: GestureDetector(
+                          onTap: () {
+                            const PRIMARY_SALES_MENU().launch(context);
+                          },
+                          child: Container(
+                            width: context.width(),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: Color(0xFF7C69EE),
+                                  width: 3.0,
+                                ),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Primary Sales',
+                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Material(
+                        elevation: 2.0,
+                        child: GestureDetector(
+                          onTap: () {
+                            const INVENTORY_MANAGEMNET_MENU().launch(context);
+                          },
+                          child: Container(
+                            width: context.width(),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: Color(0xFFFD72AF),
+                                  width: 3.0,
+                                ),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Image(image: AssetImage('images/material-management.png'),width: 50,height: 50),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Inventory Management',
+                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                ListTile(
-                  onTap: () {
-                    LeaderBoard().launch(context);
-                  },
-                  leading: const Icon(
-                    Icons.score,
-                    color: kGreyTextColor,
-                  ),
-                  title: Text(
-                    'Leader Board',
-                    style: kTextStyle.copyWith(color: kGreyTextColor),
-                  ),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: kGreyTextColor,
-                  ),
+                const SizedBox(
+                  height: 20.0,
                 ),
-                // ListTile(
-                //   onTap: () {
-                //     const PricingScreen().launch(context);
-                //   },
-                //   leading: const Icon(
-                //     FontAwesomeIcons.medal,
-                //     color: kGreyTextColor,
-                //   ),
-                //   title: Text(
-                //     'Premium Version   (Pro)',
-                //     style: kTextStyle.copyWith(color: kGreyTextColor),
-                //   ),
-                //   trailing: const Icon(
-                //     Icons.arrow_forward_ios,
-                //     color: kGreyTextColor,
-                //   ),
-                // ),
-                // ListTile(
-                //   onTap: () {
-                //     const EmptyHoliday().launch(context);
-                //   },
-                //   leading: const Icon(
-                //     FontAwesomeIcons.coffee,
-                //     color: kGreyTextColor,
-                //   ),
-                //   title: Text(
-                //     'Holiday',
-                //     style: kTextStyle.copyWith(color: kGreyTextColor),
-                //   ),
-                //   trailing: const Icon(
-                //     Icons.arrow_forward_ios,
-                //     color: kGreyTextColor,
-                //   ),
-                // ),
-                // ListTile(
-                //   onTap: () {
-                //     const EmptyHoliday().launch(context);
-                //   },
-                //   leading: const Icon(
-                //     FontAwesomeIcons.lock,
-                //     color: kGreyTextColor,
-                //   ),
-                //   title: Text(
-                //     'App Lock',
-                //     style: kTextStyle.copyWith(color: kGreyTextColor),
-                //   ),
-                //   trailing: Transform.scale(
-                //     scale: 0.6,
-                //     child: CupertinoSwitch(
-                //       value: isChecked,
-                //       thumbColor: kGreyTextColor,
-                //       onChanged: (bool value) {
-                //         setState(() {
-                //           isChecked = value;
-                //         });
-                //       },
-                //     ),
-                //   ),
-                // ),
-                // ListTile(
-                //   onTap: () {
-                //     setState(() {
-                //       Share.share('check out This Awesome HRM');
-                //     });
-                //   },
-                //   leading: const Icon(
-                //     FontAwesomeIcons.userFriends,
-                //     color: kGreyTextColor,
-                //   ),
-                //   title: Text(
-                //     'Share With Friends',
-                //     style: kTextStyle.copyWith(color: kGreyTextColor),
-                //   ),
-                //   trailing: const Icon(
-                //     Icons.arrow_forward_ios,
-                //     color: kGreyTextColor,
-                //   ),
-                // ),
-                // ListTile(
-                //   onTap: () {
-                //     const TermsOfServices().launch(context);
-                //   },
-                //   leading: const Icon(
-                //     FontAwesomeIcons.infoCircle,
-                //     color: kGreyTextColor,
-                //   ),
-                //   title: Text(
-                //     'Terms of Services',
-                //     style: kTextStyle.copyWith(color: kGreyTextColor),
-                //   ),
-                //   trailing: const Icon(
-                //     Icons.arrow_forward_ios,
-                //     color: kGreyTextColor,
-                //   ),
-                // ),
-                // ListTile(
-                //   onTap: () {
-                //    // const PrivacyPolicy().launch(context);
-                //   },
-                //   leading: const Icon(
-                //     Icons.dangerous_sharp,
-                //     color: kGreyTextColor,
-                //   ),
-                //   title: Text(
-                //     'Privacy Policy',
-                //     style: kTextStyle.copyWith(color: kGreyTextColor),
-                //   ),
-                //   trailing: const Icon(
-                //     Icons.arrow_forward_ios,
-                //     color: kGreyTextColor,
-                //   ),
-                // ),
-                ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignIn()),
-                    );
-                  },
-                  leading: const Icon(
-                    FontAwesomeIcons.signOutAlt,
-                    color: kGreyTextColor,
-                  ),
-                  title: Text(
-                    'Logout',
-                    style: kTextStyle.copyWith(color: kGreyTextColor),
-                  ),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios,
-                    color: kGreyTextColor,
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Material(
+                        elevation: 2.0,
+                        child: GestureDetector(
+                          onTap: () {
+                            SECONDERY_SALES_MENU().launch(context);
+                          },
+                          child: Container(
+                            width: context.width(),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: Color(0xFF7C69EE),
+                                  width: 3.0,
+                                ),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Secondary Sales',
+                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20.0,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Material(
+                        elevation: 2.0,
+                        child: GestureDetector(
+                          onTap: () {
+                            const VAN_SALES_MENU().launch(context);
+                          },
+                          child: Container(
+                            width: context.width(),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: Color(0xFFFD72AF),
+                                  width: 3.0,
+                                ),
+                              ),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Image(image: AssetImage('images/vanSales.png'),width: 50,height: 50),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Van Sales',
+                                    style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Material(
+                  elevation: 2.0,
+                  child: Container(
+                    width: context.width(),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: Color(0xFF4CCEFA),
+                          width: 3.0,
+                        ),
+                      ),
+                      color: Colors.white,
+                    ),
+                    child: ListTile(
+                      onTap: () {
+                        // const pendingGRNMainScreen().launch(context);
+                      },
+                      leading: const Image(image: AssetImage('images/ordertobill.png'),height: 40,width: 40,),
+                      title: Text(
+                        'Retailer Order',
+                        maxLines: 2,
+                        style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                      ),
+                      trailing: const Icon(Icons.arrow_forward_ios),
+                    ),
                   ),
                 ),
               ],
-            ),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Container(
-              height: context.height(),
-              padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
-                color: Colors.white,
-              ),
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                children: [
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Material(
-                    elevation: 2,
-                    child: Container(
-                      width: context.width(),
-                      padding: const EdgeInsets.all(10),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF4CE364),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'D M S',
-                                style: kTextStyle,
-                              ),
-                              const Spacer(),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: '30 May, 2021 ',
-                                      style: kTextStyle.copyWith(
-                                        color: kGreyTextColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                    decoration: BoxDecoration(
-                                      border: const Border(
-                                          top: BorderSide(
-                                            color: kMainColor,
-                                          )),
-                                      color: kMainColor.withOpacity(0.1),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '18982',
-                                          style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Total Purchase Order',
-                                          style: kTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                    decoration: BoxDecoration(
-                                      border: const Border(
-                                          top: BorderSide(
-                                            color: Color(0xFF4CE364),
-                                          )),
-                                      color: const Color(0xFF4CE364).withOpacity(0.1),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '2',
-                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Pending Purchase Order',
-                                          style: kTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                    decoration: BoxDecoration(
-                                      border: const Border(
-                                          top: BorderSide(
-                                            color: Color(0xFFFD72AF),
-                                          )),
-                                      color: const Color(0xFFFD72AF).withOpacity(0.1),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '2',
-                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Pending Purchase Order',
-                                          style: kTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                    decoration: BoxDecoration(
-                                      border: const Border(
-                                          top: BorderSide(
-                                            color: kMainColor,
-                                          )),
-                                      color: kMainColor.withOpacity(0.1),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '18982',
-                                          style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Total GRN',
-                                          style: kTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                    decoration: BoxDecoration(
-                                      border: const Border(
-                                          top: BorderSide(
-                                            color: Color(0xFF4CE364),
-                                          )),
-                                      color: const Color(0xFF4CE364).withOpacity(0.1),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '2',
-                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Pending GRN',
-                                          style: kTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                    decoration: BoxDecoration(
-                                      border: const Border(
-                                          top: BorderSide(
-                                            color: Color(0xFFFD72AF),
-                                          )),
-                                      color: const Color(0xFFFD72AF).withOpacity(0.1),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          '2',
-                                          style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          'Pending GRN',
-                                          style: kTextStyle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              const PRIMARY_SALES_MENU().launch(context);
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFF7C69EE),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Primary Sales',
-                                      style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20.0,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              const INVENTORY_MANAGEMNET_MENU().launch(context);
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFFFD72AF),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(image: AssetImage('images/material-management.png'),width: 50,height: 50),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Inventory Management',
-                                      style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              SECONDERY_SALES_MENU().launch(context);
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFF7C69EE),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Secondary Sales',
-                                      style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 20.0,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Material(
-                          elevation: 2.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              const VAN_SALES_MENU().launch(context);
-                            },
-                            child: Container(
-                              width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  left: BorderSide(
-                                    color: Color(0xFFFD72AF),
-                                    width: 3.0,
-                                  ),
-                                ),
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Image(image: AssetImage('images/vanSales.png'),width: 50,height: 50),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      'Van Sales',
-                                      style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF4CCEFA),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () {
-                          // const pendingGRNMainScreen().launch(context);
-                        },
-                        leading: const Image(image: AssetImage('images/ordertobill.png'),height: 40,width: 40,),
-                        title: Text(
-                          'Retailer Order',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                        ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ),

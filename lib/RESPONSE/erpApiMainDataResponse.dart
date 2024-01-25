@@ -1,6 +1,12 @@
+import 'package:hive/hive.dart';
+part 'erpApiMainDataResponse.g.dart';
+@HiveType(typeId: 0)
 class ErpApiMainDataResponse {
+  @HiveField(0)
   List<Doc> docs;
+  @HiveField(1)
   String bookmark;
+  @HiveField(2)
   String warning;
 
   ErpApiMainDataResponse({

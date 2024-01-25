@@ -1,5 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,8 @@ import 'package:maan_hrm/Screens/Reference%20Management/empty_reference.dart';
 import 'package:maan_hrm/Screens/Salary%20Statement/empty_salary_statement.dart';
 import 'package:maan_hrm/Screens/Time%20Attendence/attendance_employee_list.dart';
 import 'package:nb_utils/nb_utils.dart';
+import '../../../GlobalComponents/PreferenceManager.dart';
+import '../../../Screens/Authentication/sign_in.dart';
 import '../../../constant.dart';
 import 'package:intl/intl.dart';
 
@@ -27,6 +32,37 @@ class purchaseOrderMainScreen extends StatefulWidget {
 class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
   final dateController = TextEditingController();
   bool isVisible = false;
+  String? clientUrl;
+
+  List poList = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    PreferenceManager.instance
+        .getStringValue("accessToken")
+        .then((value) => setState(() {
+      token =Uri.encodeComponent(value.toString());
+      log(token);
+    }));
+    PreferenceManager.instance
+        .getStringValue("distributorId")
+        .then((value) => setState(() {
+      userId =value;
+    }));
+    PreferenceManager.instance
+        .getStringValue("companyId")
+        .then((value) => setState(() {
+      coCode =value;
+    }));
+    PreferenceManager.instance
+        .getStringValue("ClintUrl")
+        .then((value) => setState(() {
+              clientUrl = value;
+              fetchData();
+              print(value);
+            }));
+    super.initState();
+  }
 
   String? dateShow;
   Widget button({
@@ -147,7 +183,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                 color: Colors.white,
               ),
               child: Column(
-                children: [
+                  children: [
                   //Button Details
                   Row(
                     children: [
@@ -162,9 +198,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                         padding: const EdgeInsets.only(left: 0, right: 10),
                         child: InkWell(
                           onTap: () {
-                            setState(() {
-
-                            });
+                            setState(() {});
                             if (isVisible == true) {
                               isVisible = false;
                             } else {
@@ -267,14 +301,14 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                     ),
                   ),
                   Divider(),
-                  Expanded(
+                  isLoading?Center(child: CircularProgressIndicator()): Expanded(
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Expanded(
                             child: ListView.builder(
-                                itemCount: 10,
+                                itemCount: poList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return InkWell(
                                     onTap: () {},
@@ -290,7 +324,6 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                 icon: Icons.edit,
                                                 label: 'Edit',
                                               ),
-
                                               SlidableAction(
                                                 onPressed: (context) {},
                                                 backgroundColor: Colors.blue,
@@ -324,17 +357,21 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                 child: Container(
                                                   width: context.width(),
                                                   padding: const EdgeInsets.all(
-                                                      10.0),
+                                                      0.0),
                                                   decoration: BoxDecoration(
                                                     border: Border(
                                                       left: BorderSide(
-                                                        color: _selectedValueIndex ==
-                                                                0
-                                                            ? Colors.red
-                                                            : _selectedValueIndex ==
-                                                                    1
-                                                                ? Colors.blue
-                                                                : Colors.green,
+                                                        color: poList[index]['PO_Status'] ==
+                                                            "Draft"
+                                                            ? Colors
+                                                            .red:poList[index]['PO_Status'] ==
+                                                            "RSM Approval"
+                                                            ? Colors
+                                                            .grey:poList[index]['PO_Status'] ==
+                                                            "Hold"
+                                                            ?Colors.blue:poList[index]['PO_Status'] ==
+                                                            "Reject"
+                                                            ?Colors.orange:Colors.yellow,
                                                         width: 3.0,
                                                       ),
                                                     ),
@@ -465,232 +502,499 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                   //   ],
                                                   // ),
 
-                                                  child: ListTile(
+                                                  child: InkWell(
                                                     onTap: () {},
-                                                    title: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            ///////////
-                                                            Flexible(
-                                                              child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                    // color: Colors.grey,
-                                                                  ),
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Column(
-                                                                    children: const [
-                                                                      Padding(
-                                                                        padding:
-                                                                        EdgeInsets.all(5.0),
-                                                                        child:
-                                                                        Text(
-                                                                          "URN NUMBER",
-                                                                          overflow: TextOverflow.ellipsis,
-                                                                          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  )),
-                                                            ),
-                                                            Flexible(
-                                                              child: Container(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: const Padding(
-                                                                    padding:
-                                                                    EdgeInsets.only(left: 10),
-                                                                    child:
-                                                                    Text(
-                                                                      "PO/001",
-                                                                      overflow:
-                                                                      TextOverflow.ellipsis,
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight.w400,
-                                                                          color: Colors.black,
-                                                                          fontSize: 16),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(left: 8.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              ///////////
+                                                              Flexible(
+                                                                child: Container(
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.only(
+                                                                              bottomLeft:
+                                                                                  Radius.circular(0)),
+                                                                      // color: Colors.grey,
                                                                     ),
-                                                                  )),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            ///////////
-                                                            Flexible(
-                                                              child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                    // color: Colors.grey,
-                                                                  ),
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Column(
-                                                                    children: const [
-                                                                      Padding(
-                                                                        padding:
-                                                                        EdgeInsets.all(5.0),
-                                                                        child:
-                                                                        Text(
-                                                                          "Date",
-                                                                          overflow: TextOverflow.ellipsis,
-                                                                          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Column(
+                                                                      children: const [
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(0.0),
+                                                                          child:
+                                                                              Text(
+                                                                            "",
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: Colors.black,
+                                                                                fontSize: 16),
+                                                                          ),
                                                                         ),
-                                                                      ),
-                                                                    ],
-                                                                  )),
-                                                            ),
-                                                            Flexible(
-                                                              child: Container(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: const Padding(
-                                                                    padding:
-                                                                    EdgeInsets.only(left: 10),
-                                                                    child:
-                                                                    Text(
-                                                                      "27/10/2023",
-                                                                      overflow:
-                                                                      TextOverflow.ellipsis,
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight.w400,
-                                                                          color: Colors.black,
-                                                                          fontSize: 16),
-                                                                    ),
-                                                                  )),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            ///////////
-                                                            Flexible(
-                                                              child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                    // color: Colors.grey,
-                                                                  ),
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Column(
-                                                                    children: const [
-                                                                      Padding(
-                                                                        padding:
-                                                                        EdgeInsets.all(5.0),
-                                                                        child:
-                                                                        Text(
-                                                                          "Created By",
-                                                                          overflow: TextOverflow.ellipsis,
-                                                                          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  )),
-                                                            ),
-                                                            Flexible(
-                                                              child: Container(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child:  Padding(
-                                                                    padding:
-                                                                    EdgeInsets.only(left: 10),
-                                                                    child:
-                                                                    Text(
-                                                                      _selectedValueIndex ==
-                                                                          0?' Self':"System",
-                                                                      overflow:
-                                                                      TextOverflow.ellipsis,
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight.w400,
-                                                                          color:_selectedValueIndex ==
-                                                                              0? Colors
-                                                                              .blue:Colors.red,
-                                                                          fontSize: 16),
-                                                                    ),
-                                                                  )),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            ///////////
-                                                            Flexible(
-                                                              child: Container(
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius:
-                                                                    BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                    // color: Colors.grey,
-                                                                  ),
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: Column(
-                                                                    children: const [
-                                                                      Padding(
-                                                                        padding:
-                                                                        EdgeInsets.all(5.0),
-                                                                        child:
-                                                                        Text(
-                                                                          "Total Amount",
-                                                                          overflow: TextOverflow.ellipsis,
-                                                                          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  )),
-                                                            ),
-                                                            Flexible(
-                                                              child: Container(
-                                                                  alignment: Alignment.centerLeft,
-                                                                  child: const Padding(
-                                                                    padding:
-                                                                    EdgeInsets.only(left: 10),
-                                                                    child:
-                                                                    Text(
-                                                                      "2567",
-                                                                      overflow:
-                                                                      TextOverflow.ellipsis,
-                                                                      style: TextStyle(
-                                                                          fontWeight: FontWeight.w400,
-                                                                          color: Colors.black,
-                                                                          fontSize: 16),
-                                                                    ),
-                                                                  )),
-                                                            ),
-                                                          ],
-                                                        ),
+                                                                      ],
+                                                                    )),
+                                                              ),
+                                                              Flexible(
+                                                                child: Container(
+                                                                  height: 25,
+                                                                   decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),color: poList[index]['PO_Status'] ==
+                                                                       "Draft"
+                                                                       ? Colors
+                                                                       .red:poList[index]['PO_Status'] ==
+                                                                       "RSM Approval"
+                                                                       ? Colors
+                                                                       .grey:poList[index]['PO_Status'] ==
+                                                                       "Hold"
+                                                                       ?Colors.blue:poList[index]['PO_Status'] ==
+                                                                       "Reject"
+                                                                       ?Colors.orange:Colors.yellow,),
 
-                                                      ],
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              left:
+                                                                                  0),
+                                                                      child: Text(
+                                                                          poList[index]['PO_Status'],
+                                                                          style: TextStyle(
+                                                                              color:/* poList[index]['PO_Status'] ==
+                                                                                  "Draft"
+                                                                                  ? Colors
+                                                                                  .red:poList[index]['PO_Status'] ==
+                                                                                  "RSM Approval"
+                                                                                  ? Colors
+                                                                                  .grey:poList[index]['PO_Status'] ==
+                                                                                  "Hold"
+                                                                                  ?Colors.blue:poList[index]['PO_Status'] ==
+                                                                                  "Reject"
+                                                                                  ?Colors.orange:*/Colors.white,
+                                                                              fontSize: 15,
+                                                                              fontWeight:
+                                                                              FontWeight
+                                                                                  .bold)),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              ///////////
+                                                              Flexible(
+                                                                child: Container(
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.only(
+                                                                              bottomLeft:
+                                                                                  Radius.circular(0)),
+                                                                      // color: Colors.grey,
+                                                                    ),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Column(
+                                                                      children: const [
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(5.0),
+                                                                          child:
+                                                                              Text(
+                                                                            "PO No",
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: Colors.black,
+                                                                                fontSize: 16),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )),
+                                                              ),
+                                                              Flexible(
+                                                                child: Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              left:
+                                                                                  10),
+                                                                      child: Text(
+                                                                        poList[index]
+                                                                            [
+                                                                            'URN_NO'],
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w400,
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize:
+                                                                                16),
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              ///////////
+                                                              Flexible(
+                                                                child: Container(
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.only(
+                                                                              bottomLeft:
+                                                                                  Radius.circular(0)),
+                                                                      // color: Colors.grey,
+                                                                    ),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Column(
+                                                                      children: const [
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(5.0),
+                                                                          child:
+                                                                              Text(
+                                                                            "Date",
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: Colors.black,
+                                                                                fontSize: 16),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )),
+                                                              ),
+                                                              Flexible(
+                                                                child: Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              left:
+                                                                                  10),
+                                                                      child: Text(
+                                                                        poList[index]
+                                                                            [
+                                                                            'cur_date'],
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w400,
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize:
+                                                                                16),
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          /*    Row(
+                                                            children: [
+                                                              ///////////
+                                                              Flexible(
+                                                                child: Container(
+                                                                    decoration: const BoxDecoration(
+                                                                      borderRadius:
+                                                                      BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                      // color: Colors.grey,
+                                                                    ),
+                                                                    alignment: Alignment.centerLeft,
+                                                                    child: Column(
+                                                                      children: const [
+                                                                        Padding(
+                                                                          padding:
+                                                                          EdgeInsets.all(5.0),
+                                                                          child:
+                                                                          Text(
+                                                                            "Created By",
+                                                                            overflow: TextOverflow.ellipsis,
+                                                                            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )),
+                                                              ),
+                                                              Flexible(
+                                                                child: Container(
+                                                                    alignment: Alignment.centerLeft,
+                                                                    child:  Padding(
+                                                                      padding:
+                                                                      EdgeInsets.only(left: 10),
+                                                                      child:
+                                                                      Text(
+                                                                        _selectedValueIndex ==
+                                                                            0?' Self':"System",
+                                                                        overflow:
+                                                                        TextOverflow.ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight.w400,
+                                                                            color:_selectedValueIndex ==
+                                                                                0? Colors
+                                                                                .blue:Colors.red,
+                                                                            fontSize: 16),
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),*/
+                                                          Row(
+                                                            children: [
+                                                              ///////////
+                                                              Flexible(
+                                                                child: Container(
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.only(
+                                                                              bottomLeft:
+                                                                                  Radius.circular(0)),
+                                                                      // color: Colors.grey,
+                                                                    ),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Column(
+                                                                      children: const [
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(5.0),
+                                                                          child:
+                                                                              Text(
+                                                                            "Total Amount",
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: Colors.black,
+                                                                                fontSize: 16),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )),
+                                                              ),
+                                                              Flexible(
+                                                                child: Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              left:
+                                                                                  10),
+                                                                      child: Text(
+                                                                        poList[index]
+                                                                                [
+                                                                                'total']
+                                                                            .toString(),
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w400,
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize:
+                                                                                16),
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              ///////////
+                                                              Flexible(
+                                                                child: Container(
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.only(
+                                                                              bottomLeft:
+                                                                                  Radius.circular(0)),
+                                                                      // color: Colors.grey,
+                                                                    ),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Column(
+                                                                      children: const [
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(5.0),
+                                                                          child:
+                                                                              Text(
+                                                                            "Total Tax",
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: Colors.black,
+                                                                                fontSize: 16),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )),
+                                                              ),
+                                                              Flexible(
+                                                                child: Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              left:
+                                                                                  10),
+                                                                      child: Text(
+                                                                        poList[index]
+                                                                                [
+                                                                                'total_tax']
+                                                                            .toString(),
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w400,
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize:
+                                                                                16),
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              ///////////
+                                                              Flexible(
+                                                                child: Container(
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.only(
+                                                                              bottomLeft:
+                                                                                  Radius.circular(0)),
+                                                                      // color: Colors.grey,
+                                                                    ),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child: Column(
+                                                                      children: const [
+                                                                        Padding(
+                                                                          padding:
+                                                                              EdgeInsets.all(5.0),
+                                                                          child:
+                                                                              Text(
+                                                                            "Total",
+                                                                            overflow:
+                                                                                TextOverflow.ellipsis,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: Colors.black,
+                                                                                fontSize: 16),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    )),
+                                                              ),
+                                                              Flexible(
+                                                                child: Container(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .centerLeft,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: EdgeInsets
+                                                                          .only(
+                                                                              left:
+                                                                                  10),
+                                                                      child: Text(
+                                                                        poList[index]
+                                                                                [
+                                                                                'Final_total']
+                                                                            .toString(),
+                                                                        overflow:
+                                                                            TextOverflow
+                                                                                .ellipsis,
+                                                                        style: TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w400,
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontSize:
+                                                                                16),
+                                                                      ),
+                                                                    )),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                    trailing: InkWell(
+                                                    /*trailing: InkWell(
                                                         onTap: () {
                                                           //OrderDetailsPage().launch(context);
                                                         },
                                                         child: Text(
-                                                            _selectedValueIndex ==
-                                                                    0
-                                                                ? "Draft"
-                                                                : _selectedValueIndex ==
-                                                                        1
-                                                                    ? "In Process"
-                                                                    : "Approved",
+                                                            poList[index]['PO_Status'],
                                                             style: TextStyle(
-                                                                color: _selectedValueIndex ==
-                                                                        0
-                                                                    ? Colors.red
-                                                                    : _selectedValueIndex ==
-                                                                            1
+                                                                color: poList[index]['PO_Status'] ==
+                                                                            "Draft"
                                                                         ? Colors
-                                                                            .blue
+                                                                            .red
                                                                         : Colors
                                                                             .green,
                                                                 fontSize: 15,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .bold))),
+                                                                        .bold))),*/
                                                   ),
                                                 ),
                                               ),
@@ -715,12 +1019,107 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
             builder: (context) => attachmentClass(),
           );*/
           //urnData();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => addNewOrderForPo(),));
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => addNewOrderForPo(),
+              ));
         },
         elevation: 10,
         child: const Icon(Icons.add),
       ),
     );
+  }
+var token,coCode,userId;
+  Future<void> fetchData() async {
+    //clientUrl="https://demo.datanote.co.in/urminapi/";
+    /*   isLoading = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    uId = prefs.getString("uId").toString();
+    token = Uri.encodeComponent(prefs.getString("token").toString());
+    co_code = prefs.getString("co_code").toString();*/
+    PreferenceManager.instance
+        .getStringValue("accessToken")
+        .then((value) => setState(() {
+       token =Uri.encodeComponent(value.toString());
+      log(token);
+    }));
+ PreferenceManager.instance
+        .getStringValue("distributorId")
+        .then((value) => setState(() {
+       userId =value;
+    }));
+ PreferenceManager.instance
+        .getStringValue("companyId")
+        .then((value) => setState(() {
+       coCode =value;
+    }));
+
+
+    isLoading = true;
+
+    var dio = Dio();
+    Map<String, dynamic> payload = {
+      "Co_Code":coCode,
+      "User_Id":userId,
+      "Access_Token":token
+    };
+
+    print("${clientUrl}EntryList/GetPoList$payload");
+    var res = await dio.get("${clientUrl}EntryList/GetPoList",
+        //data: formData,
+        queryParameters: payload,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ));
+
+    print('---- status code: ${res.statusCode}');
+setState(() {
+  isLoading=false;
+});
+    if (res.statusCode == 200) {
+      /*     isLoading = false;*/
+      var json = jsonDecode(res.data);
+      log("OtpRES" + json['message'].toString());
+      if (json['message'].toString() == "User Id or Token is Invalid.") {
+        Fluttertoast.showToast(
+            msg: "LogOut",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            timeInSecForIosWeb: 1,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => const SignIn()),
+        // );
+      }else{
+        setState(() {
+          isLoading=false;
+        });
+        for (var i = 0; i < json['message'].length; i++) {
+         if (json['message'][i]['PO_Status']=="Draft"){
+           poList = json['message'];
+         }
+
+          //children.add(new ListTile());
+        }
+      }
+      setState(() {
+        isLoading=false;
+      });
+      log(poList.toString());
+
+    } else {
+      setState(() {
+        isLoading=false;
+      });
+      // show error
+      print("Try Again");
+    }
   }
 }
