@@ -6,7 +6,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class IncrementList extends StatefulWidget {
-  const IncrementList({Key? key}) : super(key: key);
+   IncrementList({Key? key}) : super(key: key);
 
   @override
   _IncrementListState createState() => _IncrementListState();
@@ -19,10 +19,10 @@ class _IncrementListState extends State<IncrementList> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const AddIncrement().launch(context);
+           AddIncrement().launch(context);
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -33,13 +33,13 @@ class _IncrementListState extends State<IncrementList> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Increment List',
           maxLines: 2,
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: const [
+        actions:  [
           Image(
             image: AssetImage('images/employeesearch.png'),
           ),
@@ -48,21 +48,21 @@ class _IncrementListState extends State<IncrementList> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -72,7 +72,7 @@ class _IncrementListState extends State<IncrementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const IncrementDetails().launch(context);
+                         IncrementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp1.png'),
                       title: Text(
@@ -83,13 +83,13 @@ class _IncrementListState extends State<IncrementList> {
                         'Designer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -99,7 +99,7 @@ class _IncrementListState extends State<IncrementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const IncrementDetails().launch(context);
+                         IncrementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp2.png'),
                       title: Text(
@@ -110,13 +110,13 @@ class _IncrementListState extends State<IncrementList> {
                         'Manager',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -126,7 +126,7 @@ class _IncrementListState extends State<IncrementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const IncrementDetails().launch(context);
+                         IncrementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp3.png'),
                       title: Text(
@@ -137,13 +137,13 @@ class _IncrementListState extends State<IncrementList> {
                         'Developer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -153,7 +153,7 @@ class _IncrementListState extends State<IncrementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const IncrementDetails().launch(context);
+                         IncrementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp4.png'),
                       title: Text(
@@ -164,7 +164,7 @@ class _IncrementListState extends State<IncrementList> {
                         'Officer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),

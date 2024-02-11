@@ -10,7 +10,7 @@
 //
 // // ignore_for_file: library_private_types_in_public_api
 // class AddNewCard extends StatefulWidget {
-//   const AddNewCard({Key? key}) : super(key: key);
+//    AddNewCard({Key? key}) : super(key: key);
 //
 //   @override
 //   _AddNewCardState createState() => _AddNewCardState();
@@ -41,7 +41,7 @@
 //         backgroundColor: kMainColor,
 //         elevation: 0.0,
 //         titleSpacing: 0.0,
-//         iconTheme: const IconThemeData(color: Colors.white),
+//         iconTheme:  IconThemeData(color: Colors.white),
 //         title: Text(
 //           'Add New Card',
 //           maxLines: 2,
@@ -52,21 +52,21 @@
 //         child: Column(
 //           crossAxisAlignment: CrossAxisAlignment.start,
 //           children: [
-//             const SizedBox(
+//              SizedBox(
 //               height: 20.0,
 //             ),
 //             Container(
 //               height: context.height(),
 //               width: context.width(),
-//               padding: const EdgeInsets.all(20.0),
-//               decoration: const BoxDecoration(
+//               padding:  EdgeInsets.all(20.0),
+//               decoration:  BoxDecoration(
 //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
 //                 color: Colors.white,
 //               ),
 //               child: Column(
 //                 crossAxisAlignment: CrossAxisAlignment.center,
 //                 children: [
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   CreditCardWidget(
@@ -99,22 +99,22 @@
 //                     expiryDate: expiryDate,
 //                     themeColor: Colors.blue,
 //                     textColor: kTitleColor,
-//                     cardNumberDecoration: const InputDecoration(
+//                     cardNumberDecoration:  InputDecoration(
 //                       border: OutlineInputBorder(),
 //                       labelText: 'Number',
 //                       hintText: 'XXXX XXXX XXXX XXXX',
 //                     ),
-//                     expiryDateDecoration: const InputDecoration(
+//                     expiryDateDecoration:  InputDecoration(
 //                       border: OutlineInputBorder(),
 //                       labelText: 'Expired Date',
 //                       hintText: 'XX/XX',
 //                     ),
-//                     cvvCodeDecoration: const InputDecoration(
+//                     cvvCodeDecoration:  InputDecoration(
 //                       border: OutlineInputBorder(),
 //                       labelText: 'CVV',
 //                       hintText: 'XXX',
 //                     ),
-//                     cardHolderDecoration: const InputDecoration(
+//                     cardHolderDecoration:  InputDecoration(
 //                       border: OutlineInputBorder(),
 //                       labelText: 'Card Holder',
 //                     ),
@@ -123,7 +123,7 @@
 //                       buttontext: 'Add Card',
 //                       buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
 //                       onPressed: () {
-//                         const PaymentMethods().launch(context);
+//                          PaymentMethods().launch(context);
 //                       }),
 //                 ],
 //               ),

@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class EmployeeList extends StatefulWidget {
-  const EmployeeList({Key? key}) : super(key: key);
+   EmployeeList({Key? key}) : super(key: key);
 
   @override
   _EmployeeListState createState() => _EmployeeListState();
@@ -23,13 +23,13 @@ class _EmployeeListState extends State<EmployeeList> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Employee List',
           maxLines: 2,
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: const [
+        actions:  [
           Image(
             image: AssetImage('images/employeesearch.png'),
           ),
@@ -38,21 +38,21 @@ class _EmployeeListState extends State<EmployeeList> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -67,17 +67,17 @@ class _EmployeeListState extends State<EmployeeList> {
                             hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            border: const OutlineInputBorder(),
+                            border:  OutlineInputBorder(),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.0),
                             color: kMainColor,
@@ -85,7 +85,7 @@ class _EmployeeListState extends State<EmployeeList> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                               Icon(
                                 Icons.add,
                                 color: Colors.white,
                               ),
@@ -99,7 +99,7 @@ class _EmployeeListState extends State<EmployeeList> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -109,7 +109,7 @@ class _EmployeeListState extends State<EmployeeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeDetails().launch(context);
+                         EmployeeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp1.png'),
                       title: Text(
@@ -120,13 +120,13 @@ class _EmployeeListState extends State<EmployeeList> {
                         'Designer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -136,7 +136,7 @@ class _EmployeeListState extends State<EmployeeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeDetails().launch(context);
+                         EmployeeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp2.png'),
                       title: Text(
@@ -147,13 +147,13 @@ class _EmployeeListState extends State<EmployeeList> {
                         'Manager',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -163,7 +163,7 @@ class _EmployeeListState extends State<EmployeeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeDetails().launch(context);
+                         EmployeeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp3.png'),
                       title: Text(
@@ -174,13 +174,13 @@ class _EmployeeListState extends State<EmployeeList> {
                         'Developer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -190,7 +190,7 @@ class _EmployeeListState extends State<EmployeeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeDetails().launch(context);
+                         EmployeeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp4.png'),
                       title: Text(
@@ -201,7 +201,7 @@ class _EmployeeListState extends State<EmployeeList> {
                         'Officer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),

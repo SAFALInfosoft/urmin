@@ -15,7 +15,7 @@ import '../../DMS_Screens/DMS_DashBoard.dart';
 import '../Home/SFA_DashBoard.dart';
 
 class PhoneVerification extends StatefulWidget {
-  const PhoneVerification({Key? key}) : super(key: key);
+   PhoneVerification({Key? key}) : super(key: key);
 
   @override
   _PhoneVerificationState createState() => _PhoneVerificationState();
@@ -64,7 +64,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
         elevation: 0.0,
         leading: Container(),
         centerTitle: true,
-        // iconTheme: const IconThemeData(color: Colors.white),
+        // iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Enter Otp',
           style: kTextStyle.copyWith(
@@ -75,7 +75,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding:  EdgeInsets.all(10.0),
             child: CircleAvatar(
               backgroundImage: AssetImage("images/logo.png"),
               minRadius: 50,
@@ -84,8 +84,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
@@ -93,14 +93,14 @@ class _PhoneVerificationState extends State<PhoneVerification> {
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
-                      border: const Border(
+                      border:  Border(
                           left: BorderSide(
                         color: kAlertColor,
                         width: 3.0,
@@ -115,15 +115,15 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
-                  const OtpForm(),
-                  const SizedBox(
+                   OtpForm(),
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     decoration: kButtonDecoration.copyWith(
                         color: kTitleColor.withOpacity(0.1)),
                     child: Text(
@@ -132,7 +132,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                           color: kTitleColor, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   RichText(
@@ -154,7 +154,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
@@ -163,9 +163,9 @@ class _PhoneVerificationState extends State<PhoneVerification> {
                         color: kMainColor,
                         borderRadius: BorderRadius.all(Radius.circular(50))),
                     onPressed: () {
-                      //  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => const Dms_HomeScreen()));
+                      //  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) =>  Dms_HomeScreen()));
                       _submit();
-                      // const PhoneVerification().launch(context);
+                      //  PhoneVerification().launch(context);
                     },
                   ),
                 ],
@@ -188,8 +188,8 @@ class _PhoneVerificationState extends State<PhoneVerification> {
 
     var dio = Dio();
     Map<String, dynamic> payload = {
-      "Mobile_No": "+916353100160",
-      "Company_Id": "1a36b22bdd89ffd361644e6ea06c2394",
+      "Mobile_No": mobile,
+      "Company_Id": company,
       "MoB_OTP": "1111"
     };
 
@@ -240,7 +240,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
     var jsonData;
     if (response.statusCode == 200) {
       jsonData = json.decode(response.body);
-
+log(response.body.toString());
       var map = Map<String, dynamic>.from(jsonData);
       log(map.toString());
       var response1 = OtpVerificationResponse.fromJson(map);
@@ -250,8 +250,13 @@ class _PhoneVerificationState extends State<PhoneVerification> {
         PreferenceManager.instance
             .setStringValue("accessToken", response1.message[0].moAccessToken);
         PreferenceManager.instance.setStringValue(
-            "distributorId", response1.message[0].distributorId);PreferenceManager.instance.setStringValue(
+            "distributorId", response1.message[0].distributorId);
+        PreferenceManager.instance.setStringValue(
             "distributorName", response1.message[0].distributorName);
+        PreferenceManager.instance.setStringValue(
+            "companyGst", response1.message[0].companyGst);
+        PreferenceManager.instance.setStringValue(
+            "companyStateCode", response1.message[0].companyStateCode);
         PreferenceManager.instance
             .setStringValue("companyId", response1.message[0].companyId);
         PreferenceManager.instance
@@ -265,7 +270,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
         PreferenceManager.instance
             .setStringValue("role", response1.message[0].role);
         ErpMainDataFetch(response1.message[0].distributorId).then((value) => Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const Dms_HomeScreen())));
+            builder: (BuildContext context) =>  Dms_HomeScreen())));
 
       } else {
         Fluttertoast.showToast(

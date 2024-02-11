@@ -10,7 +10,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class EmptyCertificate extends StatefulWidget {
-  const EmptyCertificate({Key? key}) : super(key: key);
+   EmptyCertificate({Key? key}) : super(key: key);
 
   @override
   _EmptyCertificateState createState() => _EmptyCertificateState();
@@ -24,14 +24,14 @@ class _EmptyCertificateState extends State<EmptyCertificate> {
         onPressed: () async{
           bool isValid = await PurchaseModel().isActiveBuyer();
           if(isValid){
-            const AddCertificate().launch(context);
+             AddCertificate().launch(context);
           } else{
             showLicense(context: context);
           }
 
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -43,7 +43,7 @@ class _EmptyCertificateState extends State<EmptyCertificate> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Empty Certificate',
           maxLines: 2,
@@ -53,14 +53,14 @@ class _EmptyCertificateState extends State<EmptyCertificate> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
@@ -68,10 +68,10 @@ class _EmptyCertificateState extends State<EmptyCertificate> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Image(
+                   Image(
                     image: AssetImage('images/empty.png'),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Column(

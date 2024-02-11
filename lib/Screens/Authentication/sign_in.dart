@@ -21,15 +21,15 @@ import '../../GlobalComponents/PreferenceManager.dart';
 import 'package:http/http.dart' as http;
 
 import '../../RESPONSE/erpApiMainDataResponse.dart';
+
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+  SignIn({Key? key}) : super(key: key);
 
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-
   final TextEditingController controller = TextEditingController();
   bool isChecked = false;
   String employee = 'Urmin';
@@ -41,7 +41,7 @@ class _SignInState extends State<SignIn> {
 
   var clientUrl;
 
-  var selectionItems;
+  List selectionItems = [];
 
   TextEditingController compneyNameController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
@@ -56,11 +56,12 @@ class _SignInState extends State<SignIn> {
     String apiUrl = 'http://api.urmingroup.co.in/fcustomer/_find';
 
     // Replace with your actual authorization key
-    String authorizationKey = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';
+    String authorizationKey =
+        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';
 
     // Replace with your actual request payload
     Map<String, dynamic> requestPayload = {
-      "selector": {"Distributor_id": "50c60cdef1e5286ef69f0256ab03c577"}
+      "selector": {"Distributor_id": "dcbd62d4d5e6446634e5ba708be6e850"}
     };
     try {
       // Make the API call
@@ -85,13 +86,12 @@ class _SignInState extends State<SignIn> {
         var box = Hive.box('erpApiMainData');
         box.put('erpApiMainData', body);
         await Hive.openBox('erpApiMainData');
-        Map<String, dynamic>  bookmark=box.get('erpApiMainData');
+        Map<String, dynamic> bookmark = box.get('erpApiMainData');
         bookmark.forEach((key, value) {
-          if(key=='bookmark')  {
+          if (key == 'bookmark') {
             debugPrint("bookmark $value");
           }
         });
-
       } else {
         // Handle error
         print('API call failed with status code: ${response.statusCode}');
@@ -102,6 +102,7 @@ class _SignInState extends State<SignIn> {
       print('Error making API call: $error');
     }
   }
+
   DropdownButton<String> getCompany() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String emp in Compney) {
@@ -121,6 +122,7 @@ class _SignInState extends State<SignIn> {
       },
     );
   }
+
   DropdownButton<String> getLanguage() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String emp in Language) {
@@ -140,33 +142,32 @@ class _SignInState extends State<SignIn> {
       },
     );
   }
+
   @override
   void initState() {
     // TODO: implement initState
     PreferenceManager.instance
         .getStringValue("Role_Type")
         .then((value) => setState(() {
-          RoleType=value;
-      print(value);
+              RoleType = value;
+              print(value);
 
-    //  clientUrl="https://demo.datanote.co.in/urminapi/";
-    }));
+              //  clientUrl="https://demo.datanote.co.in/urminapi/";
+            }));
     PreferenceManager.instance
         .getStringValue("ClintUrl")
         .then((value) => setState(() {
-      clientUrl=value;
-      print(value);
-      //clientUrl="https://demo.datanote.co.in/urminapi/";
-    }));
-setState(() {
-
-
-});
+              clientUrl = value;
+              print(value);
+              //clientUrl="https://demo.datanote.co.in/urminapi/";
+            }));
+    setState(() {});
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-   codeController.text="+91";
+    codeController.text = "+91";
     var _formKey = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -174,13 +175,14 @@ setState(() {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-       // iconTheme: const IconThemeData(color: Colors.white),
-       // centerTitle: true,
+        // iconTheme:  IconThemeData(color: Colors.white),
+        // centerTitle: true,
         leading: Container(),
         centerTitle: true,
         title: Text(
           '$RoleType Sign In',
-          style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+          style: kTextStyle.copyWith(
+              color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
@@ -191,7 +193,7 @@ setState(() {
           //   thickness: 1
           // ),
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(10.0),
             child: CircleAvatar(
               backgroundImage: AssetImage("images/logo.png"),
               minRadius: 50,
@@ -200,16 +202,18 @@ setState(() {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+              padding: EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Form(
-key: _formKey,
+                key: _formKey,
                 child: Column(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       height: 20.0,
                     ),
                     Row(
@@ -233,7 +237,8 @@ key: _formKey,
                               labelText: 'Phone Number',
                               hintText: '11111 11111',
                               labelStyle: kTextStyle,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               counter: SizedBox.shrink(),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20.0),
@@ -249,7 +254,7 @@ key: _formKey,
                             ),
                           ),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10.0,
                         ),
                         Expanded(
@@ -260,13 +265,14 @@ key: _formKey,
                               controller: mobileController,
                               maxLength: 10,
                               validator: (value) {
-                                if (value == null || value.isEmpty||value.length!=10) {
+                                if (value == null ||
+                                    value.isEmpty ||
+                                    value.length != 10) {
                                   return 'Please Check mobile number';
-                                }else if(value.length==10){
+                                } else if (value.length == 10) {
                                   return null;
                                 }
                                 // You can add more custom validation logic here if needed
-
                               },
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
@@ -274,13 +280,13 @@ key: _formKey,
                                 )
                               ],
                               enabled: true,
-
                               decoration: InputDecoration(
                                 labelText: 'Phone Number',
                                 hintText: '11111 11111',
                                 counter: SizedBox.shrink(),
                                 labelStyle: kTextStyle,
-                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
@@ -299,35 +305,39 @@ key: _formKey,
                         ),
                       ],
                     ),
-                    const SizedBox(
+                    SizedBox(
                       height: 20.0,
                     ),
                     Visibility(
-                      visible:false,
+                      visible: false,
                       child: SizedBox(
                         height: 60.0,
-                        child:  Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: TextField(
                                 decoration: InputDecoration(
                                     label: Text("Select Company"),
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                                style: const TextStyle(fontSize: 15, color: Colors.black),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0))),
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
                                 controller: compneyNameController,
                                 // decoration: InputDecoration(
                               ),
                             ),
                             PopupMenuButton(
-                              icon: const Icon(Icons.arrow_drop_down),
+                              icon: Icon(Icons.arrow_drop_down),
                               onSelected: (value) {
                                 setState(() {
                                   var selectedItem = selectionItems.firstWhere(
-                                        (item) => item["Select_Value"] == value,
+                                    (item) => item["Select_Value"] == value,
                                   );
                                   compneyNameController.text = value.toString();
-                                  selectedCode = selectedItem["Select_Value_Code"];
+                                  selectedCode =
+                                      selectedItem["Select_Value_Code"];
                                   log(selectedCode);
                                   PreferenceManager.instance.setStringValue(
                                       "companyName", value.toString());
@@ -336,16 +346,17 @@ key: _formKey,
                                 });
                               },
                               itemBuilder: (BuildContext context) {
-                                return selectionItems.map<PopupMenuItem>((value) {
+                                return selectionItems
+                                    .map<PopupMenuItem>((value) {
                                   return PopupMenuItem(
                                       height: 50,
                                       value: value["Select_Value"],
                                       child: Row(
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 8.0),
-                                            child:
-                                            Text(value["Select_Value"], style: const TextStyle(fontSize: 12)),
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: Text(value["Select_Value"],
+                                                style: TextStyle(fontSize: 12)),
                                           ),
                                         ],
                                       ));
@@ -356,25 +367,28 @@ key: _formKey,
                         ),
                       ),
                     ),
-                    // const SizedBox(
+                    //  SizedBox(
                     //   height: 20.0,
                     // ),
                     Visibility(
-                      visible:selectionItems==""?false:true,
+                      visible: selectionItems == "" ? false : true,
                       child: ButtonGlobal(
                         buttontext: 'Process',
-                        buttonDecoration: kButtonDecoration.copyWith(color: kMainColor,borderRadius: BorderRadius.all(Radius.circular(50))),
+                        buttonDecoration: kButtonDecoration.copyWith(
+                            color: kMainColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
-                            var mob="${codeController.text}${mobileController.text}";
+                            var mob =
+                                "${codeController.text}${mobileController.text}";
                             log(mob.toString());
-                            PreferenceManager.instance.setStringValue(
-                                "Mobile", mob.toString());
+                            PreferenceManager.instance
+                                .setStringValue("Mobile", mob.toString());
                             setState(() {
                               CallApiForCompneyName(mob);
                             });
-
-                          }else{
+                          } else {
                             Fluttertoast.showToast(
                                 msg: "Please Fill Data",
                                 toastLength: Toast.LENGTH_SHORT,
@@ -382,12 +396,10 @@ key: _formKey,
                                 timeInSecForIosWeb: 1,
                                 backgroundColor: Colors.red,
                                 textColor: Colors.white,
-                                fontSize: 16.0
-                            );
+                                fontSize: 16.0);
                           }
 
-
-                        //  const HomeScreen().launch(context);
+                          //   HomeScreen().launch(context);
                         },
                       ),
                     ),
@@ -415,7 +427,7 @@ key: _formKey,
       "Mobile_No": mob,
     };
 
-    print(clientUrl+"LogIn/MOB_Login_Company_List$payload");
+    print(clientUrl + "LogIn/MOB_Login_Company_List$payload");
     var res = await dio.get("${clientUrl}LogIn/MOB_Login_Company_List",
         //data: formData,
         queryParameters: payload,
@@ -435,124 +447,140 @@ key: _formKey,
 
       selectionItems = json['message'];
       log(json);
-     if (json['settings']['success'].toString()=="1"){
-       showDialog(
-         context: context,
-         builder: (BuildContext context) {
-           return AlertDialog(
-             title: Text('Select Company'),
-             content: SizedBox(
-               height: 60.0,
-               child:  Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: [
-                   Expanded(
-                     child: TextField(
-                       decoration: InputDecoration(
-                           label: Text("Select Company"),
-                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
-                       style: const TextStyle(fontSize: 15, color: Colors.black),
-                       controller: compneyNameController,
-                       // decoration: InputDecoration(
-                     ),
-                   ),
-                   PopupMenuButton(
-                     icon: const Icon(Icons.arrow_drop_down),
-                     onSelected: (value) {
-                       setState(() {
-                         var selectedItem = selectionItems.firstWhere(
-                               (item) => item["Select_Value"] == value,
-                         );
-                         compneyNameController.text = value.toString();
-                         selectedCode = selectedItem["Select_Value_Code"];
-                         log(selectedCode);
-                         PreferenceManager.instance.setStringValue(
-                             "companyName", value.toString());
-                         PreferenceManager.instance.setStringValue(
-                             "companyCode", selectedCode.toString());
-                       });
-                     },
-                     itemBuilder: (BuildContext context) {
-                       return selectionItems.map<PopupMenuItem>((value) {
-                         return PopupMenuItem(
-                             height: 50,
-                             value: value["Select_Value"],
-                             child: Row(
-                               children: [
-                                 Padding(
-                                   padding: const EdgeInsets.only(left: 8.0),
-                                   child:
-                                   Text(value["Select_Value"], style: const TextStyle(fontSize: 12)),
-                                 ),
-                               ],
-                             ));
-                       }).toList();
-                     },
-                   ),
-                 ],
-               ),
-             ),
-             actions: [
-               ButtonGlobal(
-                 buttontext: 'Get Otp',
-                 buttonDecoration: kButtonDecoration.copyWith(color: kMainColor,borderRadius: BorderRadius.all(Radius.circular(50))),
-                 onPressed: () {
-                     compneyNameController.text==""?Fluttertoast.showToast(
-                         msg: "Please Select Company",
-                         toastLength: Toast.LENGTH_SHORT,
-                         gravity: ToastGravity.BOTTOM,
-                         timeInSecForIosWeb: 1,
-                         textColor: Colors.white,
-                         fontSize: 16.0
-                     ): PhoneVerification().launch(context);
-                   //  const HomeScreen().launch(context);
-                 },
-               )
-             ],
-           );
-         },
-       );
-     }
-     else {
-       Fluttertoast.showToast(
-           msg: "Please Check Mobile!",
-           toastLength: Toast.LENGTH_LONG,
-           gravity: ToastGravity.BOTTOM,
-           backgroundColor: Colors.red,
-           timeInSecForIosWeb: 1,
-           textColor: Colors.white,
-           fontSize: 16.0);
-     }
+      if (json['settings']['success'].toString() == "1") {
+        if (selectionItems.length == 1) {
+          log(selectionItems[0]['Select_Value_Code']);
+          compneyNameController.text = selectionItems[0]['Select_Value'];
+          selectedCode = selectionItems[0]['Select_Value_Code'];
+          PreferenceManager.instance.setStringValue(
+              "companyName", selectionItems[0]['Select_Value']);
+          PreferenceManager.instance.setStringValue(
+              "companyCode", selectedCode.toString());
+        }
+        debugPrint(selectionItems.length.toString());
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Select Company'),
+              content: SizedBox(
+                height: 60.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                            label: Text("Select Company"),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                        style: TextStyle(fontSize: 15, color: Colors.black),
+                        controller: compneyNameController,
+                        // decoration: InputDecoration(
+                      ),
+                    ),
+                    selectionItems.length > 1
+                        ? PopupMenuButton(
+                            icon: Icon(Icons.arrow_drop_down),
+                            onSelected: (value) {
+                              setState(() {
+                                var selectedItem = selectionItems.firstWhere(
+                                  (item) => item["Select_Value"] == value,
+                                );
+                                compneyNameController.text = value.toString();
+                                selectedCode = selectedItem["Select_Value_Code"];
+                                log(selectedCode);
+                                PreferenceManager.instance.setStringValue(
+                                    "companyName", value.toString());
+                                PreferenceManager.instance.setStringValue(
+                                    "companyCode", selectedCode.toString());
+                              });
+                            },
+                            itemBuilder: (BuildContext context) {
+                              return selectionItems.map<PopupMenuItem>((value) {
+                                return PopupMenuItem(
+                                    height: 50,
+                                    value: value["Select_Value"],
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(left: 8.0),
+                                          child: Text(value["Select_Value"],
+                                              style: TextStyle(fontSize: 12)),
+                                        ),
+                                      ],
+                                    ));
+                              }).toList();
+                            },
+                          )
+                        : Container(),
+                  ],
+                ),
+              ),
+              actions: [
+                ButtonGlobal(
+                  buttontext: 'Get Otp',
+                  buttonDecoration: kButtonDecoration.copyWith(
+                      color: kMainColor,
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  onPressed: () {
+                    compneyNameController.text == ""
+                        ? Fluttertoast.showToast(
+                            msg: "Please Select Company",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            textColor: Colors.white,
+                            fontSize: 16.0)
+                        : PhoneVerification().launch(context);
+                    //   HomeScreen().launch(context);
+                  },
+                )
+              ],
+            );
+          },
+        );
+      } else {
+        Fluttertoast.showToast(
+            msg: "Please Check Mobile!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: Colors.red,
+            timeInSecForIosWeb: 1,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
     } else {
       // show error
       print("Try Again");
     }
   }
 }
+
 extension extString on String {
   bool get isValidEmail {
     final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     return emailRegExp.hasMatch(this);
   }
 
-  bool get isValidName{
-    final nameRegExp = new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
+  bool get isValidName {
+    final nameRegExp =
+        new RegExp(r"^\s*([A-Za-z]{1,}([\.,] |[-']| ))+[A-Za-z]+\.?\s*$");
     return nameRegExp.hasMatch(this);
   }
 
-  bool get isValidPassword{
-    final passwordRegExp =
-    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\><*~]).{8,}/pre>');
+  bool get isValidPassword {
+    final passwordRegExp = RegExp(
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\><*~]).{8,}/pre>');
     return passwordRegExp.hasMatch(this);
   }
 
-  bool get isNotNull{
-    return this!=null;
+  bool get isNotNull {
+    return this != null;
   }
 
-  bool get isValidPhone{
+  bool get isValidPhone {
     final phoneRegExp = RegExp(r"^\+?0[0-9]{10}$");
     return phoneRegExp.hasMatch(this);
   }
-
 }

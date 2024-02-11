@@ -8,7 +8,7 @@ import 'new_transaction.dart';
 
 
 class TransectionMainDemo extends StatefulWidget {
-  const TransectionMainDemo({Key? key}) : super(key: key);
+   TransectionMainDemo({Key? key}) : super(key: key);
 
   @override
   State<TransectionMainDemo> createState() => _TransectionMainDemoState();
@@ -56,7 +56,7 @@ class _TransectionMainDemoState extends State<TransectionMainDemo> {
           ),
 
         ],
-        title: const Text(
+        title:  Text(
           'Daily Expense',
         ),
         backgroundColor: Colors.deepPurple,

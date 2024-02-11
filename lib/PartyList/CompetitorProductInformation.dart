@@ -7,7 +7,7 @@ import '../GlobalComponents/button_global.dart';
 import 'afterCheckinMainPage.dart';
 
 class CompetitorProductInformation extends StatefulWidget {
-  const CompetitorProductInformation({Key? key}) : super(key: key);
+   CompetitorProductInformation({Key? key}) : super(key: key);
 
   @override
   _CompetitorProductInformationState createState() => _CompetitorProductInformationState();
@@ -24,7 +24,7 @@ class _CompetitorProductInformationState extends State<CompetitorProductInformat
           backgroundColor: kMainColor,
           elevation: 0.0,
           titleSpacing: 0.0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme:  IconThemeData(color: Colors.white),
           title: Text(
             'Competitor Product Information',
             maxLines: 2,
@@ -34,14 +34,14 @@ class _CompetitorProductInformationState extends State<CompetitorProductInformat
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 10.0,
             ),
             Expanded(
               child: Container(
                 width: context.width(),
-                padding: const EdgeInsets.all(20.0),
-                decoration: const BoxDecoration(
+                padding:  EdgeInsets.all(20.0),
+                decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                   color: Colors.white,
                 ),
@@ -51,24 +51,24 @@ class _CompetitorProductInformationState extends State<CompetitorProductInformat
                   children: [
                     AppTextField(
                       textFieldType: TextFieldType.PHONE,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         labelText: 'Brand Name',
                         // hintText: '543223',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 20.0,
                     ),
                     AppTextField(
                       textFieldType: TextFieldType.PHONE,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         labelText: 'Item Name',
                         // hintText: '543223',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 20.0,
                     ),
                     SizedBox(
@@ -82,22 +82,22 @@ class _CompetitorProductInformationState extends State<CompetitorProductInformat
                           hintText: 'No File Chosen',
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           prefixIcon: Image.asset('images/choosefile.png'),
-                          border: const OutlineInputBorder(),
+                          border:  OutlineInputBorder(),
                         ),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 20.0,
                     ),
                     AppTextField(
                       textFieldType: TextFieldType.PHONE,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         labelText: 'Remarks',
                         // hintText: '543223',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 20.0,
                     ),
                     ButtonGlobal(

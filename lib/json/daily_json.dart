@@ -1,4 +1,4 @@
-const List daily = [
+ List daily = [
   {
     "icon": "assets/images/bank.png",
     "name": "Bank",

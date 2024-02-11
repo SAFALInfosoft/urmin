@@ -7,7 +7,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class CertificateDetails extends StatefulWidget {
-  const CertificateDetails({Key? key}) : super(key: key);
+   CertificateDetails({Key? key}) : super(key: key);
 
   @override
   _CertificateDetailsState createState() => _CertificateDetailsState();
@@ -24,7 +24,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
         elevation: 0.0,
         automaticallyImplyLeading: false,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: ListTile(
           leading: Image.asset('images/emp1.png'),
           title: Text(
@@ -39,7 +39,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(
+            child:  Icon(
               Icons.close,
               color: Colors.white,
             ),
@@ -50,25 +50,25 @@ class _CertificateDetailsState extends State<CertificateDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -101,18 +101,18 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Text(
                           'NO OBJECTION  CERTIFICATE',
                           style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        const Divider(
+                         Divider(
                           thickness: 1.0,
                           color: kGreyTextColor,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Row(
@@ -123,12 +123,12 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Container(
                           width: context.width(),
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10.0),
                             color: kBgColor,
@@ -140,7 +140,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                             ),
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -159,7 +159,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -167,7 +167,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                             Expanded(
                               child: Column(
                                 children: [
-                                  const Padding(
+                                   Padding(
                                     padding: EdgeInsets.all(4.0),
                                     child: Divider(
                                       thickness: 1.0,
@@ -184,7 +184,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                             Expanded(
                               child: Column(
                                 children: [
-                                  const Padding(
+                                   Padding(
                                     padding: EdgeInsets.all(4.0),
                                     child: Divider(
                                       thickness: 1.0,
@@ -203,7 +203,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 30.0,
                   ),
                   Row(
@@ -211,7 +211,7 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: kMainColor,
@@ -223,13 +223,13 @@ class _CertificateDetailsState extends State<CertificateDetails> {
                           )),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.0),
                             color: kMainColor.withOpacity(0.1),

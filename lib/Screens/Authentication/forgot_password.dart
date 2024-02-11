@@ -8,7 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
+   ForgotPassword({Key? key}) : super(key: key);
 
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
@@ -23,7 +23,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Forgot Password',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -33,7 +33,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding:  EdgeInsets.all(20.0),
             child: Text(
               'Lorem ipsum dolor sit amet, consectetur.',
               style: kTextStyle.copyWith(color: Colors.white),
@@ -41,14 +41,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -62,7 +62,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         hintText: '1767 432556',
                         labelStyle: kTextStyle,
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        border: const OutlineInputBorder(),
+                        border:  OutlineInputBorder(),
                         // prefixIcon: CountryCodePicker(
                         //   padding: EdgeInsets.zero,
                         //   onChanged: print,
@@ -74,14 +74,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Get Otp',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const PhoneVerification().launch(context);
+                       PhoneVerification().launch(context);
                     },
                   ),
                 ],

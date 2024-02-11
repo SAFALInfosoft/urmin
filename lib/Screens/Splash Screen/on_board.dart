@@ -9,7 +9,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class OnBoard extends StatefulWidget {
-  const OnBoard({Key? key}) : super(key: key);
+   OnBoard({Key? key}) : super(key: key);
 
   @override
   _OnBoardState createState() => _OnBoardState();
@@ -57,20 +57,20 @@ class _OnBoardState extends State<OnBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0FDFF),
+      backgroundColor:  Color(0xFFF0FDFF),
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Color(0xFFFCF1F0)),
-        backgroundColor: const Color(0xFFF0FDFF),
+        iconTheme:  IconThemeData(color: Color(0xFFFCF1F0)),
+        backgroundColor:  Color(0xFFF0FDFF),
         elevation: 0.0,
         actions: [
-          const SizedBox(
+           SizedBox(
             width: 20.0,
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding:  EdgeInsets.only(top: 8.0),
             child: TextButton(
               onPressed: () {
-                const SignIn().launch(context);
+                 SignIn().launch(context);
               },
               child: Text(
                 'Skip',
@@ -81,7 +81,7 @@ class _OnBoardState extends State<OnBoard> {
               ),
             ),
           ),
-          const SizedBox(
+           SizedBox(
             width: 30.0,
           )
         ],
@@ -132,14 +132,14 @@ class _OnBoardState extends State<OnBoard> {
                           ),
                           Expanded(
                             child: Container(
-                              decoration: const BoxDecoration(
+                              decoration:  BoxDecoration(
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                                 color: Colors.white,
                               ),
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 20.0, right: 30.0, top: 15.0, bottom: 15.0),
+                                    padding:  EdgeInsets.only(left: 20.0, right: 30.0, top: 15.0, bottom: 15.0),
                                     child: Text(
                                       sliderList[index]['title'].toString(),
                                       textAlign: TextAlign.start,
@@ -151,7 +151,7 @@ class _OnBoardState extends State<OnBoard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 30.0, right: 20.0),
+                                    padding:  EdgeInsets.only(left: 30.0, right: 20.0),
                                     // ignore: sized_box_for_whitespace
                                     child: Container(
                                       width: context.width(),
@@ -179,7 +179,7 @@ class _OnBoardState extends State<OnBoard> {
                   Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding:  EdgeInsets.all(8.0),
                         child: DotIndicator(
                           currentDotSize: 15,
                           dotSize: 6,
@@ -189,9 +189,9 @@ class _OnBoardState extends State<OnBoard> {
                           unselectedIndicatorColor: Colors.grey,
                         ),
                       ),
-                      const Spacer(),
+                       Spacer(),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding:  EdgeInsets.all(8.0),
                         child: CircularPercentIndicator(
                           radius: 80.0,
                           lineWidth: 3.0,
@@ -202,14 +202,14 @@ class _OnBoardState extends State<OnBoard> {
                             onTap: () {
                               setState(() {
                                 currentIndexPage < 2
-                                    ? pageController.nextPage(duration: const Duration(microseconds: 3000), curve: Curves.bounceInOut)
+                                    ? pageController.nextPage(duration:  Duration(microseconds: 3000), curve: Curves.bounceInOut)
                                     : Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => const SelectType()),
+                                        MaterialPageRoute(builder: (context) =>  SelectType()),
                                       );
                               });
                             },
-                            child: const CircleAvatar(
+                            child:  CircleAvatar(
                               radius: 35.0,
                               backgroundColor: kMainColor,
                               child: Center(

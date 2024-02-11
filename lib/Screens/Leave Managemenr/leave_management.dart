@@ -7,7 +7,7 @@ import '../Employee management/employee_details.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class LeaveManagement extends StatefulWidget {
-  const LeaveManagement({Key? key}) : super(key: key);
+   LeaveManagement({Key? key}) : super(key: key);
 
   @override
   _LeaveManagementState createState() => _LeaveManagementState();
@@ -25,13 +25,13 @@ class _LeaveManagementState extends State<LeaveManagement> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Leave List',
           maxLines: 2,
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: const [
+        actions:  [
           Image(
             image: AssetImage('images/employeesearch.png'),
           ),
@@ -41,19 +41,19 @@ class _LeaveManagementState extends State<LeaveManagement> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -66,7 +66,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             });
                           },
                           child: Container(
-                            padding: const EdgeInsets.all(20),
+                            padding:  EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: !isApproved ? kMainColor : kMainColor.withOpacity(0.1),
@@ -80,7 +80,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 10.0,
                       ),
                       Expanded(
@@ -91,7 +91,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             });
                           },
                           child: Container(
-                            padding: const EdgeInsets.all(20),
+                            padding:  EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
                               color: isApproved ? kMainColor : kMainColor.withOpacity(0.1),
@@ -107,17 +107,17 @@ class _LeaveManagementState extends State<LeaveManagement> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                     child: Column(
                       children: [
                         ListTile(
                           onTap: () {
-                           //const AddEmployee().launch(context);
+                           // AddEmployee().launch(context);
                           },
                           leading: Image.asset('images/Pro.png'),
                           title: Text(
@@ -131,7 +131,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                           trailing: Container(
                             height: 50.0,
                             width: 80.0,
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2.0),
                               color: kMainColor.withOpacity(0.08),
@@ -146,7 +146,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Column(
@@ -174,11 +174,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                 ),
                               ],
                             ),
-                            const Divider(
+                             Divider(
                               thickness: 1.0,
                               color: kGreyTextColor,
                             ),
-                            const SizedBox(
+                             SizedBox(
                               height: 20.0,
                             ),
                             Row(
@@ -205,7 +205,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Visibility(
@@ -214,7 +214,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kMainColor,
@@ -226,11 +226,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 10.0,
                               ),
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kAlertColor.withOpacity(0.1),
@@ -253,23 +253,23 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ],
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                     child: Column(
                       children: [
                         ListTile(
                           onTap: () {
-                            // const EmployeeDetails().launch(context);
+                            //  EmployeeDetails().launch(context);
                           },
                           leading: Image.asset('images/Pro.png'),
                           title: Text(
@@ -283,7 +283,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                           trailing: Container(
                             height: 50.0,
                             width: 80.0,
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2.0),
                               color: kHalfDay.withOpacity(0.08),
@@ -298,7 +298,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Column(
@@ -326,11 +326,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                 ),
                               ],
                             ),
-                            const Divider(
+                             Divider(
                               thickness: 1.0,
                               color: kGreyTextColor,
                             ),
-                            const SizedBox(
+                             SizedBox(
                               height: 20.0,
                             ),
                             Row(
@@ -357,7 +357,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Visibility(
@@ -366,7 +366,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kMainColor,
@@ -378,11 +378,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 10.0,
                               ),
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kAlertColor.withOpacity(0.1),
@@ -405,23 +405,23 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ],
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                     child: Column(
                       children: [
                         ListTile(
                           onTap: () {
-                            // const EmployeeDetails().launch(context);
+                            //  EmployeeDetails().launch(context);
                           },
                           leading: Image.asset('images/Pro.png'),
                           title: Text(
@@ -435,7 +435,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                           trailing: Container(
                             height: 50.0,
                             width: 90.0,
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2.0),
                               color: kGreenColor.withOpacity(0.08),
@@ -450,7 +450,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Column(
@@ -478,11 +478,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                 ),
                               ],
                             ),
-                            const Divider(
+                             Divider(
                               thickness: 1.0,
                               color: kGreyTextColor,
                             ),
-                            const SizedBox(
+                             SizedBox(
                               height: 20.0,
                             ),
                             Row(
@@ -509,7 +509,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Visibility(
@@ -518,7 +518,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kMainColor,
@@ -530,11 +530,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 10.0,
                               ),
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kAlertColor.withOpacity(0.1),
@@ -557,23 +557,23 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ],
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0), color: Colors.white),
                     child: Column(
                       children: [
                         ListTile(
                           onTap: () {
-                            // const EmployeeDetails().launch(context);
+                            //  EmployeeDetails().launch(context);
                           },
                           leading: Image.asset('images/Pro.png'),
                           title: Text(
@@ -587,7 +587,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                           trailing: Container(
                             height: 50.0,
                             width: 90.0,
-                            padding: const EdgeInsets.all(10.0),
+                            padding:  EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(2.0),
                               color: kAlertColor.withOpacity(0.08),
@@ -602,7 +602,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Column(
@@ -630,11 +630,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                 ),
                               ],
                             ),
-                            const Divider(
+                             Divider(
                               thickness: 1.0,
                               color: kGreyTextColor,
                             ),
-                            const SizedBox(
+                             SizedBox(
                               height: 20.0,
                             ),
                             Row(
@@ -661,7 +661,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Visibility(
@@ -670,7 +670,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kMainColor,
@@ -682,11 +682,11 @@ class _LeaveManagementState extends State<LeaveManagement> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 width: 10.0,
                               ),
                               Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: kAlertColor.withOpacity(0.1),
@@ -709,7 +709,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
                             ],
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                       ],
@@ -722,7 +722,7 @@ class _LeaveManagementState extends State<LeaveManagement> {
         ),
       ),
       floatingActionButton: FloatingActionButton(onPressed: (){
-        const AddLeave().launch(context);
+         AddLeave().launch(context);
       },
       child: Icon(Icons.add,color:Colors.white),
       ),

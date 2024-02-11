@@ -4,7 +4,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class PrivacyPolicy extends StatelessWidget {
-  const PrivacyPolicy({Key? key}) : super(key: key);
+   PrivacyPolicy({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class PrivacyPolicy extends StatelessWidget {
         elevation: 0.0,
         automaticallyImplyLeading: false,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Privacy Policy',
           style: kTextStyle.copyWith(color: Colors.white),
@@ -25,26 +25,26 @@ class PrivacyPolicy extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -67,7 +67,7 @@ class PrivacyPolicy extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                 ],

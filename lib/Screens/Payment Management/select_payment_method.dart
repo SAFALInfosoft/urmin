@@ -7,7 +7,7 @@
 //
 // // ignore_for_file: library_private_types_in_public_api
 // class SelectPaymentMethod extends StatefulWidget {
-//   const SelectPaymentMethod({Key? key}) : super(key: key);
+//    SelectPaymentMethod({Key? key}) : super(key: key);
 //
 //   @override
 //   _SelectPaymentMethodState createState() => _SelectPaymentMethodState();
@@ -29,7 +29,7 @@
 //         backgroundColor: kMainColor,
 //         elevation: 0.0,
 //         titleSpacing: 0.0,
-//         iconTheme: const IconThemeData(color: Colors.white),
+//         iconTheme:  IconThemeData(color: Colors.white),
 //         title: Text(
 //           'Empty Increment',
 //           maxLines: 2,
@@ -39,21 +39,21 @@
 //       body: Column(
 //         crossAxisAlignment: CrossAxisAlignment.start,
 //         children: [
-//           const SizedBox(
+//            SizedBox(
 //             height: 20.0,
 //           ),
 //           Expanded(
 //             child: Container(
 //               width: context.width(),
-//               padding: const EdgeInsets.all(20.0),
-//               decoration: const BoxDecoration(
+//               padding:  EdgeInsets.all(20.0),
+//               decoration:  BoxDecoration(
 //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
 //                 color: Colors.white,
 //               ),
 //               child: Column(
 //                 crossAxisAlignment: CrossAxisAlignment.center,
 //                 children: [
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   CreditCardWidget(
@@ -70,7 +70,7 @@
 //                     isSwipeGestureEnabled: true,
 //                     onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   Container(
@@ -80,7 +80,7 @@
 //                     ),
 //                     child: ListTile(
 //                       onTap: () {
-//                         const PaymentMethods().launch(context);
+//                          PaymentMethods().launch(context);
 //                       },
 //                       leading: Image.asset('images/addcard.png'),
 //                       title: Text(
@@ -91,7 +91,7 @@
 //                         'Add card or bank account',
 //                         style: kTextStyle.copyWith(color: kGreyTextColor),
 //                       ),
-//                       trailing: const Icon(
+//                       trailing:  Icon(
 //                         Icons.arrow_forward_ios,
 //                         color: kGreyTextColor,
 //                       ),

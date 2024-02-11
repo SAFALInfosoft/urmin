@@ -4,7 +4,7 @@ import 'package:maan_hrm/constant.dart';
 import 'package:maan_hrm/viewOrder.dart';
 import 'package:nb_utils/nb_utils.dart';
 class viewOrders extends StatefulWidget {
-  const viewOrders({Key? key}) : super(key: key);
+   viewOrders({Key? key}) : super(key: key);
 
   @override
   State<viewOrders> createState() => _viewOrdersState();
@@ -28,15 +28,15 @@ class _viewOrdersState extends State<viewOrders> {
       body: SingleChildScrollView(
         child: Container(
           height: context.height(),
-          padding: const EdgeInsets.all(20.0),
-          decoration: const BoxDecoration(
+          padding:  EdgeInsets.all(20.0),
+          decoration:  BoxDecoration(
             borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
             color: Colors.white,
           ),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:  EdgeInsets.all(8.0),
                 child: CupertinoSearchTextField(
                   //controller: controller,
                   onChanged: (value) {},
@@ -46,18 +46,18 @@ class _viewOrdersState extends State<viewOrders> {
               ),
               Expanded(
                 child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
+                  physics:  ClampingScrollPhysics(),
                   itemCount: 15,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  EdgeInsets.all(8.0),
                       child: Container(
                         child: Material(
                           elevation: 2.0,
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF4DCEFA),

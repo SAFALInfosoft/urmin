@@ -15,25 +15,25 @@ class _ExpanseFormState extends State<ExpanseForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      appBar: AppBar(title:  Text('Home')),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          padding:  EdgeInsets.symmetric(horizontal: 25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const SizedBox(height: 19),
-              const Text('Names of Programming Languages',
+               SizedBox(height: 19),
+               Text('Names of Programming Languages',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.teal,
                       fontSize: 22)),
-              const SizedBox(height: 20),
+               SizedBox(height: 20),
               ...List.generate(_formCount, (index) => form(index)),
               buttonRow(),
-              const SizedBox(height: 10),
+               SizedBox(height: 10),
               Visibility(visible: _dataArray.isNotEmpty, child: Text(_data!)),
-              const SizedBox(height: 30),
+               SizedBox(height: 30),
             ],
           ),
         ),
@@ -42,7 +42,7 @@ class _ExpanseFormState extends State<ExpanseForm> {
   }
 
   Widget form(int key) => Padding(
-    padding: const EdgeInsets.only(bottom: 10.0),
+    padding:  EdgeInsets.only(bottom: 10.0),
     child: TextFormField(
       decoration: InputDecoration(hintText: 'Form ${key + 1}'),
       onChanged: (val) => _onUpdate(key, val),
@@ -65,7 +65,7 @@ class _ExpanseFormState extends State<ExpanseForm> {
                 _formCount--;
               });
             },
-            icon: const CircleAvatar(
+            icon:  CircleAvatar(
               backgroundColor: Colors.red,
               child: Icon(
                 Icons.remove,
@@ -76,7 +76,7 @@ class _ExpanseFormState extends State<ExpanseForm> {
           onPressed: () {
             setState(() => _formCount++);
           },
-          icon: const CircleAvatar(
+          icon:  CircleAvatar(
             backgroundColor: Colors.teal,
             child: Icon(
               Icons.add,

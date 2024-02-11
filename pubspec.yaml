@@ -39,6 +39,7 @@ dependencies:
   shared_preferences:
   font_awesome_flutter:
   time_chart:
+
   flutter_credit_card:
   nb_utils:
   url_launcher:

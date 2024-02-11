@@ -1,12 +1,14 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hive/hive.dart';
 import 'package:maan_hrm/Screens/Employee%20Overtime/empty_employee_overtime.dart';
 import 'package:maan_hrm/Screens/Employee%20management/empty_employee.dart';
 import 'package:maan_hrm/Screens/Leave%20Managemenr/leave_management.dart';
@@ -22,7 +24,7 @@ import 'package:intl/intl.dart';
 import 'addNewOrder.dart';
 
 class purchaseOrderMainScreen extends StatefulWidget {
-  const purchaseOrderMainScreen({Key? key}) : super(key: key);
+   purchaseOrderMainScreen({Key? key}) : super(key: key);
 
   @override
   _purchaseOrderMainScreenState createState() =>
@@ -35,8 +37,19 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
   String? clientUrl;
 
   List poList = [];
+  List temppoList = [];
   @override
   void initState() {
+    CheckUserConnection().then((value) {
+      if(ActiveConnection==true){
+
+      }else{
+        kMainColor=Colors.red;
+      }
+    });
+
+    openHiveBox();
+
     // TODO: implement initState
     PreferenceManager.instance
         .getStringValue("accessToken")
@@ -50,7 +63,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
       userId =value;
     }));
     PreferenceManager.instance
-        .getStringValue("companyId")
+        .getStringValue("companyCode")
         .then((value) => setState(() {
       coCode =value;
     }));
@@ -58,12 +71,26 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
         .getStringValue("ClintUrl")
         .then((value) => setState(() {
               clientUrl = value;
-              fetchData();
+             // fetchData();
               print(value);
             }));
     super.initState();
-  }
+    openHiveBox();
 
+  }
+  openHiveBox() async {
+    var box = await Hive.openBox('poList');
+    var bookmark = box.get('poList');
+    temppoList=bookmark;
+    poList= temppoList;
+    setState(() {
+      poList = temppoList
+          .where((item) => item["PO_Status"]
+          .toLowerCase()
+          .contains("Draft".toLowerCase()))
+          .toList();
+    });
+  }
   String? dateShow;
   Widget button({
     required String text,
@@ -76,35 +103,48 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
           setState(() {
             _selectedValueIndex = index;
             if (_selectedValueIndex == 0) {
-              Status = "open";
+              poList = temppoList
+                  .where((item) => item["PO_Status"]
+                  .toLowerCase()
+                  .contains("Draft".toLowerCase()))
+                  .toList();
               //customerTicketData(Recordlength, selectedType, Status, searchText);
             }
             if (_selectedValueIndex == 1) {
               setState(() {
-                Status = "close";
+                poList = temppoList
+                    .where((item) => item["PO_Status"]
+                    .toLowerCase().contains("RSM_Approved".toLowerCase()) ||
+                    item["PO_Status"].toLowerCase().contains("Reject".toLowerCase())||
+                    item["PO_Status"].toLowerCase().contains("RSM Approval".toLowerCase()))
+                    .toList();
                 // isDateVisible = false;
                 //  customerTicketData(Recordlength, selectedType, Status, searchText);
               });
             }
             if (_selectedValueIndex == 2) {
-              Status = "All";
+              poList = temppoList
+                  .where((item) => item["PO_Status"]
+                  .toLowerCase().contains("Demo".toLowerCase()) )
+                  .toList();
+
               //customerTicketData(Recordlength, selectedType, Status, searchText);
             }
           });
         },
         child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
+          padding:  EdgeInsets.only(left: 10, right: 10),
           child: Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              borderRadius:  BorderRadius.all(Radius.circular(12)),
               border: Border.all(color: Colors.black, width: 1.1),
               color: index == _selectedValueIndex
                   ? Color(0xFF4CCEFA)
                   : Colors.white,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:  EdgeInsets.all(8.0),
               child: Text(
                 text,
                 textAlign: TextAlign.center,
@@ -152,8 +192,10 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
   String age = '';
   @override
   Widget build(BuildContext context) {
+
+
     DateTime now = DateTime.now();
-    log(now);
+
     String dateStr = DateFormat.yMMMEd().format(now);
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -162,21 +204,32 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Purchase Order',
           maxLines: 2,
           style: kTextStyle.copyWith(
               color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions:  [
+          ActiveConnection?Container():Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: Image(
+              color: Colors.white,
+              height: 30,
+              width: 30,
+              image: AssetImage('images/wifi.png'),
+            ),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
@@ -195,7 +248,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 0, right: 10),
+                        padding:  EdgeInsets.only(left: 0, right: 10),
                         child: InkWell(
                           onTap: () {
                             setState(() {});
@@ -209,13 +262,13 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                             //width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(12)),
+                                   BorderRadius.all(Radius.circular(12)),
                               border:
                                   Border.all(color: Colors.black, width: 1.1),
                               color: Colors.white,
                             ),
                             child: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding:  EdgeInsets.all(5.0),
                                 child: Icon(Icons.date_range)),
                           ),
                         ),
@@ -226,10 +279,18 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                     height: 5,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(8.0),
                     child: CupertinoSearchTextField(
                       //controller: controller,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        setState(() {
+
+                        });
+                        poList = temppoList
+                            .where((item) =>
+                            item["PO_Status"].toLowerCase().contains(value.toLowerCase()))
+                            .toList();
+                      },
                       onSubmitted: (value) {},
 
                       autocorrect: true,
@@ -301,7 +362,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                     ),
                   ),
                   Divider(),
-                  isLoading?Center(child: CircularProgressIndicator()): Expanded(
+                    poList==[]||poList.isEmpty?Center(child: CircularProgressIndicator()): Expanded(
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -313,10 +374,10 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                   return InkWell(
                                     onTap: () {},
                                     child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding:  EdgeInsets.all(5.0),
                                         child: Slidable(
                                           startActionPane: ActionPane(
-                                            motion: const BehindMotion(),
+                                            motion:  BehindMotion(),
                                             children: [
                                               SlidableAction(
                                                 onPressed: (context) {},
@@ -333,7 +394,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                             ],
                                           ),
                                           endActionPane: ActionPane(
-                                            motion: const BehindMotion(),
+                                            motion:  BehindMotion(),
                                             children: [
                                               SlidableAction(
                                                 onPressed: (context) {},
@@ -350,13 +411,13 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                             ],
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding:  EdgeInsets.all(8.0),
                                             child: Container(
                                               child: Material(
                                                 elevation: 2.0,
                                                 child: Container(
                                                   width: context.width(),
-                                                  padding: const EdgeInsets.all(
+                                                  padding:  EdgeInsets.all(
                                                       0.0),
                                                   decoration: BoxDecoration(
                                                     border: Border(
@@ -403,7 +464,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                   //               ),
                                                   //               child: Padding(
                                                   //                 padding:
-                                                  //                 const EdgeInsets
+                                                  //                  EdgeInsets
                                                   //                     .all(
                                                   //                     8.0),
                                                   //                 child: Text(
@@ -413,7 +474,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                   //                   TextOverflow
                                                   //                       .ellipsis,
                                                   //                   style:
-                                                  //                   const TextStyle(
+                                                  //                    TextStyle(
                                                   //                     color: Colors
                                                   //                         .white,
                                                   //                     fontSize:
@@ -427,14 +488,14 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                   //         )
                                                   //       ],
                                                   //     ),
-                                                  //     const SizedBox(
+                                                  //      SizedBox(
                                                   //       height: 5,
                                                   //     ),
                                                   //     Container(
                                                   //       decoration:
                                                   //       BoxDecoration(
                                                   //         borderRadius:
-                                                  //         const BorderRadius
+                                                  //          BorderRadius
                                                   //             .only(
                                                   //             bottomLeft: Radius
                                                   //                 .circular(
@@ -453,14 +514,14 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                   //               ///////////
                                                   //               Flexible(
                                                   //                 child: Container(
-                                                  //                     decoration: const BoxDecoration(
+                                                  //                     decoration:  BoxDecoration(
                                                   //                       borderRadius:
                                                   //                       BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                   //                       // color: Colors.grey,
                                                   //                     ),
                                                   //                     alignment: Alignment.centerRight,
                                                   //                     child: Column(
-                                                  //                       children: const [
+                                                  //                       children:  [
                                                   //                         Padding(
                                                   //                           padding:
                                                   //                           EdgeInsets.all(5.0),
@@ -477,7 +538,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                   //               Flexible(
                                                   //                 child: Container(
                                                   //                     alignment: Alignment.centerLeft,
-                                                  //                     child: const Padding(
+                                                  //                     child:  Padding(
                                                   //                       padding:
                                                   //                       EdgeInsets.only(left: 10),
                                                   //                       child:
@@ -505,7 +566,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                   child: InkWell(
                                                     onTap: () {},
                                                     child: Padding(
-                                                      padding: const EdgeInsets.only(left: 8.0),
+                                                      padding:  EdgeInsets.only(left: 8.0),
                                                       child: Column(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -520,7 +581,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               Flexible(
                                                                 child: Container(
                                                                     decoration:
-                                                                        const BoxDecoration(
+                                                                         BoxDecoration(
                                                                       borderRadius:
                                                                           BorderRadius.only(
                                                                               bottomLeft:
@@ -531,7 +592,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                         Alignment
                                                                             .centerLeft,
                                                                     child: Column(
-                                                                      children: const [
+                                                                      children:  [
                                                                         Padding(
                                                                           padding:
                                                                               EdgeInsets.all(0.0),
@@ -593,6 +654,75 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                                   .bold)),
                                                                     )),
                                                               ),
+                                                              PopupMenuButton<int>(
+                                                                itemBuilder: (context) => [
+                                                                  // PopupMenuItem 1
+                                                                  PopupMenuItem(
+                                                                    value: 1,
+                                                                    // row with 2 children
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Icon(Icons.edit),
+                                                                        SizedBox(
+                                                                          width: 10,
+                                                                        ),
+                                                                        Text("Edit")
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  // PopupMenuItem 2
+                                                                  PopupMenuItem(
+                                                                    value: 2,
+                                                                    // row with two children
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Icon(Icons.timelapse_outlined),
+                                                                        SizedBox(
+                                                                          width: 10,
+                                                                        ),
+                                                                        Text("Order History")
+                                                                      ],
+                                                                    ),
+                                                                  ),PopupMenuItem(
+                                                                    value: 2,
+                                                                    // row with two children
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Icon(Icons.remove_red_eye),
+                                                                        SizedBox(
+                                                                          width: 10,
+                                                                        ),
+                                                                        Text("View")
+                                                                      ],
+                                                                    ),
+                                                                  ),PopupMenuItem(
+                                                                    value: 2,
+                                                                    // row with two children
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Icon(Icons.delete),
+                                                                        SizedBox(
+                                                                          width: 10,
+                                                                        ),
+                                                                        Text("Delete")
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                                offset: Offset(0, 100),
+                                                                color: Colors.grey,
+                                                                elevation: 2,
+                                                                // on selected we show the dialog box
+                                                                onSelected: (value) {
+                                                                  // if value 1 show dialog
+                                                                  if (value == 1) {
+                                                                  //  _showDialog(context);
+                                                                    // if value 2 show dialog
+                                                                  } else if (value == 2) {
+                                                                   // _showDialog(context);
+                                                                  }
+                                                                },
+                                                              ),
                                                             ],
                                                           ),
                                                           SizedBox(
@@ -604,7 +734,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               Flexible(
                                                                 child: Container(
                                                                     decoration:
-                                                                        const BoxDecoration(
+                                                                         BoxDecoration(
                                                                       borderRadius:
                                                                           BorderRadius.only(
                                                                               bottomLeft:
@@ -615,7 +745,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                         Alignment
                                                                             .centerLeft,
                                                                     child: Column(
-                                                                      children: const [
+                                                                      children:  [
                                                                         Padding(
                                                                           padding:
                                                                               EdgeInsets.all(5.0),
@@ -669,7 +799,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               Flexible(
                                                                 child: Container(
                                                                     decoration:
-                                                                        const BoxDecoration(
+                                                                         BoxDecoration(
                                                                       borderRadius:
                                                                           BorderRadius.only(
                                                                               bottomLeft:
@@ -680,7 +810,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                         Alignment
                                                                             .centerLeft,
                                                                     child: Column(
-                                                                      children: const [
+                                                                      children:  [
                                                                         Padding(
                                                                           padding:
                                                                               EdgeInsets.all(5.0),
@@ -733,14 +863,14 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               ///////////
                                                               Flexible(
                                                                 child: Container(
-                                                                    decoration: const BoxDecoration(
+                                                                    decoration:  BoxDecoration(
                                                                       borderRadius:
                                                                       BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                       // color: Colors.grey,
                                                                     ),
                                                                     alignment: Alignment.centerLeft,
                                                                     child: Column(
-                                                                      children: const [
+                                                                      children:  [
                                                                         Padding(
                                                                           padding:
                                                                           EdgeInsets.all(5.0),
@@ -783,7 +913,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               Flexible(
                                                                 child: Container(
                                                                     decoration:
-                                                                        const BoxDecoration(
+                                                                         BoxDecoration(
                                                                       borderRadius:
                                                                           BorderRadius.only(
                                                                               bottomLeft:
@@ -794,7 +924,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                         Alignment
                                                                             .centerLeft,
                                                                     child: Column(
-                                                                      children: const [
+                                                                      children:  [
                                                                         Padding(
                                                                           padding:
                                                                               EdgeInsets.all(5.0),
@@ -849,7 +979,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               Flexible(
                                                                 child: Container(
                                                                     decoration:
-                                                                        const BoxDecoration(
+                                                                         BoxDecoration(
                                                                       borderRadius:
                                                                           BorderRadius.only(
                                                                               bottomLeft:
@@ -860,7 +990,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                         Alignment
                                                                             .centerLeft,
                                                                     child: Column(
-                                                                      children: const [
+                                                                      children:  [
                                                                         Padding(
                                                                           padding:
                                                                               EdgeInsets.all(5.0),
@@ -915,7 +1045,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               Flexible(
                                                                 child: Container(
                                                                     decoration:
-                                                                        const BoxDecoration(
+                                                                         BoxDecoration(
                                                                       borderRadius:
                                                                           BorderRadius.only(
                                                                               bottomLeft:
@@ -926,7 +1056,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                         Alignment
                                                                             .centerLeft,
                                                                     child: Column(
-                                                                      children: const [
+                                                                      children:  [
                                                                         Padding(
                                                                           padding:
                                                                               EdgeInsets.all(5.0),
@@ -1026,9 +1156,28 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
               ));
         },
         elevation: 10,
-        child: const Icon(Icons.add),
+        backgroundColor: kMainColor,
+        child:  Icon(Icons.add,color: Colors.white,),
       ),
     );
+  }
+  bool ActiveConnection =false;
+  String T = "";
+  Future CheckUserConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        setState(() {
+          ActiveConnection = true;
+          T = "Turn off the data and repress again";
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        ActiveConnection = false;
+        T = "Turn On the data and repress again";
+      });
+    }
   }
 var token,coCode,userId;
   Future<void> fetchData() async {
@@ -1050,7 +1199,7 @@ var token,coCode,userId;
        userId =value;
     }));
  PreferenceManager.instance
-        .getStringValue("companyId")
+        .getStringValue("companyCode")
         .then((value) => setState(() {
        coCode =value;
     }));
@@ -1094,21 +1243,28 @@ setState(() {
             textColor: Colors.white,
             fontSize: 16.0);
         // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => const SignIn()),
+        // context,
+        // MaterialPageRoute(builder: (context) =>  SignIn()),
         // );
       }else{
+
         setState(() {
           isLoading=false;
         });
-        for (var i = 0; i < json['message'].length; i++) {
-         if (json['message'][i]['PO_Status']=="Draft"){
-           poList = json['message'];
-         }
+        var box = Hive.box('poList');
+        box.put('poList', json['message']);
+        await Hive.openBox('poList');
+        poList =box.get('poList');
+        log("POLIST"+poList.toString());
+        for(var i = 0; i < json['message'].length; i++) {
 
-          //children.add(new ListTile());
+         if (json['message'][i]['PO_Status']=="Draft"){
+        //   poList = json['message'];
+         }
+         // children.add(new ListTile());
         }
       }
+
       setState(() {
         isLoading=false;
       });

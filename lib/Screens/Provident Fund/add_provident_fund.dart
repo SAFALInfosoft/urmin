@@ -7,7 +7,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class AddProvidentFund extends StatefulWidget {
-  const AddProvidentFund({Key? key}) : super(key: key);
+   AddProvidentFund({Key? key}) : super(key: key);
 
   @override
   _AddProvidentFundState createState() => _AddProvidentFundState();
@@ -77,7 +77,7 @@ class _AddProvidentFundState extends State<AddProvidentFund> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add Provident Fund',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -87,19 +87,19 @@ class _AddProvidentFundState extends State<AddProvidentFund> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -117,18 +117,18 @@ class _AddProvidentFundState extends State<AddProvidentFund> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Employee ID',
                       hintText: '58675375',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -146,29 +146,29 @@ class _AddProvidentFundState extends State<AddProvidentFund> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Subscription Amount',
                       hintText: '\$10000000',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Contribution Amount',
                       hintText: '\$2000',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
@@ -179,7 +179,7 @@ class _AddProvidentFundState extends State<AddProvidentFund> {
                       dateController.text = date.toString().substring(0, 10);
                     },
                     controller: dateController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border: OutlineInputBorder(),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         suffixIcon: Icon(
@@ -189,14 +189,14 @@ class _AddProvidentFundState extends State<AddProvidentFund> {
                         labelText: 'Loan Date',
                         hintText: '11/09/2021'),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Save',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const ProvidentFundList().launch(context);
+                       ProvidentFundList().launch(context);
                     },
                   ),
                 ],

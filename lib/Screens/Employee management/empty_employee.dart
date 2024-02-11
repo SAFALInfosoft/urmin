@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class EmptyEmployeeScreen extends StatefulWidget {
-  const EmptyEmployeeScreen({Key? key}) : super(key: key);
+   EmptyEmployeeScreen({Key? key}) : super(key: key);
 
   @override
   _EmptyEmployeeScreenState createState() => _EmptyEmployeeScreenState();
@@ -19,10 +19,10 @@ class _EmptyEmployeeScreenState extends State<EmptyEmployeeScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const AddEmployee().launch(context);
+           AddEmployee().launch(context);
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -34,7 +34,7 @@ class _EmptyEmployeeScreenState extends State<EmptyEmployeeScreen> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Empty Employee',
           maxLines: 2,
@@ -44,14 +44,14 @@ class _EmptyEmployeeScreenState extends State<EmptyEmployeeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
@@ -59,10 +59,10 @@ class _EmptyEmployeeScreenState extends State<EmptyEmployeeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Image(
+                   Image(
                     image: AssetImage('images/empty.png'),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Column(

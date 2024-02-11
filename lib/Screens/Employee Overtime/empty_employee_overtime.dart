@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class EmptyEmployeeOvertime extends StatefulWidget {
-  const EmptyEmployeeOvertime({Key? key}) : super(key: key);
+   EmptyEmployeeOvertime({Key? key}) : super(key: key);
 
   @override
   _EmptyEmployeeOvertimeState createState() => _EmptyEmployeeOvertimeState();
@@ -19,10 +19,10 @@ class _EmptyEmployeeOvertimeState extends State<EmptyEmployeeOvertime> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const AddEmployeeOvertime().launch(context);
+           AddEmployeeOvertime().launch(context);
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -34,7 +34,7 @@ class _EmptyEmployeeOvertimeState extends State<EmptyEmployeeOvertime> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Empty Employee Overtime',
           maxLines: 2,
@@ -44,14 +44,14 @@ class _EmptyEmployeeOvertimeState extends State<EmptyEmployeeOvertime> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
@@ -59,10 +59,10 @@ class _EmptyEmployeeOvertimeState extends State<EmptyEmployeeOvertime> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Image(
+                   Image(
                     image: AssetImage('images/empty.png'),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Column(

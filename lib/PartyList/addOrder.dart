@@ -7,7 +7,7 @@ import '../../constant.dart';
 import 'afterCheckinMainPage.dart';
 
 class addNewOrderPage extends StatefulWidget {
-  const addNewOrderPage({Key? key}) : super(key: key);
+   addNewOrderPage({Key? key}) : super(key: key);
 
   @override
   _addNewOrderPageState createState() => _addNewOrderPageState();
@@ -25,7 +25,7 @@ class _addNewOrderPageState extends State<addNewOrderPage> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add New Order',
           maxLines: 2,
@@ -36,21 +36,21 @@ class _addNewOrderPageState extends State<addNewOrderPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           
-          const SizedBox(
+           SizedBox(
             height: 10.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(8.0),
                     child: CupertinoSearchTextField(
                       //controller: controller,
                       onChanged: (value) {},
@@ -88,7 +88,7 @@ class _addNewOrderPageState extends State<addNewOrderPage> {
                                       children: <Widget>[
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(left: 10, right: 7),
+                                           EdgeInsets.only(left: 10, right: 7),
                                           child: Row(
                                             mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -107,7 +107,7 @@ class _addNewOrderPageState extends State<addNewOrderPage> {
                                                     MainAxisAlignment.start,
                                                     children: <Widget>[
                                                       Padding(
-                                                        padding: const EdgeInsets.all(8.0),
+                                                        padding:  EdgeInsets.all(8.0),
                                                         child: Icon(
                                                           Icons.add_circle,
                                                           color: Colors.green,
@@ -115,14 +115,14 @@ class _addNewOrderPageState extends State<addNewOrderPage> {
                                                         ),
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.all(8.0),
+                                                        padding:  EdgeInsets.all(8.0),
                                                         child: Text(
                                                           qty > 0 ? qty.toString() : '100',
                                                           style: TextStyle(fontSize: 16),
                                                         ),
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.all(8.0),
+                                                        padding:  EdgeInsets.all(8.0),
                                                         child: Icon(
                                                           Icons.remove_circle,
                                                           color: Colors.red,
@@ -138,7 +138,7 @@ class _addNewOrderPageState extends State<addNewOrderPage> {
                                         ),
                                         Padding(
                                           padding:
-                                          const EdgeInsets.only(left: 10, right: 7,top: 5),
+                                           EdgeInsets.only(left: 10, right: 7,top: 5),
                                           child: Text(
                                             '\u{20B9} 50',
                                             style: TextStyle(fontSize: 18),
@@ -155,7 +155,7 @@ class _addNewOrderPageState extends State<addNewOrderPage> {
                   ),
                   // Container(
                   //   height: 200,
-                  //   padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+                  //   padding:  EdgeInsets.only(top: 15, left: 15, right: 15),
                   //   child: Column(
                   //     crossAxisAlignment: CrossAxisAlignment.start,
                   //     children:  <Widget>[

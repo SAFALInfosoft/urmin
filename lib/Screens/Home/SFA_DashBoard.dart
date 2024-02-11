@@ -35,7 +35,7 @@ import 'leaderBoard.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+   HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: kMainColor,
             elevation: 0.0,
             titleSpacing: 0.0,
-            iconTheme: const IconThemeData(color: Colors.white),
+            iconTheme:  IconThemeData(color: Colors.white),
             title: Text(
               '${RoleType??''} Management',
               maxLines: 2,
@@ -85,9 +85,9 @@ class _HomeScreenState extends State<HomeScreen> {
             actions:  [
               InkWell(
                 onTap: () {
-                  const NotificationScreen().launch(context);
+                   NotificationScreen().launch(context);
                 },
-                child: const Padding(
+                child:  Padding(
                   padding: EdgeInsets.only(right: 10.0),
                   child: Image(
                     height: 30,
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Container(
                   height: context.height() / 3,
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
                     color: kMainColor,
                   ),
@@ -111,24 +111,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Container(
                         height: context.height() / 4,
-                        decoration: const BoxDecoration(
+                        decoration:  BoxDecoration(
                           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
                           color: Colors.white,
                         ),
                         child: Center(
                           child: Column(
                             children: [
-                              const SizedBox(
+                               SizedBox(
                                 height: 10.0,
                               ),
-                              const CircleAvatar(
+                               CircleAvatar(
                                 radius: 60.0,
                                 backgroundColor: kMainColor,
                                 backgroundImage: AssetImage(
                                   'images/Pro.png',
                                 ),
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 height: 10.0,
                               ),
                               Text(
@@ -141,11 +141,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ).onTap(() {
-                            const ProfileScreen().launch(context);
+                             ProfileScreen().launch(context);
                           }),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 10.0,
                       ),
                       Row(
@@ -192,14 +192,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 20.0,
                 ),
                 ListTile(
                   onTap: () {
-                    const ProfileScreen().launch(context);
+                     ProfileScreen().launch(context);
                   },
-                  leading: const Icon(
+                  leading:  Icon(
                     Icons.person,
                     color: kGreyTextColor,
                   ),
@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Profile',
                     style: kTextStyle.copyWith(color: kGreyTextColor),
                   ),
-                  trailing: const Icon(
+                  trailing:  Icon(
                     Icons.arrow_forward_ios,
                     color: kGreyTextColor,
                   ),
@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                      LeaderBoard().launch(context);
                   },
-                  leading: const Icon(
+                  leading:  Icon(
                     Icons.score,
                     color: kGreyTextColor,
                   ),
@@ -224,16 +224,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Leader Board',
                     style: kTextStyle.copyWith(color: kGreyTextColor),
                   ),
-                  trailing: const Icon(
+                  trailing:  Icon(
                     Icons.arrow_forward_ios,
                     color: kGreyTextColor,
                   ),
                 ),
                 // ListTile(
                 //   onTap: () {
-                //     const PricingScreen().launch(context);
+                //      PricingScreen().launch(context);
                 //   },
-                //   leading: const Icon(
+                //   leading:  Icon(
                 //     FontAwesomeIcons.medal,
                 //     color: kGreyTextColor,
                 //   ),
@@ -241,16 +241,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     'Premium Version   (Pro)',
                 //     style: kTextStyle.copyWith(color: kGreyTextColor),
                 //   ),
-                //   trailing: const Icon(
+                //   trailing:  Icon(
                 //     Icons.arrow_forward_ios,
                 //     color: kGreyTextColor,
                 //   ),
                 // ),
                 // ListTile(
                 //   onTap: () {
-                //     const EmptyHoliday().launch(context);
+                //      EmptyHoliday().launch(context);
                 //   },
-                //   leading: const Icon(
+                //   leading:  Icon(
                 //     FontAwesomeIcons.coffee,
                 //     color: kGreyTextColor,
                 //   ),
@@ -258,16 +258,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     'Holiday',
                 //     style: kTextStyle.copyWith(color: kGreyTextColor),
                 //   ),
-                //   trailing: const Icon(
+                //   trailing:  Icon(
                 //     Icons.arrow_forward_ios,
                 //     color: kGreyTextColor,
                 //   ),
                 // ),
                 // ListTile(
                 //   onTap: () {
-                //     const EmptyHoliday().launch(context);
+                //      EmptyHoliday().launch(context);
                 //   },
-                //   leading: const Icon(
+                //   leading:  Icon(
                 //     FontAwesomeIcons.lock,
                 //     color: kGreyTextColor,
                 //   ),
@@ -294,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 //       Share.share('check out This Awesome HRM');
                 //     });
                 //   },
-                //   leading: const Icon(
+                //   leading:  Icon(
                 //     FontAwesomeIcons.userFriends,
                 //     color: kGreyTextColor,
                 //   ),
@@ -302,16 +302,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     'Share With Friends',
                 //     style: kTextStyle.copyWith(color: kGreyTextColor),
                 //   ),
-                //   trailing: const Icon(
+                //   trailing:  Icon(
                 //     Icons.arrow_forward_ios,
                 //     color: kGreyTextColor,
                 //   ),
                 // ),
                 // ListTile(
                 //   onTap: () {
-                //     const TermsOfServices().launch(context);
+                //      TermsOfServices().launch(context);
                 //   },
-                //   leading: const Icon(
+                //   leading:  Icon(
                 //     FontAwesomeIcons.infoCircle,
                 //     color: kGreyTextColor,
                 //   ),
@@ -319,16 +319,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     'Terms of Services',
                 //     style: kTextStyle.copyWith(color: kGreyTextColor),
                 //   ),
-                //   trailing: const Icon(
+                //   trailing:  Icon(
                 //     Icons.arrow_forward_ios,
                 //     color: kGreyTextColor,
                 //   ),
                 // ),
                 // ListTile(
                 //   onTap: () {
-                //    // const PrivacyPolicy().launch(context);
+                //    //  PrivacyPolicy().launch(context);
                 //   },
-                //   leading: const Icon(
+                //   leading:  Icon(
                 //     Icons.dangerous_sharp,
                 //     color: kGreyTextColor,
                 //   ),
@@ -336,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     'Privacy Policy',
                 //     style: kTextStyle.copyWith(color: kGreyTextColor),
                 //   ),
-                //   trailing: const Icon(
+                //   trailing:  Icon(
                 //     Icons.arrow_forward_ios,
                 //     color: kGreyTextColor,
                 //   ),
@@ -345,10 +345,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignIn()),
+                      MaterialPageRoute(builder: (context) =>  SignIn()),
                     );
                   },
-                  leading: const Icon(
+                  leading:  Icon(
                     FontAwesomeIcons.signOutAlt,
                     color: kGreyTextColor,
                   ),
@@ -356,7 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Logout',
                     style: kTextStyle.copyWith(color: kGreyTextColor),
                   ),
-                  trailing: const Icon(
+                  trailing:  Icon(
                     Icons.arrow_forward_ios,
                     color: kGreyTextColor,
                   ),
@@ -365,18 +365,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding:  EdgeInsets.only(top: 10.0),
             child: Container(
               height: context.height(),
-              padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.only(left: 20.0,right: 20,top: 20),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: ListView(
-                physics: const ClampingScrollPhysics(),
+                physics:  ClampingScrollPhysics(),
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 10.0,
                   ),
                   Expanded(
@@ -385,12 +385,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       elevation: 2.0,
                       child: GestureDetector(
                         onTap: () {
-                          const MyPartyList().launch(context);
+                           MyPartyList().launch(context);
                         },
                         child: Container(
                           width: context.width(),
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: const BoxDecoration(
+                          padding:  EdgeInsets.all(10.0),
+                          decoration:  BoxDecoration(
                             border: Border(
                               left: BorderSide(
                                 color: Color(0xFFFF8919),
@@ -411,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         'Your Achievements',
                                         style: kTextStyle.copyWith(color: kGreyTextColor,fontSize: 20),
                                       ),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 5,
                                       ),
                                       Text(
@@ -420,10 +420,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ],
                                   ),
-                                  const Spacer(),
+                                   Spacer(),
                                   InkWell(
                                     onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const achivementDetailsPage(),));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  achivementDetailsPage(),));
                                     },
                                     child: RichText(
                                       text: TextSpan(
@@ -440,7 +440,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 height: 20.0,
                               ),
                               Row(
@@ -449,11 +449,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Expanded(
                                     flex: 1,
                                     child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
+                                      padding:  EdgeInsets.all(5.0),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                        padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                         decoration: BoxDecoration(
-                                          border: const Border(
+                                          border:  Border(
                                               top: BorderSide(
                                                 color: kMainColor,
                                               )),
@@ -478,22 +478,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Expanded(
                                     flex: 1,
                                     child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
+                                      padding:  EdgeInsets.all(5.0),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                        padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                         decoration: BoxDecoration(
-                                          border: const Border(
+                                          border:  Border(
                                               top: BorderSide(
                                                 color: Color(0xFF4CE364),
                                               )),
-                                          color: const Color(0xFF4CE364).withOpacity(0.1),
+                                          color:  Color(0xFF4CE364).withOpacity(0.1),
                                         ),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '50,000',
-                                              style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                              style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               'Achievement',
@@ -507,22 +507,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Expanded(
                                     flex: 1,
                                     child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
+                                      padding:  EdgeInsets.all(5.0),
                                       child: Container(
-                                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
+                                        padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
                                         decoration: BoxDecoration(
-                                          border: const Border(
+                                          border:  Border(
                                               top: BorderSide(
                                                 color: Color(0xFF4ACDF9),
                                               )),
-                                          color: const Color(0xFF4ACDF9).withOpacity(0.1),
+                                          color:  Color(0xFF4ACDF9).withOpacity(0.1),
                                         ),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '35000',
-                                              style: kTextStyle.copyWith(color: const Color(0xFF4ACDF9), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                              style: kTextStyle.copyWith(color:  Color(0xFF4ACDF9), fontSize: 18.0, fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               'Collection',
@@ -541,7 +541,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -552,12 +552,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           elevation: 2.0,
                           child: GestureDetector(
                             onTap: () {
-                              const MyPartyList().launch(context);
+                               MyPartyList().launch(context);
                             },
                             child: Container(
                               width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
+                              padding:  EdgeInsets.all(10.0),
+                              decoration:  BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Color(0xFF7C69EE),
@@ -570,9 +570,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
 
-                                  const Image(image: AssetImage('images/newOrder.png'),height: 50,width: 50,),
+                                   Image(image: AssetImage('images/newOrder.png'),height: 50,width: 50,),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(8.0),
                                     child: Text(
                                       'Start My Route',
                                       style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -584,7 +584,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -593,12 +593,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           elevation: 2.0,
                           child: GestureDetector(
                             onTap: () {
-                              const viewOrders().launch(context);
+                               viewOrders().launch(context);
                             },
                             child: Container(
                               width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
+                              padding:  EdgeInsets.all(10.0),
+                              decoration:  BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Color(0xFFFD72AF),
@@ -610,9 +610,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/order.png'),width: 50,height: 50),
+                                   Image(image: AssetImage('images/order.png'),width: 50,height: 50),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(8.0),
                                     child: Text(
                                       'View Orders',
                                       style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -626,7 +626,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -637,12 +637,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           elevation: 2.0,
                           child: GestureDetector(
                             onTap: () {
-                              const EmployeeManagement().launch(context);
+                               EmployeeManagement().launch(context);
                             },
                             child: Container(
                               width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
+                              padding:  EdgeInsets.all(10.0),
+                              decoration:  BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Color(0xFF7C69EE),
@@ -654,9 +654,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/salesman.png'),height: 50,width: 50,),
+                                   Image(image: AssetImage('images/salesman.png'),height: 50,width: 50,),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(8.0),
                                     child: Text(
                                       'SFA Management',
                                       style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -668,7 +668,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -677,12 +677,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           elevation: 2.0,
                           child: GestureDetector(
                             onTap: () {
-                              const ExpenseManagementScreen().launch(context);
+                               ExpenseManagementScreen().launch(context);
                             },
                             child: Container(
                               width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
+                              padding:  EdgeInsets.all(10.0),
+                              decoration:  BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Color(0xFFFD72AF),
@@ -694,9 +694,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/expensemanagement.png'),width: 50,height: 50),
+                                   Image(image: AssetImage('images/expensemanagement.png'),width: 50,height: 50),
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:  EdgeInsets.all(8.0),
                                     child: Text(
                                       'Reports',
                                       style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -710,7 +710,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                /* const SizedBox(
+                /*  SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -721,12 +721,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           elevation: 2.0,
                           child: GestureDetector(
                             onTap: () {
-                              const PayrollManagementScreen().launch(context);
+                               PayrollManagementScreen().launch(context);
                             },
                             child: Container(
                               width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
+                              padding:  EdgeInsets.all(10.0),
+                              decoration:  BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Color(0xFF4ACDF9),
@@ -738,7 +738,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/payrollmanagement.png')),
+                                   Image(image: AssetImage('images/payrollmanagement.png')),
                                   Text(
                                     'Payroll Management',
                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -749,7 +749,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -757,12 +757,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           elevation: 2.0,
                           child: GestureDetector(
                             onTap: () {
-                              const EmptyFileManagement().launch(context);
+                               EmptyFileManagement().launch(context);
                             },
                             child: Container(
                               width: context.width(),
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: const BoxDecoration(
+                              padding:  EdgeInsets.all(10.0),
+                              decoration:  BoxDecoration(
                                 border: Border(
                                   left: BorderSide(
                                     color: Color(0xFF02B984),
@@ -774,7 +774,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Image(image: AssetImage('images/filemanagement.png')),
+                                   Image(image: AssetImage('images/filemanagement.png')),
                                   Text(
                                     ' Files Managements ',
                                     maxLines: 2,
@@ -789,7 +789,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   */
-                  // const SizedBox(
+                  //  SizedBox(
                   //   height: 20.0,
                   // ),
                   Visibility(
@@ -798,8 +798,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       elevation: 2.0,
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF4DCEFA),
@@ -810,28 +810,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: ListTile(
                           onTap: () {
-                            const RouteManagementMenuScreen().launch(context);
+                             RouteManagementMenuScreen().launch(context);
                           },
-                          leading: const Image(image: AssetImage('images/RouteManagement.png'),height: 40,width: 40,),
+                          leading:  Image(image: AssetImage('images/RouteManagement.png'),height: 40,width: 40,),
                           title: Text(
                             'Route Management',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFFFF8919),
@@ -844,25 +844,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                            StatsPage().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/gamification.png'),height: 40,width: 40,),
+                        leading:  Image(image: AssetImage('images/gamification.png'),height: 40,width: 40,),
                         title: Text(
                           'Market Visit',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFF1CC389),
@@ -873,27 +873,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          const EmptyNoticeBoard().launch(context);
+                           EmptyNoticeBoard().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/paymentCollecton.png'),height: 40,width: 40,),
+                        leading:  Image(image: AssetImage('images/paymentCollecton.png'),height: 40,width: 40,),
                         title: Text(
                           'Payment Collection',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),
-                  /*const SizedBox(
+                  /* SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFF8270F1),
@@ -903,13 +903,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                       ),
                       child: ListTile(
-                        leading: const Image(image: AssetImage('images/awards.png')),
+                        leading:  Image(image: AssetImage('images/awards.png')),
                         title: Text(
                           'Awards',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),*/
@@ -933,12 +933,12 @@ class _HomeScreenState extends State<HomeScreen> {
         return AlertDialog(
 
           // title: TextStyleExample(name : 'Privacy',style : textTheme.titleMedium!.copyWith(color: MyColors.black, fontWeight: FontWeight.bold)),
-          title: const Text("Exit!"),
-          content: const Text("Are you sure want to exit?",
+          title:  Text("Exit!"),
+          content:  Text("Are you sure want to exit?",
               style: TextStyle(fontSize: 15)),
           actions: <Widget>[
             TextButton(
-              child: const Text("Cancel"),
+              child:  Text("Cancel"),
               //child: TextStyleExample(name : 'DISAGREE',style : textTheme.labelLarge!),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -946,7 +946,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             TextButton(
               // child: TextStyleExample(name : 'AGREE',style : textTheme.labelLarge!.copyWith(color: MyColors.accentDark)),
-              child: const Text("Sure"),
+              child:  Text("Sure"),
               onPressed: () {
 
                 SystemNavigator.pop();

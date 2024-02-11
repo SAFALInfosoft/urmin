@@ -4,7 +4,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class SalaryStatementDetails extends StatefulWidget {
-  const SalaryStatementDetails({Key? key}) : super(key: key);
+   SalaryStatementDetails({Key? key}) : super(key: key);
 
   @override
   _SalaryStatementDetailsState createState() => _SalaryStatementDetailsState();
@@ -29,7 +29,7 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
         elevation: 0.0,
         automaticallyImplyLeading: false,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: ListTile(
           leading: Image.asset('images/emp1.png'),
           title: Text(
@@ -44,7 +44,7 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(
+            child:  Icon(
               Icons.close,
               color: Colors.white,
             ),
@@ -54,21 +54,21 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -83,11 +83,11 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                             hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            border: const OutlineInputBorder(),
+                            border:  OutlineInputBorder(),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -99,7 +99,7 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                             dateController.text = date.toString().substring(0, 10);
                           },
                           controller: dateController,
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                               border: OutlineInputBorder(),
                               floatingLabelBehavior: FloatingLabelBehavior.always,
                               suffixIcon: Icon(
@@ -112,12 +112,12 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -125,7 +125,7 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Row(
@@ -156,11 +156,11 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                             ),
                           ],
                         ),
-                        const Divider(
+                         Divider(
                           thickness: 1.0,
                           color: kGreyTextColor,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -191,11 +191,11 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                             ),
                           ],
                         ),
-                        const Divider(
+                         Divider(
                           thickness: 1.0,
                           color: kGreyTextColor,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -229,13 +229,13 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                       ],
                     ),
                   ),
-                  const Spacer(),
+                   Spacer(),
                   Row(
                     children: [
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: kMainColor,
@@ -247,13 +247,13 @@ class _SalaryStatementDetailsState extends State<SalaryStatementDetails> {
                           )),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.0),
                             color: kMainColor.withOpacity(0.1),

@@ -7,7 +7,7 @@ import '../GlobalComponents/button_global.dart';
 import 'afterCheckinMainPage.dart';
 
 class MarketSurvey extends StatefulWidget {
-  const MarketSurvey({Key? key}) : super(key: key);
+   MarketSurvey({Key? key}) : super(key: key);
 
   @override
   _MarketSurveyState createState() => _MarketSurveyState();
@@ -24,7 +24,7 @@ class _MarketSurveyState extends State<MarketSurvey> {
           backgroundColor: kMainColor,
           elevation: 0.0,
           titleSpacing: 0.0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme:  IconThemeData(color: Colors.white),
           title: Text(
             'Market Survey',
             maxLines: 2,
@@ -34,14 +34,14 @@ class _MarketSurveyState extends State<MarketSurvey> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Expanded(
               child: Container(
                 width: context.width(),
-                padding: const EdgeInsets.all(20.0),
-                decoration: const BoxDecoration(
+                padding:  EdgeInsets.all(20.0),
+                decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                   color: Colors.white,
                 ),
@@ -49,12 +49,12 @@ class _MarketSurveyState extends State<MarketSurvey> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Image(
+                     Image(
                       width: 200,
                       height: 200,
                       image: AssetImage('images/empty.png'),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 20.0,
                     ),
                     Column(

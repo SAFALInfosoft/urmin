@@ -1,9 +1,15 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:maan_hrm/RouteManagement/RouteManagementMenuScreen.dart';
 import 'package:maan_hrm/Screens/Authentication/profile_screen.dart';
 import 'package:maan_hrm/Screens/Client%20Management/empty_client_list.dart';
@@ -22,7 +28,9 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:time_chart/time_chart.dart';
 import 'package:intl/intl.dart';
+import '../GlobalComponents/NetworkConnectivity.dart';
 import '../GlobalComponents/PreferenceManager.dart';
+import '../GlobalComponents/Tools.dart';
 import '../PartyList/MyPartyListPage.dart';
 import '../achivementDetailsPage.dart';
 import '../constant.dart';
@@ -36,10 +44,10 @@ import 'Inventory_Management/INVENTORY_MANAGEMNET_MENU.dart';
 import 'PrimarySales/PRIMARY_SALES_MENU.dart';
 import 'Secondery Salse/SECONDERY_SALES_MENU.dart';
 import 'Van Salse/VAN_SALES_MENU.dart';
-
+import 'package:http/http.dart'as http;
 // ignore_for_file: library_private_types_in_public_api
 class Dms_HomeScreen extends StatefulWidget {
-  const Dms_HomeScreen({Key? key}) : super(key: key);
+   Dms_HomeScreen({Key? key}) : super(key: key);
 
   @override
   _Dms_HomeScreenState createState() => _Dms_HomeScreenState();
@@ -51,30 +59,117 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
   String? token;
 
   String? distributorName;
+  final NetworkConnectivity _networkConnectivity = NetworkConnectivity.instance;
+  Map _source = {ConnectivityResult.none: false};
+  String isConnect = '';
+  bool idLoading=false;
+  Tools? tools;
 
+  bool? isOffline;
+
+  String? companyId;
+
+  String? factoryId;
+
+  String? userId;
+
+  String? coCode;
+
+  String? clientUrl;
+
+  var poList;
+
+  String? distributorId;
+
+  String? Price_id;
   @override
   void initState() {
     // TODO: implement initState
-    PreferenceManager.instance
-        .getStringValue("Role_Type")
-        .then((value) => setState(() {
-      RoleType=value;
-      print(value);
-    }));PreferenceManager.instance
-        .getStringValue("distributorName")
-        .then((value) => setState(() {
-      distributorName=value;
-      print("distributorName"+value);
-    }));
+    tools = Tools(context);
+
 
     PreferenceManager.instance
-        .getStringValue("accessToken")
+        .getStringValue("ClintUrl")
         .then((value) => setState(() {
-      token=value;
+      clientUrl = value;
       print(value);
     }));
+
+    CheckUserConnection().then((value) {
+      if(ActiveConnection==true){
+        PreferenceManager.instance
+            .getStringValue("Role_Type")
+            .then((value) => setState(() {
+          RoleType=value;
+          print(value);
+        }));
+        PreferenceManager.instance
+            .getStringValue("distributorName")
+            .then((value) => setState(() {
+          distributorName=value;
+          print("distributorName"+value);
+        }));PreferenceManager.instance
+            .getStringValue("factoryId")
+            .then((value) => setState(() {
+          factoryId=value;
+          print("factoryId"+value);
+        }));
+        PreferenceManager.instance
+            .getStringValue("companyCode")
+            .then((value) => setState(() {
+          companyId=value;
+          print("companyId"+value);
+        }));
+        PreferenceManager.instance
+            .getStringValue("distributorId")
+            .then((value) => setState(() {
+          distributorId=value;
+          print("companyId"+value);
+        }));
+        PreferenceManager.instance
+            .getStringValue("accessToken")
+            .then((value) => setState(() {
+          token =Uri.encodeComponent(value.toString());
+          log(token);
+          setState(() {
+            openHiveBox();
+          });
+          fshipmaster().then((value) => fetch_polist());
+
+        }));
+      }else{
+        kMainColor=Colors.red;
+        Fluttertoast.showToast(
+            msg: "You Are Now Offline",
+            textColor: Colors.white,
+            backgroundColor: Colors.red,
+            gravity: ToastGravity.CENTER,
+            toastLength: Toast.LENGTH_SHORT);
+      }
+    });
+
+
     super.initState();
   }
+  openHiveBox() async {
+    var box = await Hive.openBox('erpApiMainData');
+    var bookmark = box.get('erpApiMainData');
+    bookmark.forEach((key, value) {
+      log(key.toString());
+      if (key == 'docs') {
+        debugPrint("erpApiMainData  ${value[0]}");
+        setState(() {
+          log("TCS"+value[0]['TCS_Applicable']);
+          PreferenceManager.instance
+              .setStringValue("TCS_Applicable", value[0]['TCS_Applicable']);
+          fpricelist(value[0]['Price_id'],value[0]['Factory_id']);
+        });
+      }
+    });
+  }
+  bool ActiveConnection =false ;
+  String T = "";
+
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
@@ -96,24 +191,20 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
           backgroundColor: kMainColor,
           elevation: 0.0,
           titleSpacing: 0.0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme:  IconThemeData(color: Colors.white),
           title: Text(
             'Urmin DMS',
             maxLines: 2,
             style: kTextStyle.copyWith(color: Colors.white, fontSize: 16.0),
           ),
           actions:  [
-            InkWell(
-              onTap: () {
-                const NotificationScreen().launch(context);
-              },
-              child: const Padding(
-                padding: EdgeInsets.only(right: 10.0),
-                child: Image(
-                  height: 30,
-                  width: 30,
-                  image: AssetImage('images/notificationicon.png'),
-                ),
+            ActiveConnection?Container():Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: Image(
+                color: Colors.white,
+                height: 30,
+                width: 30,
+                image: AssetImage('images/wifi.png'),
               ),
             ),
           ],
@@ -123,7 +214,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
             children: [
               Container(
                 height: context.height() / 3,
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
                   color: kMainColor,
                 ),
@@ -131,24 +222,24 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                   children: [
                     Container(
                       height: context.height() / 4,
-                      decoration: const BoxDecoration(
+                      decoration:  BoxDecoration(
                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
                         color: Colors.white,
                       ),
                       child: Center(
                         child: Column(
                           children: [
-                            const SizedBox(
+                             SizedBox(
                               height: 10.0,
                             ),
-                            const CircleAvatar(
+                             CircleAvatar(
                               radius: 60.0,
                               backgroundColor: kMainColor,
                               backgroundImage: AssetImage(
                                 'images/Pro.png',
                               ),
                             ),
-                            const SizedBox(
+                             SizedBox(
                               height: 10.0,
                             ),
                             Text(
@@ -161,11 +252,11 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             // ),
                           ],
                         ).onTap(() {
-                          const ProfileScreen().launch(context);
+                           ProfileScreen().launch(context);
                         }),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 10.0,
                     ),
                     Row(
@@ -212,14 +303,14 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                   ],
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               ListTile(
                 onTap: () {
-                  const ProfileScreen().launch(context);
+                   ProfileScreen().launch(context);
                 },
-                leading: const Icon(
+                leading:  Icon(
                   Icons.person,
                   color: kGreyTextColor,
                 ),
@@ -227,7 +318,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                   'Profile',
                   style: kTextStyle.copyWith(color: kGreyTextColor),
                 ),
-                trailing: const Icon(
+                trailing:  Icon(
                   Icons.arrow_forward_ios,
                   color: kGreyTextColor,
                 ),
@@ -236,7 +327,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                 onTap: () {
                   LeaderBoard().launch(context);
                 },
-                leading: const Icon(
+                leading:  Icon(
                   Icons.score,
                   color: kGreyTextColor,
                 ),
@@ -244,16 +335,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                   'Leader Board',
                   style: kTextStyle.copyWith(color: kGreyTextColor),
                 ),
-                trailing: const Icon(
+                trailing:  Icon(
                   Icons.arrow_forward_ios,
                   color: kGreyTextColor,
                 ),
               ),
               // ListTile(
               //   onTap: () {
-              //     const PricingScreen().launch(context);
+              //      PricingScreen().launch(context);
               //   },
-              //   leading: const Icon(
+              //   leading:  Icon(
               //     FontAwesomeIcons.medal,
               //     color: kGreyTextColor,
               //   ),
@@ -261,16 +352,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
               //     'Premium Version   (Pro)',
               //     style: kTextStyle.copyWith(color: kGreyTextColor),
               //   ),
-              //   trailing: const Icon(
+              //   trailing:  Icon(
               //     Icons.arrow_forward_ios,
               //     color: kGreyTextColor,
               //   ),
               // ),
               // ListTile(
               //   onTap: () {
-              //     const EmptyHoliday().launch(context);
+              //      EmptyHoliday().launch(context);
               //   },
-              //   leading: const Icon(
+              //   leading:  Icon(
               //     FontAwesomeIcons.coffee,
               //     color: kGreyTextColor,
               //   ),
@@ -278,16 +369,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
               //     'Holiday',
               //     style: kTextStyle.copyWith(color: kGreyTextColor),
               //   ),
-              //   trailing: const Icon(
+              //   trailing:  Icon(
               //     Icons.arrow_forward_ios,
               //     color: kGreyTextColor,
               //   ),
               // ),
               // ListTile(
               //   onTap: () {
-              //     const EmptyHoliday().launch(context);
+              //      EmptyHoliday().launch(context);
               //   },
-              //   leading: const Icon(
+              //   leading:  Icon(
               //     FontAwesomeIcons.lock,
               //     color: kGreyTextColor,
               //   ),
@@ -314,7 +405,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
               //       Share.share('check out This Awesome HRM');
               //     });
               //   },
-              //   leading: const Icon(
+              //   leading:  Icon(
               //     FontAwesomeIcons.userFriends,
               //     color: kGreyTextColor,
               //   ),
@@ -322,16 +413,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
               //     'Share With Friends',
               //     style: kTextStyle.copyWith(color: kGreyTextColor),
               //   ),
-              //   trailing: const Icon(
+              //   trailing:  Icon(
               //     Icons.arrow_forward_ios,
               //     color: kGreyTextColor,
               //   ),
               // ),
               // ListTile(
               //   onTap: () {
-              //     const TermsOfServices().launch(context);
+              //      TermsOfServices().launch(context);
               //   },
-              //   leading: const Icon(
+              //   leading:  Icon(
               //     FontAwesomeIcons.infoCircle,
               //     color: kGreyTextColor,
               //   ),
@@ -339,16 +430,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
               //     'Terms of Services',
               //     style: kTextStyle.copyWith(color: kGreyTextColor),
               //   ),
-              //   trailing: const Icon(
+              //   trailing:  Icon(
               //     Icons.arrow_forward_ios,
               //     color: kGreyTextColor,
               //   ),
               // ),
               // ListTile(
               //   onTap: () {
-              //    // const PrivacyPolicy().launch(context);
+              //    //  PrivacyPolicy().launch(context);
               //   },
-              //   leading: const Icon(
+              //   leading:  Icon(
               //     Icons.dangerous_sharp,
               //     color: kGreyTextColor,
               //   ),
@@ -356,7 +447,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
               //     'Privacy Policy',
               //     style: kTextStyle.copyWith(color: kGreyTextColor),
               //   ),
-              //   trailing: const Icon(
+              //   trailing:  Icon(
               //     Icons.arrow_forward_ios,
               //     color: kGreyTextColor,
               //   ),
@@ -365,10 +456,10 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SignIn()),
+                    MaterialPageRoute(builder: (context) =>  SignIn()),
                   );
                 },
-                leading: const Icon(
+                leading:  Icon(
                   FontAwesomeIcons.signOutAlt,
                   color: kGreyTextColor,
                 ),
@@ -376,7 +467,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                   'Logout',
                   style: kTextStyle.copyWith(color: kGreyTextColor),
                 ),
-                trailing: const Icon(
+                trailing:  Icon(
                   Icons.arrow_forward_ios,
                   color: kGreyTextColor,
                 ),
@@ -384,27 +475,27 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
             ],
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
+        body:Padding(
+          padding:  EdgeInsets.only(top: 10.0),
           child: Container(
             height: context.height(),
-            padding: const EdgeInsets.only(left: 20.0,right: 20,top: 20),
-            decoration: const BoxDecoration(
+            padding:  EdgeInsets.only(left: 20.0,right: 20,top: 20),
+            decoration:  BoxDecoration(
               borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
               color: Colors.white,
             ),
-            child: ListView(
-              physics: const ClampingScrollPhysics(),
+            child: idLoading?Center(child: CircularProgressIndicator()): ListView(
+              physics:  ClampingScrollPhysics(),
               children: [
-                const SizedBox(
+                 SizedBox(
                   height: 10.0,
                 ),
                 Material(
                   elevation: 2,
                   child: Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
+                    padding:  EdgeInsets.all(10),
+                    decoration:  BoxDecoration(
                       border: Border(
                         left: BorderSide(
                           color: Color(0xFF4CE364),
@@ -421,7 +512,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                               'D M S',
                               style: kTextStyle,
                             ),
-                            const Spacer(),
+                             Spacer(),
                             RichText(
                               text: TextSpan(
                                 children: [
@@ -436,7 +527,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Row(
@@ -444,11 +535,11 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding:  EdgeInsets.all(5.0),
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                   decoration: BoxDecoration(
-                                    border: const Border(
+                                    border:  Border(
                                         top: BorderSide(
                                           color: kMainColor,
                                         )),
@@ -472,22 +563,22 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding:  EdgeInsets.all(5.0),
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                   decoration: BoxDecoration(
-                                    border: const Border(
+                                    border:  Border(
                                         top: BorderSide(
                                           color: Color(0xFF4CE364),
                                         )),
-                                    color: const Color(0xFF4CE364).withOpacity(0.1),
+                                    color:  Color(0xFF4CE364).withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '2',
-                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Pending Purchase Order',
@@ -500,22 +591,22 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding:  EdgeInsets.all(5.0),
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                   decoration: BoxDecoration(
-                                    border: const Border(
+                                    border:  Border(
                                         top: BorderSide(
                                           color: Color(0xFFFD72AF),
                                         )),
-                                    color: const Color(0xFFFD72AF).withOpacity(0.1),
+                                    color:  Color(0xFFFD72AF).withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '2',
-                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Pending Purchase Order',
@@ -528,7 +619,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -536,11 +627,11 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding:  EdgeInsets.all(5.0),
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                   decoration: BoxDecoration(
-                                    border: const Border(
+                                    border:  Border(
                                         top: BorderSide(
                                           color: kMainColor,
                                         )),
@@ -564,22 +655,22 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding:  EdgeInsets.all(5.0),
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                   decoration: BoxDecoration(
-                                    border: const Border(
+                                    border:  Border(
                                         top: BorderSide(
                                           color: Color(0xFF4CE364),
                                         )),
-                                    color: const Color(0xFF4CE364).withOpacity(0.1),
+                                    color:  Color(0xFF4CE364).withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '2',
-                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Pending GRN',
@@ -592,22 +683,22 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             ),
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.all(5.0),
+                                padding:  EdgeInsets.all(5.0),
                                 child: Container(
-                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                   decoration: BoxDecoration(
-                                    border: const Border(
+                                    border:  Border(
                                         top: BorderSide(
                                           color: Color(0xFFFD72AF),
                                         )),
-                                    color: const Color(0xFFFD72AF).withOpacity(0.1),
+                                    color:  Color(0xFFFD72AF).withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '2',
-                                        style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Pending GRN',
@@ -624,7 +715,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 20.0,
                 ),
                 Row(
@@ -635,12 +726,12 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                         elevation: 2.0,
                         child: GestureDetector(
                           onTap: () {
-                            const PRIMARY_SALES_MENU().launch(context);
+                             PRIMARY_SALES_MENU().launch(context);
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7C69EE),
@@ -652,9 +743,9 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
+                                 Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(8.0),
                                   child: Text(
                                     'Primary Sales',
                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -666,7 +757,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       width: 20.0,
                     ),
                     Expanded(
@@ -675,12 +766,12 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                         elevation: 2.0,
                         child: GestureDetector(
                           onTap: () {
-                            const INVENTORY_MANAGEMNET_MENU().launch(context);
+                             INVENTORY_MANAGEMNET_MENU().launch(context);
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFFFD72AF),
@@ -692,9 +783,9 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Image(image: AssetImage('images/material-management.png'),width: 50,height: 50),
+                                 Image(image: AssetImage('images/material-management.png'),width: 50,height: 50),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(8.0),
                                   child: Text(
                                     'Inventory Management',
                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -708,7 +799,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 20.0,
                 ),
                 Row(
@@ -723,8 +814,8 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7C69EE),
@@ -736,9 +827,9 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
+                                 Image(image: AssetImage('images/sales.png'),height: 50,width: 50,),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(8.0),
                                   child: Text(
                                     'Secondary Sales',
                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -750,7 +841,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       width: 20.0,
                     ),
                     Expanded(
@@ -759,12 +850,12 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                         elevation: 2.0,
                         child: GestureDetector(
                           onTap: () {
-                            const VAN_SALES_MENU().launch(context);
+                             VAN_SALES_MENU().launch(context);
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFFFD72AF),
@@ -776,9 +867,9 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Image(image: AssetImage('images/vanSales.png'),width: 50,height: 50),
+                                 Image(image: AssetImage('images/vanSales.png'),width: 50,height: 50),
                                 Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(8.0),
                                   child: Text(
                                     'Van Sales',
                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
@@ -793,15 +884,15 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 20.0,
                 ),
                 Material(
                   elevation: 2.0,
                   child: Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: const BoxDecoration(
+                    padding:  EdgeInsets.all(10.0),
+                    decoration:  BoxDecoration(
                       border: Border(
                         left: BorderSide(
                           color: Color(0xFF4CCEFA),
@@ -812,15 +903,15 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        // const pendingGRNMainScreen().launch(context);
+                        //  pendingGRNMainScreen().launch(context);
                       },
-                      leading: const Image(image: AssetImage('images/ordertobill.png'),height: 40,width: 40,),
+                      leading:  Image(image: AssetImage('images/ordertobill.png'),height: 40,width: 40,),
                       title: Text(
                         'Retailer Order',
                         maxLines: 2,
                         style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                       ),
-                      trailing: const Icon(Icons.arrow_forward_ios),
+                      trailing:  Icon(Icons.arrow_forward_ios),
                     ),
                   ),
                 ),
@@ -831,6 +922,280 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
       ),
     );
   }
+
+  Future CheckUserConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        setState(() {
+          ActiveConnection = true;
+          T = "Turn off the data and repress again";
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        ActiveConnection = false;
+        T = "Turn On the data and repress again";
+      });
+    }
+  }
+  checkInternetConnection() async {
+    _networkConnectivity.initialise();
+    _networkConnectivity.myStream.listen((source) {
+      _source = source;
+      switch (_source.keys.toList()[0]) {
+        case ConnectivityResult.mobile:
+          isConnect =
+          _source.values.toList()[0] ? 'Mobile: Online' : 'Mobile: Offline';
+          break;
+        case ConnectivityResult.wifi:
+          log(_source.values.toString());
+          isConnect = _source.values.toList()[0] ? 'WiFi: Online' : 'WiFi: Offline';
+          break;
+        case ConnectivityResult.none:
+        default:
+          isConnect = 'Offline';
+      }
+      if (!mounted) return;
+      setState(() {});
+    });
+  }
+  Future<void> fetch_polist() async {
+    //clientUrl="https://demo.datanote.co.in/urminapi/";
+    /*   isLoading = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    uId = prefs.getString("uId").toString();
+    token = Uri.encodeComponent(prefs.getString("token").toString());
+    co_code = prefs.getString("co_code").toString();*/
+    idLoading = true;
+
+    var dio = Dio();
+    Map<String, dynamic> payload = {
+      "Co_Code":companyId,
+      "User_Id":distributorId,
+      "Access_Token":token
+    };
+
+    print("${clientUrl}EntryList/GetPoList$payload");
+    var res = await dio.get("${clientUrl}EntryList/GetPoList",
+        //data: formData,
+        queryParameters: payload,
+        options: Options(
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ));
+
+    print('---- status code: ${res.statusCode}');
+    setState(() {
+      idLoading=false;
+    });
+    if (res.statusCode == 200) {
+      /*     isLoading = false;*/
+      var json = jsonDecode(res.data);
+      log("OtpRES" + json['message'].toString());
+      if (json['message'].toString() == "User Id or Token is Invalid.") {
+        Fluttertoast.showToast(
+            msg: "LogOut",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            backgroundColor: Colors.red,
+            timeInSecForIosWeb: 1,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        // Navigator.push(
+        // context,
+        // MaterialPageRoute(builder: (context) =>  SignIn()),
+        // );
+      }else{
+
+        setState(() {
+          idLoading=false;
+        });
+        var box = Hive.box('poList');
+        box.put('poList', json['message']);
+        await Hive.openBox('poList');
+        poList=box.get('poList');
+        log("POLIST"+poList.toString());
+        // bookmark.forEach((key, value) {
+        //   if(key=='docs')  {
+        //     debugPrint("fshipmasterData $value");
+        //   }
+        // });
+        // for(var i = 0; i < json['message'].length; i++) {
+        //
+        //   if (json['message'][i]['PO_Status']=="Draft"){
+        //     poList = json['message'];
+        //   }
+        //   // children.add(new ListTile());
+        // }
+      }
+
+      setState(() {
+        idLoading=false;
+      });
+      log(poList.toString());
+
+    } else {
+      setState(() {
+        idLoading=false;
+      });
+      // show error
+      print("Try Again");
+    }
+  }
+  Future<void> fshipmaster() async {
+    setState(() {
+      idLoading = true;
+    });
+
+    // Replace with your actual API URL
+    String apiUrl = 'http://api.urmingroup.co.in/fshipmaster/_find';
+
+    // Replace with your actual authorization key
+    String authorizationKey =
+        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';
+
+    // Replace with your actual request payload
+    Map<String, dynamic> requestPayload = {
+      "selector": {"Distributor_id": distributorId}
+    };
+    try {
+      // Make the API call
+      http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $authorizationKey',
+        },
+        body: json.encode(requestPayload),
+      );
+      setState(() {
+        idLoading = false;
+      });
+      // Check the response status
+      if (response.statusCode == 200) {
+        setState(() {
+          idLoading = false;
+        });
+        Map<String, dynamic> responseBody = json.decode(response.body);
+
+        //debugPrint("responseBody $responseBody");
+        final body = jsonDecode(response.body);
+        debugPrint("responseBody fshipmaster ${body}");
+
+        var box = Hive.box('fshipmasterData');
+        box.put('fshipmasterData', body);
+        await Hive.openBox('fshipmasterData');
+        Map<String, dynamic>  bookmark=box.get('fshipmasterData');
+        bookmark.forEach((key, value) {
+          if(key=='docs')  {
+            debugPrint("fshipmasterData $value");
+          }
+        });
+      } else {
+        setState(() {
+          idLoading = false;
+        });
+        // Handle error
+        print('API call failed with status code: ${response.statusCode}');
+        print(response.body);
+      }
+    } catch (error) {
+      setState(() {
+        idLoading = false;
+      });
+      // Handle any exceptions
+      print('Error making API call: $error');
+    }
+  }
+
+  Future<void> fpricelist(priceID,fctoryid) async {
+    setState(() {
+      idLoading = true;
+    });
+
+    // Replace with your actual API URL
+    String apiUrl = 'http://api.urmingroup.co.in/fpricelist/_find';
+
+    // Replace with your actual authorization key
+    String authorizationKey =
+        'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';
+
+    // Replace with your actual request payload
+    Map<String, dynamic> requestPayload = {
+      "selector": {
+        "Company_id": companyId,
+        "Factory_id": fctoryid,
+        "Price_id": priceID
+      }
+    };
+    try {
+      log("PayLoad for ItemList"+requestPayload.toString());
+      // Make the API call
+      http.Response response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $authorizationKey',
+        },
+        body: json.encode(requestPayload),
+      );
+      setState(() {
+        idLoading = false;
+      });
+      // Check the response status
+      if (response.statusCode == 200) {
+        setState(() {
+          idLoading = false;
+        });
+        Map<String, dynamic> responseBody = json.decode(response.body);
+
+        // debugPrint("responseBody  $responseBody");
+        final body = jsonDecode(response.body);
+        debugPrint("responseBody fpricelist ${body['docs'][0]['item']}");
+        var fpricelist_Items = body['docs'][0]['item'];
+        // log("ItemCount " + fpricelist_Items.length.toString());
+        var box = Hive.box('ItemList');
+        box.put('ItemList', fpricelist_Items);
+        await Hive.openBox('ItemList');
+        Map<String, dynamic>  bookmark=box.get('ItemList');
+        log("ItemList"+bookmark.toString());
+        bookmark.forEach((key, value) {
+          //if(key=='docs')  {
+          debugPrint("ItemList $value");
+        });
+        // var box = Hive.box('erpApiMainData');
+        // box.put('erpApiMainData', body);
+        // await Hive.openBox('erpApiMainData');
+        // Map<String, dynamic>  bookmark=box.get('erpApiMainData');
+        // bookmark.forEach((key, value) {
+        //   PhoneVerification().launch(context);
+        //   if(key=='bookmark')  {
+        //     debugPrint("bookmark $value");
+        //   }
+        // });
+      } else {
+        if(mounted!)return;
+        setState(() {
+          idLoading = false;
+        });
+        // Handle error
+        print('API call failed with status code: ${response.statusCode}');
+        print(response.body);
+      }
+    } catch (error) {
+      if(mounted!)return;
+      setState(() {
+        idLoading = false;
+      });
+      // Handle any exceptions
+      print('Error making API call: $error');
+    }
+  }
+
+
   void confirmationDialog(BuildContext context) async {
     final textTheme = Theme.of(context)
         .textTheme
@@ -843,12 +1208,12 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
         return AlertDialog(
 
           // title: TextStyleExample(name : 'Privacy',style : textTheme.titleMedium!.copyWith(color: MyColors.black, fontWeight: FontWeight.bold)),
-          title: const Text("Exit!"),
-          content: const Text("Are you sure want to exit?",
+          title:  Text("Exit!"),
+          content:  Text("Are you sure want to exit?",
               style: TextStyle(fontSize: 15)),
           actions: <Widget>[
             TextButton(
-              child: const Text("Cancel"),
+              child:  Text("Cancel"),
               //child: TextStyleExample(name : 'DISAGREE',style : textTheme.labelLarge!),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -856,7 +1221,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
             ),
             TextButton(
               // child: TextStyleExample(name : 'AGREE',style : textTheme.labelLarge!.copyWith(color: MyColors.accentDark)),
-              child: const Text("Sure"),
+              child:  Text("Sure"),
               onPressed: () {
 
                 SystemNavigator.pop();

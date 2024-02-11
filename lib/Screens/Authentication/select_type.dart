@@ -10,7 +10,7 @@ import '../../GlobalComponents/PreferenceManager.dart';
 import '../../constant.dart';
 
 class SelectType extends StatefulWidget {
-  const SelectType({Key? key}) : super(key: key);
+   SelectType({Key? key}) : super(key: key);
 
   @override
   _SelectTypeState createState() => _SelectTypeState();
@@ -29,7 +29,7 @@ class _SelectTypeState extends State<SelectType> {
             body: Stack(
           children: <Widget>[
             Container(
-              decoration: const BoxDecoration(
+              decoration:  BoxDecoration(
                 color: Colors.white,
                 // image: DecorationImage(
                 //   image: AssetImage("images/bg.png"),
@@ -48,16 +48,16 @@ class _SelectTypeState extends State<SelectType> {
                     minRadius: 50,
                     maxRadius: 50,
                      ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20,
                   ),
-                  //const Image(image: AssetImage("images/people.png")),
+                  // Image(image: AssetImage("images/people.png")),
                   Text(
                     'Select Your Role',
                     style: kTextStyle.copyWith(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
@@ -67,7 +67,7 @@ class _SelectTypeState extends State<SelectType> {
                       child: ListTile(
                         onTap: () {
                           PreferenceManager.instance.setStringValue(
-                              "Role_Type", "DMS").then((value) => const SignIn().launch(context));
+                              "Role_Type", "DMS").then((value) =>  SignIn().launch(context));
                           PreferenceManager.instance
                               .getStringValue("Role_Type")
                               .then((value) => setState(() {
@@ -76,7 +76,7 @@ class _SelectTypeState extends State<SelectType> {
                             }
                           }));
                         },
-                        leading: const Image(
+                        leading:  Image(
                           image: AssetImage('images/employeemanagement.png'),
                           height: 40,
                           width: 40,
@@ -93,7 +93,7 @@ class _SelectTypeState extends State<SelectType> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(10.0),
+                    padding:  EdgeInsets.all(10.0),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
@@ -103,14 +103,14 @@ class _SelectTypeState extends State<SelectType> {
                       child: ListTile(
                         onTap: () {
                           PreferenceManager.instance.setStringValue(
-                              "Role_Type", "SFA").then((value) => const SignIn().launch(context));
+                              "Role_Type", "SFA").then((value) =>  SignIn().launch(context));
                           PreferenceManager.instance
                               .getStringValue("Role_Type")
                               .then((value) => setState(() {
                             log(value);
                           }));
                         },
-                        leading: const Image(height: 40,
+                        leading:  Image(height: 40,
                           width: 40,
 
                           image: AssetImage('images/salesman.png'),
@@ -146,12 +146,12 @@ class _SelectTypeState extends State<SelectType> {
       builder: (BuildContext context) {
         return AlertDialog(
           // title: TextStyleExample(name : 'Privacy',style : textTheme.titleMedium!.copyWith(color: MyColors.black, fontWeight: FontWeight.bold)),
-          title: const Text("Exit!"),
-          content: const Text("Are you sure want to exit?",
+          title:  Text("Exit!"),
+          content:  Text("Are you sure want to exit?",
               style: TextStyle(fontSize: 15)),
           actions: <Widget>[
             TextButton(
-              child: const Text("Cancel"),
+              child:  Text("Cancel"),
               //child: TextStyleExample(name : 'DISAGREE',style : textTheme.labelLarge!),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -159,7 +159,7 @@ class _SelectTypeState extends State<SelectType> {
             ),
             TextButton(
               // child: TextStyleExample(name : 'AGREE',style : textTheme.labelLarge!.copyWith(color: MyColors.accentDark)),
-              child: const Text("Sure"),
+              child:  Text("Sure"),
               onPressed: () {
                 SystemNavigator.pop();
               },

@@ -17,7 +17,7 @@ import 'package:intl/intl.dart';
 import '../../../constant.dart';
 
 class SalseReturnMainScreen extends StatefulWidget {
-  const SalseReturnMainScreen({Key? key}) : super(key: key);
+   SalseReturnMainScreen({Key? key}) : super(key: key);
 
   @override
   _SalseReturnMainScreenState createState() =>
@@ -54,18 +54,18 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
           });
         },
         child: Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8),
+          padding:  EdgeInsets.only(left: 8, right: 8),
           child: Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              borderRadius:  BorderRadius.all(Radius.circular(12)),
               border: Border.all(color: Colors.black, width: 1.1),
               color: index == _selectedValueIndex
-                  ? const Color(0xFF4CCEFA)
+                  ?  Color(0xFF4CCEFA)
                   : Colors.white,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 10.0,bottom: 10),
+              padding:  EdgeInsets.only(top: 10.0,bottom: 10),
               child: Text(
                 text,
                 textAlign: TextAlign.center,
@@ -125,10 +125,10 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
               return AlertDialog(
 
                 // title: TextStyleExample(name : 'Privacy',style : textTheme.titleMedium!.copyWith(color: MyColors.black, fontWeight: FontWeight.bold)),
-                title: const Center(child: Text("Transporter Details")),
+                title:  Center(child: Text("Transporter Details")),
                 content: Expanded(
                   child: Column(
-                    children: const [
+                    children:  [
                       Divider(),
                       ListTile(
                         leading: Icon(Icons.person),
@@ -166,7 +166,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text("Cancel"),
+                    child:  Text("Cancel"),
                     //child: TextStyleExample(name : 'DISAGREE',style : textTheme.labelLarge!),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -181,7 +181,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
         child: Row(
           children: [
             Icon(IconData,color: Colors.blue),
-            const SizedBox(width: 5,),
+             SizedBox(width: 5,),
             Text(title),
           ],
         ),
@@ -200,12 +200,12 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
         return AlertDialog(
 
           // title: TextStyleExample(name : 'Privacy',style : textTheme.titleMedium!.copyWith(color: MyColors.black, fontWeight: FontWeight.bold)),
-          title: const Text("Exit!"),
-          content: const Text("Are you sure want to exit?",
+          title:  Text("Exit!"),
+          content:  Text("Are you sure want to exit?",
               style: TextStyle(fontSize: 15)),
           actions: <Widget>[
             TextButton(
-              child: const Text("Cancel"),
+              child:  Text("Cancel"),
               //child: TextStyleExample(name : 'DISAGREE',style : textTheme.labelLarge!),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -213,7 +213,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
             ),
             TextButton(
               // child: TextStyleExample(name : 'AGREE',style : textTheme.labelLarge!.copyWith(color: MyColors.accentDark)),
-              child: const Text("Sure"),
+              child:  Text("Sure"),
               onPressed: () {
 
               },
@@ -236,7 +236,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Sales Return',
           maxLines: 2,
@@ -249,8 +249,8 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
@@ -269,7 +269,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 0, right: 10),
+                        padding:  EdgeInsets.only(left: 0, right: 10),
                         child: InkWell(
                           onTap: () {
                             setState(() {
@@ -285,12 +285,12 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                             //width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
+                               BorderRadius.all(Radius.circular(12)),
                               border:
                               Border.all(color: Colors.black, width: 1.1),
                               color: Colors.white,
                             ),
-                            child: const Padding(
+                            child:  Padding(
                                 padding: EdgeInsets.all(5.0),
                                 child: Icon(Icons.date_range)),
                           ),
@@ -298,11 +298,11 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 5,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(8.0),
                     child: CupertinoSearchTextField(
                       //controller: controller,
                       onChanged: (value) {},
@@ -311,7 +311,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                       autocorrect: true,
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 10,
                   ),
                   Visibility(
@@ -333,10 +333,10 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                             },
                             controller: dateController,
                             decoration: InputDecoration(
-                                border: const OutlineInputBorder(),
+                                border:  OutlineInputBorder(),
                                 floatingLabelBehavior:
                                 FloatingLabelBehavior.always,
-                                suffixIcon: const Icon(
+                                suffixIcon:  Icon(
                                   Icons.date_range_rounded,
                                   color: kGreyTextColor,
                                 ),
@@ -344,7 +344,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                 hintText: dateStr.toString()),
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           width: 10,
                         ),
                         Expanded(
@@ -362,10 +362,10 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                             },
                             controller: dateController,
                             decoration: InputDecoration(
-                                border: const OutlineInputBorder(),
+                                border:  OutlineInputBorder(),
                                 floatingLabelBehavior:
                                 FloatingLabelBehavior.always,
-                                suffixIcon: const Icon(
+                                suffixIcon:  Icon(
                                   Icons.date_range_rounded,
                                   color: kGreyTextColor,
                                 ),
@@ -376,7 +376,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                       ],
                     ),
                   ),
-                  const Divider(),
+                   Divider(),
                   Expanded(
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -389,15 +389,15 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                   return InkWell(
                                     onTap: () {salesReturnInvoiceScreen().launch(context);},
                                     child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding:  EdgeInsets.all(5.0),
                                         child: Dismissible(
                                           background: Container(
-                                            decoration: const BoxDecoration(
+                                            decoration:  BoxDecoration(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(15)),
                                               color: Colors.green,
                                             ),
-                                            child: const Icon(
+                                            child:  Icon(
                                               Icons.edit,
                                               size: 20,
                                             ),
@@ -414,24 +414,24 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                             }
                                           },
                                           secondaryBackground: Container(
-                                            decoration: const BoxDecoration(
+                                            decoration:  BoxDecoration(
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(15)),
                                               color: Colors.red,
                                             ),
-                                            child: const Icon(
+                                            child:  Icon(
                                               Icons.delete,
                                               size: 20,
                                             ),
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
+                                            padding:  EdgeInsets.all(8.0),
                                             child: Container(
                                               child: Material(
                                                 elevation: 2.0,
                                                 child: Container(
                                                   width: context.width(),
-                                                  padding: const EdgeInsets.all(
+                                                  padding:  EdgeInsets.all(
                                                       10.0),
                                                   decoration: BoxDecoration(
                                                     border: Border(
@@ -463,14 +463,14 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -487,7 +487,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child: const Padding(
+                                                                child:  Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -509,14 +509,14 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -533,7 +533,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child: const Padding(
+                                                                child:  Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -555,14 +555,14 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -579,7 +579,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child:  const Padding(
+                                                                child:   Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -601,14 +601,14 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -625,7 +625,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child: const Padding(
+                                                                child:  Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -657,14 +657,14 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -681,7 +681,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child: const Padding(
+                                                                child:  Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -703,14 +703,14 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -727,7 +727,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child: const Padding(
+                                                                child:  Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -749,14 +749,14 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -773,7 +773,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child:  const Padding(
+                                                                child:   Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -819,7 +819,7 @@ class _SalseReturnMainScreenState extends State<SalseReturnMainScreen> {
       //     //urnData();
       //   },
       //   elevation: 10,
-      //   child: const Icon(Icons.add),
+      //   child:  Icon(Icons.add),
       // ),
     );
   }

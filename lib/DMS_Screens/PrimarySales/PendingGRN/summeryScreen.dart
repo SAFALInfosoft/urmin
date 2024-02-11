@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../../GlobalComponents/PreferenceManager.dart';
 import '../../../GlobalComponents/button_global.dart';
 import '../../../constant.dart';
 
@@ -12,9 +14,14 @@ class OrderSummaryScreen extends StatefulWidget {
   // final String? routeName;
   // final Function(String) onSubmitCallBack;
   // final Function onCancelCallBack;
+String total;
+String gstCharge,CGST,SGST,IGST,TCS;
+double orderTotal;
+var item;
+   OrderSummaryScreen( this.total, this.gstCharge,this.CGST,this.SGST,this.IGST,this.TCS,this.orderTotal,this.item,
 
-  const OrderSummaryScreen(
       {Key? key,
+
        /* required this.data,
         required this.routeName,
         required this.onSubmitCallBack*/
@@ -27,7 +34,7 @@ class OrderSummaryScreen extends StatefulWidget {
 
 class _MyHomePageState extends State<OrderSummaryScreen> {
   String summary = '';
-  String purpose = 'Cheque';
+  String purpose = 'Address';
   bool selection = false;
   List<String> selected = [];
 
@@ -38,14 +45,52 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
 
   var DayType="Full Day";
 
-  @override
-  void dispose() {
-    dateController.dispose();
-    super.dispose();
-    _selectTime(context).dispose();
+  var roundoff;
+List selectionItems=[];
+
+  var selectedWareHouse;
+
+  int grandTotal=0;
+
+  double roundOff=0.0;
+
+  String? companyStateCode,TCS_Applicable,Distributor_state_code;
+
+  openHiveBox() async {
+    var box = await Hive.openBox('erpApiMainData');
+    var bookmark = box.get('erpApiMainData');
+    bookmark.forEach((key, value) {
+      log(key.toString());
+      if (key == 'docs') {
+        debugPrint("DATA ${value[0]['gst'][0]['state_code']+companyStateCode}");
+        setState(() {
+          TCS_Applicable = value[0]['TCS_Applicable'];
+          Distributor_state_code = value[0]['gst'][0]['state_code'].toString();
+        });
+      }
+    });
   }
-
-
+  openHiveBoxFORfshipmasterData() async {
+    var box = await Hive.openBox('fshipmasterData');
+    var bookmark = box.get('fshipmasterData');
+    bookmark.forEach((key, value) {
+      log(key.toString());
+      if (key == 'docs') {
+        debugPrint("DATA ${value[0]}");
+        selectionItems = value;
+        print("selectionItems.length "+selectionItems.length.toString());
+        if (selectionItems.length == 1) {
+          compneyNameController.text = selectionItems[0]['Warehouse_Name'];
+          selectedWareHouse=selectionItems[0]['Warehouse_id'];
+          // selectedCode = selectionItems[0]['Select_Value_Code'];
+        }
+        log(selectionItems);
+        // setState(() {
+        //   Distributor_state_code=value[0]['gst'][0]['state_code'].toString();
+        // });
+      }
+    });
+  }
   DropdownButton<String> getLeaveType() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String gender in paymentModes) {
@@ -66,46 +111,64 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
     );
   }
 
-  TimeOfDay selectedTime = TimeOfDay.now();
-
-  _selectTime(BuildContext context) async {
-    final TimeOfDay? timeOfDay = await showTimePicker(
-      context: context,
-      initialTime: selectedTime,
-      initialEntryMode: TimePickerEntryMode.dial,
-    );
-
-    setState(() {
-      selectedTime = timeOfDay!;
-      timeController.text = "${selectedTime.hour}:${selectedTime.minute}";
-      //timeController.text=selectedTime.toString();
-      log("${selectedTime.minute}:${selectedTime.hour}");
-    });
-  }
+  TextEditingController compneyNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    PreferenceManager.instance
+        .getStringValue("companyStateCode")
+        .then((value) => setState(() {
+      companyStateCode = value;
+      print(value);
+    }));
+    openHiveBoxFORfshipmasterData();
+    openHiveBox();
+//     for (var i = 0; i < widget.item.length; i++) {
+// log(i.toString());
+//     }
+     grandTotal = (widget.total.toDouble() + widget.gstCharge.toDouble()).ceil();
+    print(grandTotal); // Output: 354397
+
+    // Calculate the round-off value
+     roundOff = (grandTotal - widget.total.toDouble() - widget.gstCharge.toDouble());
+    print(roundOff); // Output: 0.28 (Note: Dart does not remove trailing zeros)
+
+    double orderTotal= double.parse(widget.orderTotal.toStringAsFixed(2));
+
+    log(orderTotal.toString());
+   var roundoff1=orderTotal-orderTotal.toInt();
+   // roundoff=roundoff1.toStringAsFixed(2);
+    //var round=calculateroundOFF();
+  // var roundOFF= calculateroundOFF();
+  //  log(round.toString());
+  }
+  double calculateroundOFF() {
+    double orderTotalDouble = double.parse("${widget.orderTotal}");
+   // int orderTotalInt = int.parse("${widget.orderTotal}");
+ //   log(orderTotalInt);
+    double roundOFF = orderTotalDouble;
+    return roundOFF.roundToDouble();
   }
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Order Summary'),
+      title:  Text('Order Summary'),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       elevation: 0.0,
       actions: <Widget>[
-        const SizedBox(height: 20.0),
+         SizedBox(height: 20.0),
         Row(
           children: [
             Flexible(
               child: InkWell(
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2,
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
+                  padding:  EdgeInsets.all(5),
+                  decoration:  BoxDecoration(
                       color: Color(0xFF555555),
                       borderRadius: BorderRadius.all(Radius.circular(5))),
-                  child: const Text(
+                  child:  Text(
                     'Cancel',
                     style: TextStyle(
                         color: Colors.white,
@@ -120,18 +183,18 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
                 },
               ),
             ),
-            const SizedBox(
+             SizedBox(
               width: 5,
             ),
             Flexible(
               child: InkWell(
                 child: Container(
                   width: MediaQuery.of(context).size.width / 2,
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                      color: Color(0XFF6883BC),
+                  padding:  EdgeInsets.all(5),
+                  decoration:  BoxDecoration(
+                      color: kMainColor,
                       borderRadius: BorderRadius.all(Radius.circular(5))),
-                  child: const Text(
+                  child:  Text(
                     "Submit",
                     style: TextStyle(
                         color: Colors.white,
@@ -148,72 +211,117 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
         )
       ],
       content: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
+        physics:  ClampingScrollPhysics(),
         child: Container(
           width: double.maxFinite,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Divider(),
+               Divider(),
               Row(
                 mainAxisAlignment:
                 MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Column(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment:
-                    CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Text('Net Total'),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Text('Charges'),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      Text('Roundoff'),
-                      SizedBox(
-                        height: 5.0,
-                      ),
-                      const Text(
-                          'Grand Total'),
-
-                      // Text('Sub Total'),
-                    ],
+                  Flexible(
+                    child: Column(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment:
+                      CrossAxisAlignment.start,
+                      children:  <Widget>[
+                        Text('Total Of WSP'),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                        (companyStateCode != Distributor_state_code) || (Distributor_state_code != "24" && companyStateCode != "24")? Text('IGST'):SizedBox.shrink(),
+                        (companyStateCode != Distributor_state_code) || (Distributor_state_code != "24" && companyStateCode != "24")?SizedBox(
+                          height: 5.0,
+                        ):SizedBox.shrink(),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                        (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")? Text('CGST'):SizedBox.shrink(),
+                        (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")?SizedBox(
+                          height: 5.0,
+                        ):SizedBox.shrink(),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                        (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")? Text('SGST'):SizedBox.shrink(),
+                        (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")?SizedBox(
+                          height: 5.0,
+                        ):SizedBox.shrink(),
+                        Text('TOTAL GST'),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                         Text(
+                            'TCS'),SizedBox(
+                          height: 5.0,
+                        ),
+                         Text(
+                            'Roundoff'),SizedBox(
+                          height: 5.0,
+                        ),
+                         Text(
+                            'Order Total'),
+                    
+                        // Text('Sub Total'),
+                      ],
+                    ),
                   ),
                   Column(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment:
                     CrossAxisAlignment.start,
-                    children: const <Widget>[
-                      Text('  \u{20B9} 00'),
+                    children:  <Widget>[
+                      Text('  \u{20B9}${widget.total.toDouble().toStringAsFixed(2)}',style: TextStyle(overflow: TextOverflow.ellipsis)),
                       SizedBox(
                         height: 5.0,
                       ),
-                      Text('  \u{20B9} 5,000'),
+                      (companyStateCode != Distributor_state_code) || (Distributor_state_code != "24" && companyStateCode != "24")?Text('  \u{20B9}${widget.IGST.toDouble().toStringAsFixed(2)}',style: TextStyle(overflow: TextOverflow.ellipsis)):SizedBox.shrink(),
+                      (companyStateCode != Distributor_state_code) || (Distributor_state_code != "24" && companyStateCode != "24")?SizedBox(
+                        height: 5.0,
+                      ):SizedBox.shrink(),
                       SizedBox(
                         height: 5.0,
                       ),
-                      Text('  \u{20B9} 45,000'),
+                      (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")? Text('  \u{20B9}${widget.CGST.toDouble().toStringAsFixed(2)}',style: TextStyle(overflow: TextOverflow.ellipsis)):SizedBox.shrink(),
+                      (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")?SizedBox(
+                        height: 5.0,
+                      ):SizedBox.shrink(),
                       SizedBox(
                         height: 5.0,
                       ),
-                      Text('  \u{20B9} 10,000'),
+                      (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")? Text('  \u{20B9}${widget.SGST.toDouble().toStringAsFixed(2)}',style: TextStyle(overflow: TextOverflow.ellipsis)):SizedBox.shrink(),
+                      (companyStateCode == Distributor_state_code) || (Distributor_state_code == "24" && companyStateCode == "24")?SizedBox(
+                        height: 5.0,
+                      ):SizedBox.shrink(),
+                      Text('  \u{20B9}${widget.gstCharge.toDouble().toStringAsFixed(2)}'),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text('  \u{20B9}${widget.TCS.toDouble().toStringAsFixed(2)}'),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text('  \u{20B9}${roundOff.toDouble().toStringAsFixed(2)}'),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text('  \u{20B9}${grandTotal.ceil()}',style: TextStyle(overflow: TextOverflow.ellipsis)),
 
 
                     ],
                   ),
                 ],
               ),
-              const Divider(),
-                    Align(
+               Divider(),
+                    /*Align(
                         alignment: Alignment.center,
                         child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
+                    children:  [
                       SizedBox(
                           height: 100,
                           width: 100,
@@ -234,8 +342,9 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
                       )
                     ],
                         ),
-                      ),
-              const Divider(),
+                      ),*/
+
+             //  Divider(),
               // ConstrainedBox(
               //   constraints: BoxConstraints(
               //     maxHeight: MediaQuery.of(context).size.height * 0.4,
@@ -251,7 +360,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //             Row(
               //               mainAxisAlignment: MainAxisAlignment.start,
               //               children: [
-              //                 const Text(
+              //                  Text(
               //                   "Order ID        :",
               //                   style: TextStyle(
               //                     color: Colors.black,
@@ -259,12 +368,12 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //                     fontSize: 14.0,
               //                   ),
               //                 ),
-              //                 const SizedBox(
+              //                  SizedBox(
               //                   width: 10,
               //                 ),
               //                 Text(
               //                   "widget.data.orderNo".toString(),
-              //                   style: const TextStyle(
+              //                   style:  TextStyle(
               //                     color: Colors.black,
               //                     fontWeight: FontWeight.w500,
               //                     fontSize: 14.0,
@@ -275,7 +384,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //             Row(
               //               mainAxisAlignment: MainAxisAlignment.start,
               //               children: [
-              //                 const Text(
+              //                  Text(
               //                   "Order date   :",
               //                   style: TextStyle(
               //                     color: Colors.black,
@@ -283,12 +392,12 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //                     fontSize: 14.0,
               //                   ),
               //                 ),
-              //                 const SizedBox(
+              //                  SizedBox(
               //                   width: 10,
               //                 ),
               //                 Text(
               //                   "widget.data.orderDate".toString(),
-              //                   style: const TextStyle(
+              //                   style:  TextStyle(
               //                     color: Colors.black,
               //                     fontWeight: FontWeight.w500,
               //                     fontSize: 14.0,
@@ -299,7 +408,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //             Row(
               //               mainAxisAlignment: MainAxisAlignment.start,
               //               children: [
-              //                 const Text(
+              //                  Text(
               //                   "Shop Name  :",
               //                   style: TextStyle(
               //                     color: Colors.black,
@@ -307,12 +416,12 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //                     fontSize: 14.0,
               //                   ),
               //                 ),
-              //                 const SizedBox(
+              //                  SizedBox(
               //                   width: 10,
               //                 ),
               //                 Text(
               //                   "widget.data.party".toString(),
-              //                   style: const TextStyle(
+              //                   style:  TextStyle(
               //                     color: Colors.black,
               //                     fontWeight: FontWeight.w500,
               //                     fontSize: 14.0,
@@ -323,7 +432,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //             Row(
               //               mainAxisAlignment: MainAxisAlignment.start,
               //               children: [
-              //                 const Text(
+              //                  Text(
               //                   "Party Name  :",
               //                   style: TextStyle(
               //                     color: Colors.black,
@@ -331,12 +440,12 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //                     fontSize: 14.0,
               //                   ),
               //                 ),
-              //                 const SizedBox(
+              //                  SizedBox(
               //                   width: 10,
               //                 ),
               //                 Text(
               //                  " widget.data.shopName".toString(),
-              //                   style: const TextStyle(
+              //                   style:  TextStyle(
               //                     color: Colors.black,
               //                     fontWeight: FontWeight.w500,
               //                     fontSize: 14.0,
@@ -347,7 +456,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //             Row(
               //               mainAxisAlignment: MainAxisAlignment.start,
               //               children: [
-              //                 const Text(
+              //                  Text(
               //                   "Route Name  :",
               //                   style: TextStyle(
               //                     color: Colors.black,
@@ -355,7 +464,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //                     fontSize: 14.0,
               //                   ),
               //                 ),
-              //                 const SizedBox(
+              //                  SizedBox(
               //                   width: 10,
               //                 ),
               //                 Flexible(
@@ -363,7 +472,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //                     "widget.routeName".toString(),
               //                     overflow: TextOverflow.visible,
               //
-              //                     style: const TextStyle(
+              //                     style:  TextStyle(
               //                       color: Colors.black,
               //                       fontWeight: FontWeight.w500,
               //                       fontSize: 14.0,
@@ -375,12 +484,12 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //             Visibility(
               //               visible: false,
               //               child: Padding(
-              //                 padding: const EdgeInsets.only(
+              //                 padding:  EdgeInsets.only(
               //                     left: 20, right: 20, top: 5, bottom: 10),
               //                 child: Row(
               //                   mainAxisAlignment: MainAxisAlignment.start,
               //                   children: [
-              //                     const Text(
+              //                      Text(
               //                       "URN NO        :",
               //                       style: TextStyle(
               //                         color: Colors.black,
@@ -388,12 +497,12 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //                         fontSize: 14.0,
               //                       ),
               //                     ),
-              //                     const SizedBox(
+              //                      SizedBox(
               //                       width: 10,
               //                     ),
               //                     Text(
               //                      " widget.data.uRNNo".toString(),
-              //                       style: const TextStyle(
+              //                       style:  TextStyle(
               //                         color: Colors.black,
               //                         fontWeight: FontWeight.w500,
               //                         fontSize: 14.0,
@@ -413,7 +522,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               //           alignment: Alignment.center,
               //           child: Column(
               //             crossAxisAlignment: CrossAxisAlignment.center,
-              //             children: const [
+              //             children:  [
               //               SizedBox(
               //                   height: 100,
               //                   width: 100,
@@ -441,48 +550,78 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               // ),
               Container(
                // height: context.height(),
-                //padding: const EdgeInsets.all(20.0),
-                decoration: const BoxDecoration(
+                //padding:  EdgeInsets.all(20.0),
+                decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
                       topRight: Radius.circular(30.0)),
-                  color: Colors.white,
+
                 ),
                 child: Column(
                   children: [
-                    const SizedBox(
+                     SizedBox(
                       height: 20.0,
                     ),
-                    SizedBox(
-                      height: 60.0,
-                      child: FormField(
-                        builder: (FormFieldState<dynamic> field) {
-                          return InputDecorator(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            readOnly: true,
                             decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                FloatingLabelBehavior.always,
-                                labelText: 'Mode of payment',
-                                labelStyle: kTextStyle,
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                            child: DropdownButtonHideUnderline(
-                                child: getLeaveType()),
-                          );
-                        },
-                      ),
+                                label: Text("Shipping Address"),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
+                            style:  TextStyle(fontSize: 15, color: Colors.black),
+                            controller: compneyNameController,
+                            // decoration: InputDecoration(
+                          ),
+                        ),
+                        selectionItems.length > 1?
+                        PopupMenuButton(
+                          icon: Icon(Icons.arrow_drop_down),
+                          onSelected: (value) {
+                            setState(() {
+                              var selectedItem = selectionItems.firstWhere((item) => item["Warehouse_Name"] == value
+                              );
+                              compneyNameController.text =
+                                  value.toString();
+                              selectedWareHouse =
+                              selectedItem["Warehouse_id"];
+                              log(selectedWareHouse);
+                            });
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return selectionItems
+                                .map<PopupMenuItem>((value) {
+                              return PopupMenuItem(
+                                  height: 50,
+                                  value: value['Warehouse_Name'],
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                        EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                            value['Warehouse_Name'],
+                                            style:
+                                            TextStyle(fontSize: 12)),
+                                      ),
+                                    ],
+                                  ));
+                            }).toList();
+                          },
+                        ):Container(),
+                      ],
                     ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    AppTextField(
+                    /*AppTextField(
                       textFieldType: TextFieldType.PHONE,
-                      decoration: const InputDecoration(
+                      decoration:  InputDecoration(
                         labelText: 'Payment Reference number',
                         // hintText: '543223',
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       height: 20.0,
                     ),
                     SizedBox(
@@ -496,39 +635,39 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
                           hintText: 'No File Chosen',
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           prefixIcon: Image.asset('images/choosefile.png'),
-                          border: const OutlineInputBorder(),
+                          border:  OutlineInputBorder(),
                         ),
                       ),
-                    ),
+                    ),*/
 
                     // ButtonGlobal(
                     //   buttontext: 'Save',
                     //   buttonDecoration:
                     //   kButtonDecoration.copyWith(color: kMainColor),
                     //   onPressed: () {
-                    //     Navigator.push(context, MaterialPageRoute(builder: (context) => const afterCheckinMainPage(),));
+                    //     Navigator.push(context, MaterialPageRoute(builder: (context) =>  afterCheckinMainPage(),));
                     //   },
                     // ),
                   ],
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               TextFormField(
                 autofocus: false,
-                maxLines: 3,
+                maxLines: 2,
                 onChanged: (value) {
                   summary = value;
                   setState(() {});
                 },
                 inputFormatters: [
                   FilteringTextInputFormatter(RegExp("[a-zA-Z0-9]"), allow: true),],
-                style: const TextStyle(
+                style:  TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
                     color: Colors.black),
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.black)),
                     hintText: "Add Summary",
@@ -538,7 +677,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
                         fontSize: 14,
                         color: Colors.grey)),
               ),
-              const Divider(),
+               Divider(),
             ],
           ),
         ),
@@ -551,7 +690,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
       *//*OrderDetailsListData data,*//*
       ) {
     return ListView.builder(
-        physics: const ClampingScrollPhysics(),
+        physics:  ClampingScrollPhysics(),
         padding: EdgeInsets.zero,
         shrinkWrap: true,
         itemCount: *//*data.items != null ? data.items?.length :*//* 0,
@@ -562,14 +701,14 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
               ),
               elevation: 5,
               margin:
-              const EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
+               EdgeInsets.only(left: 5, right: 5, top: 5, bottom: 5),
               child: customMenuItem(data.items![index]));
         });
   }
 
   Widget customMenuItem(*//*OrderDetailsItem data*//*) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+      padding:  EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -577,7 +716,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
             alignment: Alignment.centerLeft,
             child: Text(
               data.itemName.toString(),
-              style: const TextStyle(
+              style:  TextStyle(
                 fontWeight: FontWeight.w700,
                 fontSize: 14.0,
               ),
@@ -588,65 +727,65 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 'Quantity :',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14.0,
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 width: 5,
               ),
               Text(
                 data.qty.toString(),
-                style: const TextStyle(
+                style:  TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 14.0,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 3),
+           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text(
+               Text(
                 'Rate :',
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 14.0,
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 width: 5,
               ),
               Text(
                 data.rate.toString(),
-                style: const TextStyle(
+                style:  TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 14.0,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 3),
+           SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Text(
+               Text(
                 'Amount :',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14.0,
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 width: 5,
               ),
               Text(
                 data.amount.toString(),
-                style: const TextStyle(
+                style:  TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 14.0,
                     color: Colors.black),

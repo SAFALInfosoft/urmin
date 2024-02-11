@@ -9,7 +9,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class AttendanceEmployeeList extends StatefulWidget {
-  const AttendanceEmployeeList({Key? key}) : super(key: key);
+   AttendanceEmployeeList({Key? key}) : super(key: key);
 
   @override
   _AttendanceEmployeeListState createState() => _AttendanceEmployeeListState();
@@ -47,10 +47,10 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const AddEmployee().launch(context);
+           AddEmployee().launch(context);
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -62,13 +62,13 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Employee List',
           maxLines: 2,
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: const [
+        actions:  [
           Image(
             image: AssetImage('images/employeesearch.png'),
           ),
@@ -78,20 +78,20 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -105,7 +105,7 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                             dateController.text = date.toString().substring(0, 10);
                           },
                           controller: dateController,
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                               border: OutlineInputBorder(),
                               floatingLabelBehavior: FloatingLabelBehavior.always,
                               suffixIcon: Icon(
@@ -116,7 +116,7 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                               hintText: '11/09/2021'),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 10.0,
                       ),
                       Expanded(
@@ -126,11 +126,11 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                                 ? setState(() {
                                     mark = !mark;
                                   })
-                                : const MarkAttendance().launch(context);
+                                :  MarkAttendance().launch(context);
                           },
                           child: Container(
                             height: 60.0,
-                            padding: const EdgeInsets.all(5.0),
+                            padding:  EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5.0),
                               border: Border.all(color: kMainColor),
@@ -143,7 +143,7 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                                   Icons.person_outline_rounded,
                                   color: userChecked.isEmpty ? kTitleColor : Colors.white,
                                 ),
-                                const SizedBox(
+                                 SizedBox(
                                   width: 2.0,
                                 ),
                                 Text(
@@ -157,7 +157,7 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Visibility(
@@ -167,7 +167,7 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                       child: Column(
                         children: [
                       Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
+                      padding:  EdgeInsets.only(bottom: 10.0),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10.0),
@@ -175,7 +175,7 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                         ),
                         child: ListTile(
                           onTap: () {
-                            const AttendanceDetails().launch(context);
+                             AttendanceDetails().launch(context);
                           },
                           leading: Image.asset('images/attendance.png'),
                           title: Text(
@@ -186,7 +186,7 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                             "",
                             style: kTextStyle.copyWith(color: kGreyTextColor),
                           ),
-                          trailing: const Icon(
+                          trailing:  Icon(
                             Icons.arrow_forward_ios,
                             color: kGreyTextColor,
                           ),
@@ -205,14 +205,14 @@ class _AttendanceEmployeeListState extends State<AttendanceEmployeeList> {
                         itemCount: data.length,
                         itemBuilder: (context, i) {
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
+                            padding:  EdgeInsets.only(bottom: 10.0),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10.0),
                                 border: Border.all(color: kGreyTextColor.withOpacity(0.5)),
                               ),
                               child: CheckboxListTile(
-                                shape: const CircleBorder(),
+                                shape:  CircleBorder(),
                                 value: userChecked.contains(data[i]),
                                 onChanged: (val) {
                                   _onSelected(val!, data[i]);

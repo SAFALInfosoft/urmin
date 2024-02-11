@@ -12,7 +12,7 @@ import 'addOrder.dart';
 import 'package:intl/intl.dart';
 
 class afterCheckinMainPage extends StatefulWidget {
-  const afterCheckinMainPage({Key? key}) : super(key: key);
+   afterCheckinMainPage({Key? key}) : super(key: key);
 
   @override
   _afterCheckinMainPageState createState() => _afterCheckinMainPageState();
@@ -34,7 +34,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
           backgroundColor: kMainColor,
           elevation: 0.0,
           titleSpacing: 0.0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme:  IconThemeData(color: Colors.white),
           title: Text(
             'Add New Order',
             maxLines: 2,
@@ -45,14 +45,14 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 10.0,
             ),
             Expanded(
               child: Container(
                 width: context.width(),
-                padding: const EdgeInsets.all(20.0),
-                decoration: const BoxDecoration(
+                padding:  EdgeInsets.all(20.0),
+                decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30.0),
                       topRight: Radius.circular(30.0)),
@@ -71,8 +71,8 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(0.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(0.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7D6AEF),
@@ -101,7 +101,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                   style: kTextStyle,
                                 ),
                                 children: [Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(8.0),
                                   child: Column(
                                     children: [
                                       // Row(
@@ -118,14 +118,14 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                       //         ],
                                       //       ),
                                       //     ),
-                                      //     const Spacer(),
+                                      //      Spacer(),
                                       //   ],
                                       // ),
-                                      const Divider(
+                                       Divider(
                                         thickness: 1.0,
                                         color: kGreyTextColor,
                                       ),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 10.0,
                                       ),
                                       Row(
@@ -137,7 +137,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                                 MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: const <Widget>[
+                                            children:  <Widget>[
                                               Text('ToDay`s Order'),
                                               SizedBox(
                                                 height: 5.0,
@@ -150,18 +150,18 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                               SizedBox(
                                                 height: 5.0,
                                               ),
-                                              const Text(
+                                               Text(
                                                   'Current Monthly Collection'),
-                                              const SizedBox(
+                                               SizedBox(
                                                 height: 5.0,
                                               ),
-                                              const Text('Average Monthly Order'),
-                                              const SizedBox(
+                                               Text('Average Monthly Order'),
+                                               SizedBox(
                                                 height: 5.0,
                                               ),
-                                              const Text(
+                                               Text(
                                                   'Average Monthly Collection'),
-                                              const SizedBox(
+                                               SizedBox(
                                                 height: 10.0,
                                               ),
                                               // Text('Sub Total'),
@@ -172,7 +172,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                                 MainAxisAlignment.spaceEvenly,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: const <Widget>[
+                                            children:  <Widget>[
                                               Text('  \u{20B9} 00'),
                                               SizedBox(
                                                 height: 5.0,
@@ -212,19 +212,19 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Material(
                         elevation: 2.0,
                         child: GestureDetector(
                           onTap: () {
-                            const addNewOrderPage().launch(context);
+                             addNewOrderPage().launch(context);
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7D6AEF),
@@ -234,7 +234,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                               color: Colors.white,
                             ),
                             child: ListTile(
-                              leading: const Image(
+                              leading:  Image(
                                 image: AssetImage('images/add-to-cart (1).png'),
                                 height: 40,
                                 width: 40,
@@ -246,24 +246,24 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                              trailing: const Icon(Icons.arrow_forward_ios),
+                              trailing:  Icon(Icons.arrow_forward_ios),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Material(
                         elevation: 2.0,
                         child: GestureDetector(
                           onTap: () {
-                            const PaymentCollectionForParty().launch(context);
+                             PaymentCollectionForParty().launch(context);
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7D6AEF),
@@ -273,7 +273,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                               color: Colors.white,
                             ),
                             child: ListTile(
-                              leading: const Image(
+                              leading:  Image(
                                 image:
                                     AssetImage('images/paymentCollecton.png'),
                                 height: 40,
@@ -286,24 +286,24 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                              trailing: const Icon(Icons.arrow_forward_ios),
+                              trailing:  Icon(Icons.arrow_forward_ios),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Material(
                         elevation: 2.0,
                         child: GestureDetector(
                           onTap: () {
-                            const MarketSurvey().launch(context);
+                             MarketSurvey().launch(context);
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7D6AEF),
@@ -313,7 +313,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                               color: Colors.white,
                             ),
                             child: ListTile(
-                              leading: const Image(
+                              leading:  Image(
                                 image: AssetImage('images/market-survay.png'),
                                 height: 40,
                                 width: 40,
@@ -325,12 +325,12 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                              trailing: const Icon(Icons.arrow_forward_ios),
+                              trailing:  Icon(Icons.arrow_forward_ios),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Material(
@@ -341,8 +341,8 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7D6AEF),
@@ -352,7 +352,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                               color: Colors.white,
                             ),
                             child: ListTile(
-                              leading: const Image(
+                              leading:  Image(
                                 image: AssetImage(
                                     'images/merchandisingActivity.png'),
                                 height: 40,
@@ -365,12 +365,12 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                              trailing: const Icon(Icons.arrow_forward_ios),
+                              trailing:  Icon(Icons.arrow_forward_ios),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Material(
@@ -381,8 +381,8 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                           },
                           child: Container(
                             width: context.width(),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: const BoxDecoration(
+                            padding:  EdgeInsets.all(10.0),
+                            decoration:  BoxDecoration(
                               border: Border(
                                 left: BorderSide(
                                   color: Color(0xFF7D6AEF),
@@ -392,7 +392,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                               color: Colors.white,
                             ),
                             child: ListTile(
-                              leading: const Image(
+                              leading:  Image(
                                 image: AssetImage(
                                     'images/merchandisingActivity.png'),
                                 height: 40,
@@ -405,12 +405,12 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                                     color: kTitleColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                              trailing: const Icon(Icons.arrow_forward_ios),
+                              trailing:  Icon(Icons.arrow_forward_ios),
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 10,
                       )
                     ],
@@ -420,7 +420,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
             ),
             Container(
               color: Colors.white,
-              padding: const EdgeInsets.only(
+              padding:  EdgeInsets.only(
                   left: 30.0, right: 30.0, top: 10, bottom: 10),
               child: InkWell(
                 onTap: () {
@@ -428,7 +428,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const MyPartyList(),
+                          builder: (context) =>  MyPartyList(),
                         ));
                     //onNextPageChangeTapped();
                   });
@@ -441,7 +441,7 @@ class _afterCheckinMainPageState extends State<afterCheckinMainPage> {
                     border: Border.all(color: Colors.white, width: 1.0),
                     borderRadius: BorderRadius.circular(30.0),
                   ),
-                  child: const Center(
+                  child:  Center(
                     child: Text(
                       'Check Out',
                       style: TextStyle(

@@ -41,7 +41,7 @@ class _StatsPageState extends State<StatsPage> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add New Sales Man',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -72,7 +72,7 @@ class _StatsPageState extends State<StatsPage> {
     return SingleChildScrollView(
       child: Container(
         height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.all(5.0),
+        padding:  EdgeInsets.all(5.0),
         decoration:  BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
           color: Colors.white54,
@@ -90,7 +90,7 @@ class _StatsPageState extends State<StatsPage> {
                 ),
               ]),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:  EdgeInsets.all(8.0),
                 child: Column(
                   children: [
                     Row(
@@ -142,7 +142,7 @@ class _StatsPageState extends State<StatsPage> {
                                                 ? primary
                                                 : black.withOpacity(0.1))),
                                     child: Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding:  EdgeInsets.only(
                                           left: 12, right: 12, top: 7, bottom: 7),
                                       child: Text(
                                         months[index]['day'],
@@ -168,7 +168,7 @@ class _StatsPageState extends State<StatsPage> {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding:  EdgeInsets.only(left: 20, right: 20),
               child: Container(
                 width: double.infinity,
                 height: 250,
@@ -188,7 +188,7 @@ class _StatsPageState extends State<StatsPage> {
                   child: Stack(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
+                        padding:  EdgeInsets.only(
                           top: 10,
                         ),
                         child: Column(
@@ -275,7 +275,7 @@ class _StatsPageState extends State<StatsPage> {
                           ),
                         ]),
                     child: Padding(
-                      padding: const EdgeInsets.only(
+                      padding:  EdgeInsets.only(
                           left: 25, right: 25, top: 20, bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

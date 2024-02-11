@@ -7,7 +7,7 @@ import '../../PartyList/MyPartyListPage.dart';
 import '../../constant.dart';
 
 class AddEmployee extends StatefulWidget {
-  const AddEmployee({Key? key}) : super(key: key);
+   AddEmployee({Key? key}) : super(key: key);
 
   @override
   _AddEmployeeState createState() => _AddEmployeeState();
@@ -91,7 +91,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Attendance',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -100,26 +100,26 @@ class _AddEmployeeState extends State<AddEmployee> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               //height: MediaQuery.of(context).size.height,
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFFFD73B0),
@@ -140,15 +140,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                               elevation: 0.0,
                               child: Container(
                                 width: context.width(),
-                                padding: const EdgeInsets.all(10.0),
-                                decoration: const BoxDecoration(
+                                padding:  EdgeInsets.all(10.0),
+                                decoration:  BoxDecoration(
                                   color: Colors.white,
                                 ),
                                 child: Column(
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        const AddEmployee().launch(context);
+                                         AddEmployee().launch(context);
                                       },
                                       child: Expanded(
                                         child: Container(
@@ -158,7 +158,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                           ),
                                           child: ListTile(
                                             onTap: () {
-                                              const AddEmployee().launch(context);
+                                               AddEmployee().launch(context);
                                             },
                                             //leading: Image.asset('images/attendance.png',height: 40,width: 40,),
                                             title: Text(
@@ -169,7 +169,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                               "1:16 PM 26/10/2023",
                                               style: kTextStyle.copyWith(color: kGreyTextColor),
                                             ),
-                                            trailing: const Icon(
+                                            trailing:  Icon(
                                               Icons.check,
                                               color: Colors.green,
                                             ),
@@ -177,10 +177,10 @@ class _AddEmployeeState extends State<AddEmployee> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 10,),
+                                     SizedBox(height: 10,),
                                     InkWell(
                                       onTap: () {
-                                        const AddEmployee().launch(context);
+                                         AddEmployee().launch(context);
                                       },
                                       child: Expanded(
                                         child: Container(
@@ -190,7 +190,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                           ),
                                           child: ListTile(
                                             onTap: () {
-                                              const AddEmployee().launch(context);
+                                               AddEmployee().launch(context);
                                             },
                                             //leading: Image.asset('images/attendance.png',height: 40,width: 40,),
                                             title: Text(
@@ -201,7 +201,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                               "Pending...",
                                               style: kTextStyle.copyWith(color: kGreyTextColor),
                                             ),
-                                            trailing: const Icon(
+                                            trailing:  Icon(
                                               Icons.access_time_sharp,
                                               color: kGreyTextColor,
                                             ),
@@ -218,31 +218,31 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(0.0),
+                    padding:  EdgeInsets.all(0.0),
                     child: Container(
                       height: 100,
                       width: MediaQuery.of(context).size.width,
-                      //padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
+                      //padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
                       decoration: BoxDecoration(
-                        border: const Border(
+                        border:  Border(
                             left: BorderSide(
                               color: Color(0xFF4CE364),
                             )),
-                        color: const Color(0xFF4CE364).withOpacity(0.1),
+                        color:  Color(0xFF4CE364).withOpacity(0.1),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding:  EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                               'Today`s Route',
-                              style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                              style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                             ),
                             Text(
                               'Bopal-Ambli Road,Ahmedabad',
@@ -256,24 +256,24 @@ class _AddEmployeeState extends State<AddEmployee> {
 
                   /*AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Full Name',
                       hintText: 'MaanTheme',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Mobile Number',
                       hintText: '+880 1767 543223',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -291,7 +291,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Visibility(
@@ -325,11 +325,11 @@ class _AddEmployeeState extends State<AddEmployee> {
                       children: [
                         ListView.builder(
                           shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
+                          physics:  NeverScrollableScrollPhysics(),
                           itemCount: data.length,
                           itemBuilder: (context, i) {
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 10.0),
+                              padding:  EdgeInsets.only(bottom: 10.0),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -357,7 +357,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -366,14 +366,14 @@ class _AddEmployeeState extends State<AddEmployee> {
                         flex: 1,
                         child: AppTextField(
                           textFieldType: TextFieldType.PHONE,
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                             labelText: 'Basic Pay',
                             hintText: '\$00.00',
                             border: OutlineInputBorder(),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 10.0,
                       ),
                       Expanded(
@@ -381,7 +381,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                         child: Row(
                           children: [
                             Container(
-                              padding: const EdgeInsets.all(10.0),
+                              padding:  EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
                                 color: kMainColor,
@@ -391,11 +391,11 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 style: kTextStyle.copyWith(color: Colors.white),
                               ),
                             ),
-                            const SizedBox(
+                             SizedBox(
                               width: 5.0,
                             ),
                             Container(
-                              padding: const EdgeInsets.all(10.0),
+                              padding:  EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
                                 border: Border.all(color: kMainColor),
@@ -410,7 +410,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -428,12 +428,12 @@ class _AddEmployeeState extends State<AddEmployee> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Add Reference',
                       hintText: 'Enter Reference Name',
                       suffixIcon: Icon(
@@ -443,14 +443,14 @@ class _AddEmployeeState extends State<AddEmployee> {
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Sign Up',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const EmployeeAddSuccessful().launch(context);
+                       EmployeeAddSuccessful().launch(context);
                     },
                   ),*/
                 ],
@@ -460,7 +460,7 @@ class _AddEmployeeState extends State<AddEmployee> {
 
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.only(
+            padding:  EdgeInsets.only(
                 left: 30.0, right: 30.0, top: 10, bottom: 10),
             child: InkWell(
               onTap: () {
@@ -477,7 +477,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                   border: Border.all(color: Colors.white, width: 1.0),
                   borderRadius: BorderRadius.circular(30.0),
                 ),
-                child: const Center(
+                child:  Center(
                   child: Text(
                     'End MyDay',
                     style: TextStyle(

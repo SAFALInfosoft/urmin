@@ -6,7 +6,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class ClientDetails extends StatefulWidget {
-  const ClientDetails({Key? key}) : super(key: key);
+   ClientDetails({Key? key}) : super(key: key);
 
   @override
   _ClientDetailsState createState() => _ClientDetailsState();
@@ -52,7 +52,7 @@ class _ClientDetailsState extends State<ClientDetails> {
         elevation: 0.0,
         automaticallyImplyLeading: false,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: ListTile(
           leading: Image.asset('images/emp1.png'),
           title: Text(
@@ -67,7 +67,7 @@ class _ClientDetailsState extends State<ClientDetails> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(
+            child:  Icon(
               Icons.close,
               color: Colors.white,
             ),
@@ -77,21 +77,21 @@ class _ClientDetailsState extends State<ClientDetails> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -105,7 +105,7 @@ class _ClientDetailsState extends State<ClientDetails> {
                             dateController.text = date.toString().substring(0, 10);
                           },
                           controller: dateController,
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
                               border: OutlineInputBorder(),
                               floatingLabelBehavior: FloatingLabelBehavior.always,
                               suffixIcon: Icon(
@@ -116,7 +116,7 @@ class _ClientDetailsState extends State<ClientDetails> {
                               hintText: '11/09/2021'),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -138,12 +138,12 @@ class _ClientDetailsState extends State<ClientDetails> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -155,7 +155,7 @@ class _ClientDetailsState extends State<ClientDetails> {
                           'Contact Details',
                           style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Row(
@@ -174,11 +174,11 @@ class _ClientDetailsState extends State<ClientDetails> {
                             ),
                           ],
                         ),
-                        const Divider(
+                         Divider(
                           thickness: 1.0,
                           color: kGreyTextColor,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -200,13 +200,13 @@ class _ClientDetailsState extends State<ClientDetails> {
                       ],
                     ),
                   ),
-                  const Spacer(),
+                   Spacer(),
                   Row(
                     children: [
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: kMainColor,
@@ -218,13 +218,13 @@ class _ClientDetailsState extends State<ClientDetails> {
                           )),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.0),
                             color: kMainColor.withOpacity(0.1),

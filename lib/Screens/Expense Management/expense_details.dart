@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class ExpenseDetails extends StatefulWidget {
-  const ExpenseDetails({Key? key}) : super(key: key);
+   ExpenseDetails({Key? key}) : super(key: key);
 
   @override
   _ExpenseDetailsState createState() => _ExpenseDetailsState();
@@ -24,7 +24,7 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
         elevation: 0.0,
         automaticallyImplyLeading: false,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: ListTile(
           leading: Image.asset('images/emp1.png'),
           title: Text(
@@ -39,7 +39,7 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Icon(
+            child:  Icon(
               Icons.close,
               color: Colors.white,
             ),
@@ -49,21 +49,21 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -78,11 +78,11 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
                             hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                             labelStyle: kTextStyle.copyWith(color: kTitleColor),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
-                            border: const OutlineInputBorder(),
+                            border:  OutlineInputBorder(),
                           ),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -94,12 +94,12 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -129,11 +129,11 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
                             ),
                           ],
                         ),
-                        const Divider(
+                         Divider(
                           thickness: 1.0,
                           color: kGreyTextColor,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Row(
@@ -158,11 +158,11 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
                             ),
                           ],
                         ),
-                        const Divider(
+                         Divider(
                           thickness: 1.0,
                           color: kGreyTextColor,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -190,16 +190,16 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
-                  const Spacer(),
+                   Spacer(),
                   Row(
                     children: [
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: kMainColor,
@@ -211,13 +211,13 @@ class _ExpenseDetailsState extends State<ExpenseDetails> {
                           )),
                         ),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
                         child: Container(
                           height: 60.0,
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5.0),
                             color: kMainColor.withOpacity(0.1),

@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../RouteManagement/addNewShop.dart';
 
 class MyPartyList extends StatefulWidget {
-  const MyPartyList({Key? key}) : super(key: key);
+   MyPartyList({Key? key}) : super(key: key);
 
   @override
   State<MyPartyList> createState() => _MyPartyListState();
@@ -33,8 +33,8 @@ class _MyPartyListState extends State<MyPartyList> {
       body: SingleChildScrollView(
         child: Container(
           height: context.height(),
-          padding: const EdgeInsets.all(20.0),
-          decoration: const BoxDecoration(
+          padding:  EdgeInsets.all(20.0),
+          decoration:  BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30.0),
                 topRight: Radius.circular(30.0)),
@@ -46,7 +46,7 @@ class _MyPartyListState extends State<MyPartyList> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  EdgeInsets.all(8.0),
                       child: CupertinoSearchTextField(
                         //controller: controller,
                         onChanged: (value) {},
@@ -56,7 +56,7 @@ class _MyPartyListState extends State<MyPartyList> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(8.0),
                     child: SizedBox(
                       // width: MediaQuery.of(context).size.width / 3,
                       child: ElevatedButton(
@@ -67,8 +67,8 @@ class _MyPartyListState extends State<MyPartyList> {
                             Navigator.push(context,MaterialPageRoute(builder: (context) => addNewShop(),));
                           });
                         },
-                        //icon: const Icon(Icons.home_filled),
-                        child: const Text(
+                        //icon:  Icon(Icons.home_filled),
+                        child:  Text(
                           "Add Shop",
                           style: TextStyle(
                               color: Colors.white),
@@ -80,12 +80,12 @@ class _MyPartyListState extends State<MyPartyList> {
               ),
               Expanded(
                 child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
+                  physics:  ClampingScrollPhysics(),
                   itemCount: 15,
                   itemBuilder: (context, index) {
                     //log(-index);
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding:  EdgeInsets.all(8.0),
                       child: Container(
                         child: Column(
                           children: [
@@ -93,7 +93,7 @@ class _MyPartyListState extends State<MyPartyList> {
                               elevation: 2.0,
                               child: Container(
                                 width: context.width(),
-                                padding: const EdgeInsets.all(10.0),
+                                padding:  EdgeInsets.all(10.0),
                                 decoration: BoxDecoration(
                                   border: Border(
                                     left: BorderSide(
@@ -106,7 +106,7 @@ class _MyPartyListState extends State<MyPartyList> {
                                       : Colors.white),
                                 child: ListTile(
                                   onTap: () {},
-                                  leading: const CircleAvatar(
+                                  leading:  CircleAvatar(
                                     backgroundImage: AssetImage(
                                         'images/employeemanagement.png'),
                                   ),
@@ -156,8 +156,8 @@ class _MyPartyListState extends State<MyPartyList> {
                                 elevation: 2.0,
                                 child: Container(
                                   width: context.width(),
-                                  padding: const EdgeInsets.all(10.0),
-                                  decoration: const BoxDecoration(
+                                  padding:  EdgeInsets.all(10.0),
+                                  decoration:  BoxDecoration(
                                     border: Border(
                                       left: BorderSide(
                                         color: Color(0xFF4DCEFA),
@@ -173,7 +173,7 @@ class _MyPartyListState extends State<MyPartyList> {
                                     children: [
                                       Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
+                                          padding:  EdgeInsets.all(5.0),
                                           child: SizedBox(
                                             // width: MediaQuery.of(context).size.width / 3,
                                             child: ElevatedButton.icon(
@@ -189,8 +189,8 @@ class _MyPartyListState extends State<MyPartyList> {
                                                           afterCheckinMainPage(),
                                                     ));
                                               },
-                                              icon: const Icon(CupertinoIcons.check_mark_circled_solid),
-                                              label: const Text(
+                                              icon:  Icon(CupertinoIcons.check_mark_circled_solid),
+                                              label:  Text(
                                                 "Check In",
                                                 style: TextStyle(
                                                     color: Colors.white),
@@ -200,7 +200,7 @@ class _MyPartyListState extends State<MyPartyList> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding:  EdgeInsets.all(5.0),
                                         child: SizedBox(
                                           // width: MediaQuery.of(context).size.width / 3,
                                           child: ElevatedButton(
@@ -216,8 +216,8 @@ class _MyPartyListState extends State<MyPartyList> {
                                                         afterCheckinMainPage(),
                                                   ));
                                             },
-                                            child: const Icon(Icons.location_on),
-                                            // label: const Text(
+                                            child:  Icon(Icons.location_on),
+                                            // label:  Text(
                                             //   "Get Direction",
                                             //   style: TextStyle(
                                             //       color: Colors.white),
@@ -226,7 +226,7 @@ class _MyPartyListState extends State<MyPartyList> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding:  EdgeInsets.all(5.0),
                                         child: SizedBox(
                                           // width: MediaQuery.of(context).size.width / 3,
                                           child: ElevatedButton(
@@ -236,8 +236,8 @@ class _MyPartyListState extends State<MyPartyList> {
                                               setState(() {});
                                               finalIndex =index+1;
                                             },
-                                            child: const Icon(CupertinoIcons.clear_circled_solid),
-                                            // label: const Text(
+                                            child:  Icon(CupertinoIcons.clear_circled_solid),
+                                            // label:  Text(
                                             //   "Shop Close",
                                             //   style: TextStyle(
                                             //       color: Colors.white),

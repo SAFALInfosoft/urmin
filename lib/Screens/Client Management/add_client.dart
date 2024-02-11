@@ -8,7 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class AddClient extends StatefulWidget {
-  const AddClient({Key? key}) : super(key: key);
+   AddClient({Key? key}) : super(key: key);
 
   @override
   _AddClientState createState() => _AddClientState();
@@ -72,7 +72,7 @@ class _AddClientState extends State<AddClient> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add Client',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -82,19 +82,19 @@ class _AddClientState extends State<AddClient> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -115,7 +115,7 @@ class _AddClientState extends State<AddClient> {
                                 dateController.text = date.toString().substring(0, 10);
                               },
                               controller: dateController,
-                              decoration: const InputDecoration(
+                              decoration:  InputDecoration(
                                   border: OutlineInputBorder(),
                                   floatingLabelBehavior: FloatingLabelBehavior.always,
                                   suffixIcon: Icon(
@@ -125,7 +125,7 @@ class _AddClientState extends State<AddClient> {
                                   labelText: 'Joining Date',
                                   hintText: '11/09/2021'),
                             ),
-                            const SizedBox(
+                             SizedBox(
                               height: 20.0,
                             ),
                             SizedBox(
@@ -148,40 +148,40 @@ class _AddClientState extends State<AddClient> {
                       ),
                     ],
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Client Name',
                       hintText: 'MaanTheme',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Mobile Number',
                       hintText: '+880 1767 543223',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.EMAIL,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Email Address',
                       hintText: 'support@maantheme.com',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -199,14 +199,14 @@ class _AddClientState extends State<AddClient> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Save',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const ClientList().launch(context);
+                       ClientList().launch(context);
                     },
                   ),
                 ],

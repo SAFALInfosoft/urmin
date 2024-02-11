@@ -7,7 +7,7 @@
 //
 // // ignore_for_file: library_private_types_in_public_api
 // class PaymentMethods extends StatefulWidget {
-//   const PaymentMethods({Key? key}) : super(key: key);
+//    PaymentMethods({Key? key}) : super(key: key);
 //
 //   @override
 //   _PaymentMethodsState createState() => _PaymentMethodsState();
@@ -50,17 +50,17 @@
 //         backgroundColor: kMainColor,
 //         elevation: 0.0,
 //         titleSpacing: 0.0,
-//         iconTheme: const IconThemeData(color: Colors.white),
+//         iconTheme:  IconThemeData(color: Colors.white),
 //         title: Text(
 //           'Payment Methods',
 //           maxLines: 2,
 //           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
 //         ),
 //         actions: [
-//           const Image(
+//            Image(
 //             image: AssetImage('images/addnewcard.png'),
 //           ).onTap(() {
-//             const AddNewCard().launch(context);
+//              AddNewCard().launch(context);
 //           }),
 //         ],
 //       ),
@@ -68,30 +68,30 @@
 //         child: Column(
 //           crossAxisAlignment: CrossAxisAlignment.start,
 //           children: [
-//             const SizedBox(
+//              SizedBox(
 //               height: 20.0,
 //             ),
 //             Container(
 //               width: context.width(),
 //               height: context.height(),
-//               padding: const EdgeInsets.all(20.0),
-//               decoration: const BoxDecoration(
+//               padding:  EdgeInsets.all(20.0),
+//               decoration:  BoxDecoration(
 //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
 //                 color: Colors.white,
 //               ),
 //               child: Column(
 //                 crossAxisAlignment: CrossAxisAlignment.center,
 //                 children: [
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   ListView.builder(
 //                     shrinkWrap: true,
-//                     physics: const NeverScrollableScrollPhysics(),
+//                     physics:  NeverScrollableScrollPhysics(),
 //                     itemCount: data.length,
 //                     itemBuilder: (context, i) {
 //                       return Padding(
-//                         padding: const EdgeInsets.only(bottom: 10.0),
+//                         padding:  EdgeInsets.only(bottom: 10.0),
 //                         child: Container(
 //                           decoration: BoxDecoration(
 //                             color: Colors.white,
@@ -109,15 +109,15 @@
 //                       );
 //                     },
 //                   ),
-//                   const Spacer(),
+//                    Spacer(),
 //                   ButtonGlobal(
 //                     buttontext: 'Next',
 //                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
 //                     onPressed: () {
-//                       const PaymentScreen().launch(context);
+//                        PaymentScreen().launch(context);
 //                     },
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 100.0,
 //                   ),
 //                 ],

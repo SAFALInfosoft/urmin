@@ -17,7 +17,7 @@ import '../../../constant.dart';
 import 'SalseReturnMainScreen.dart';
 
 class salesReturnInvoiceScreen extends StatefulWidget {
-  const salesReturnInvoiceScreen({Key? key}) : super(key: key);
+   salesReturnInvoiceScreen({Key? key}) : super(key: key);
 
   @override
   _salesReturnInvoiceScreenState createState() =>
@@ -54,18 +54,18 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
           });
         },
         child: Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8),
+          padding:  EdgeInsets.only(left: 8, right: 8),
           child: Container(
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              borderRadius:  BorderRadius.all(Radius.circular(12)),
               border: Border.all(color: Colors.black, width: 1.1),
               color: index == _selectedValueIndex
-                  ? const Color(0xFF4CCEFA)
+                  ?  Color(0xFF4CCEFA)
                   : Colors.white,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 10.0,bottom: 10),
+              padding:  EdgeInsets.only(top: 10.0,bottom: 10),
               child: Text(
                 text,
                 textAlign: TextAlign.center,
@@ -125,10 +125,10 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
               return AlertDialog(
 
                 // title: TextStyleExample(name : 'Privacy',style : textTheme.titleMedium!.copyWith(color: MyColors.black, fontWeight: FontWeight.bold)),
-                title: const Center(child: Text("Transporter Details")),
+                title:  Center(child: Text("Transporter Details")),
                 content: Expanded(
                   child: Column(
-                    children: const [
+                    children:  [
                       Divider(),
                       ListTile(
                         leading: Icon(Icons.person),
@@ -166,7 +166,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                 ),
                 actions: <Widget>[
                   TextButton(
-                    child: const Text("Cancel"),
+                    child:  Text("Cancel"),
                     //child: TextStyleExample(name : 'DISAGREE',style : textTheme.labelLarge!),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -181,7 +181,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
         child: Row(
           children: [
             Icon(IconData,color: Colors.blue),
-            const SizedBox(width: 5,),
+             SizedBox(width: 5,),
             Text(title),
           ],
         ),
@@ -200,12 +200,12 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
         return AlertDialog(
 
           // title: TextStyleExample(name : 'Privacy',style : textTheme.titleMedium!.copyWith(color: MyColors.black, fontWeight: FontWeight.bold)),
-          title: const Text("Exit!"),
-          content: const Text("Are you sure want to exit?",
+          title:  Text("Exit!"),
+          content:  Text("Are you sure want to exit?",
               style: TextStyle(fontSize: 15)),
           actions: <Widget>[
             TextButton(
-              child: const Text("Cancel"),
+              child:  Text("Cancel"),
               //child: TextStyleExample(name : 'DISAGREE',style : textTheme.labelLarge!),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -213,7 +213,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
             ),
             TextButton(
               // child: TextStyleExample(name : 'AGREE',style : textTheme.labelLarge!.copyWith(color: MyColors.accentDark)),
-              child: const Text("Sure"),
+              child:  Text("Sure"),
               onPressed: () {
 
               },
@@ -236,7 +236,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Sales Return Detail',
           maxLines: 2,
@@ -249,8 +249,8 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
@@ -259,11 +259,11 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
               child: Column(
                 children: [
                   //Button Details
-                  const SizedBox(
+                   SizedBox(
                     height: 5,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding:  EdgeInsets.all(8.0),
                     child: CupertinoSearchTextField(
                       //controller: controller,
                       onChanged: (value) {},
@@ -273,7 +273,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                     ),
                   ),
 
-                  const Divider(),
+                   Divider(),
                   Expanded(
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -286,15 +286,15 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                   return InkWell(
                                     onTap: () {},
                                     child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
+                                        padding:  EdgeInsets.all(5.0),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding:  EdgeInsets.all(8.0),
                                           child: Container(
                                             child: Material(
                                               elevation: 2.0,
                                               child: Container(
                                                 width: context.width(),
-                                                padding: const EdgeInsets.all(
+                                                padding:  EdgeInsets.all(
                                                     10.0),
                                                 decoration: BoxDecoration(
                                                   border: Border(
@@ -325,14 +325,14 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -349,7 +349,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child: const Padding(
+                                                                child:  Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -371,14 +371,14 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -395,7 +395,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child: const Padding(
+                                                                child:  Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -417,14 +417,14 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -441,7 +441,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child:  const Padding(
+                                                                child:   Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -462,14 +462,14 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           ///////////
                                                           Flexible(
                                                             child: Container(
-                                                                decoration: const BoxDecoration(
+                                                                decoration:  BoxDecoration(
                                                                   borderRadius:
                                                                   BorderRadius.only(bottomLeft: Radius.circular(0)),
                                                                   // color: Colors.grey,
                                                                 ),
                                                                 alignment: Alignment.centerLeft,
                                                                 child: Column(
-                                                                  children: const [
+                                                                  children:  [
                                                                     Padding(
                                                                       padding:
                                                                       EdgeInsets.all(5.0),
@@ -486,7 +486,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                                           Flexible(
                                                             child: Container(
                                                                 alignment: Alignment.centerLeft,
-                                                                child:  const Padding(
+                                                                child:   Padding(
                                                                   padding:
                                                                   EdgeInsets.only(left: 10),
                                                                   child:
@@ -536,10 +536,10 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
                                      // showSummaryDialog();
                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SalseReturnMainScreen(),));
                                     },
-                                    style: const ButtonStyle(
+                                    style:  ButtonStyle(
                                         backgroundColor:
                                         MaterialStatePropertyAll(kMainColor)),
-                                    child: const Text('Submit',
+                                    child:  Text('Submit',
                                         style: TextStyle(fontSize: 20)),
                                   ))),
                         ]),
@@ -560,7 +560,7 @@ class _salesReturnInvoiceScreenState extends State<salesReturnInvoiceScreen> {
       //     //urnData();
       //   },
       //   elevation: 10,
-      //   child: const Icon(Icons.add),
+      //   child:  Icon(Icons.add),
       // ),
     );
   }

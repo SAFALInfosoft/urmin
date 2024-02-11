@@ -7,7 +7,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class MarkAttendance extends StatefulWidget {
-  const MarkAttendance({Key? key}) : super(key: key);
+   MarkAttendance({Key? key}) : super(key: key);
 
   @override
   _MarkAttendanceState createState() => _MarkAttendanceState();
@@ -65,7 +65,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Mark Attendance',
           maxLines: 2,
@@ -76,26 +76,26 @@ class _MarkAttendanceState extends State<MarkAttendance> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               width: context.width(),
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(30.0),
+                    padding:  EdgeInsets.all(30.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -107,7 +107,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                           'Select Attendance',
                           style: kTextStyle,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -120,7 +120,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: isPresent ? kMainColor : kMainColor.withOpacity(0.1),
@@ -131,7 +131,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                 ),
                               ),
                             ),
-                            const Spacer(),
+                             Spacer(),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -139,7 +139,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: isAbsent ? kAlertColor : kAlertColor.withOpacity(0.1),
@@ -156,7 +156,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 20.0,
                         ),
                         Row(
@@ -169,7 +169,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: isHalfDay ? kHalfDay : kHalfDay.withOpacity(0.1),
@@ -180,7 +180,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                 ),
                               ),
                             ),
-                            const Spacer(),
+                             Spacer(),
                             GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -188,7 +188,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
+                                padding:  EdgeInsets.only(left: 30.0, right: 30.0, top: 10.0, bottom: 10.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                   color: isHoliday ? kGreenColor : kGreenColor.withOpacity(0.1),
@@ -208,12 +208,12 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(30.0),
+                    padding:  EdgeInsets.all(30.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -225,7 +225,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                           'Select Attendance',
                           style: kTextStyle,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -235,7 +235,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                               visible: inTimeSelected,
                               child: Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(8.0),
                                   child: Container(
                                     height: 60.0,
                                     decoration: BoxDecoration(
@@ -249,12 +249,12 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                               _selectInTime(context);
                                             },
                                             child: Text("${selectedInTime.hour}:${selectedInTime.minute} ${selectedInTime.period.toString().substring(10, 12)}")),
-                                        const Spacer(),
-                                        const Icon(
+                                         Spacer(),
+                                         Icon(
                                           Icons.access_time,
                                           color: kGreyTextColor,
                                         ),
-                                        const SizedBox(
+                                         SizedBox(
                                           width: 8.0,
                                         ),
                                       ],
@@ -267,14 +267,14 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                               visible: !inTimeSelected,
                               child: Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding:  EdgeInsets.all(4.0),
                                   child: AppTextField(
                                     textFieldType: TextFieldType.NAME,
                                     readOnly: true,
                                     onTap: () async {
                                       _selectInTime(context);
                                     },
-                                    decoration: const InputDecoration(
+                                    decoration:  InputDecoration(
                                         border: OutlineInputBorder(),
                                         floatingLabelBehavior: FloatingLabelBehavior.always,
                                         suffixIcon: Icon(
@@ -291,7 +291,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                               visible: outTimeSelected,
                               child: Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding:  EdgeInsets.all(8.0),
                                   child: Container(
                                     height: 60.0,
                                     decoration: BoxDecoration(
@@ -305,12 +305,12 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                                               _selectOutTime(context);
                                             },
                                             child: Text("${selectedOutTime.hour}:${selectedOutTime.minute} ${selectedOutTime.period.toString().substring(10, 12)}")),
-                                        const Spacer(),
-                                        const Icon(
+                                         Spacer(),
+                                         Icon(
                                           Icons.access_time,
                                           color: kGreyTextColor,
                                         ),
-                                        const SizedBox(
+                                         SizedBox(
                                           width: 8.0,
                                         ),
                                       ],
@@ -323,14 +323,14 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                               visible: !outTimeSelected,
                               child: Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
+                                  padding:  EdgeInsets.all(4.0),
                                   child: AppTextField(
                                     textFieldType: TextFieldType.NAME,
                                     readOnly: true,
                                     onTap: () async {
                                       _selectOutTime(context);
                                     },
-                                    decoration: const InputDecoration(
+                                    decoration:  InputDecoration(
                                         border: OutlineInputBorder(),
                                         floatingLabelBehavior: FloatingLabelBehavior.always,
                                         suffixIcon: Icon(
@@ -348,12 +348,12 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(30.0),
+                    padding:  EdgeInsets.all(30.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -365,7 +365,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                           'Basic Pay',
                           style: kTextStyle,
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Row(
@@ -374,17 +374,17 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                             Expanded(
                               child: AppTextField(
                                 textFieldType: TextFieldType.NAME,
-                                decoration: const InputDecoration(
+                                decoration:  InputDecoration(
                                     border: OutlineInputBorder(), floatingLabelBehavior: FloatingLabelBehavior.always, labelText: 'Advance / Loan', hintText: '\$10.00'),
                               ),
                             ),
-                            const SizedBox(
+                             SizedBox(
                               width: 10.0,
                             ),
                             Expanded(
                               child: AppTextField(
                                 textFieldType: TextFieldType.NAME,
-                                decoration: const InputDecoration(
+                                decoration:  InputDecoration(
                                     border: OutlineInputBorder(), floatingLabelBehavior: FloatingLabelBehavior.always, labelText: 'Bonus', hintText: '\$10.00'),
                               ),
                             ),
@@ -393,14 +393,14 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 40.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Submit Attendance',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const AttendanceManagement().launch(context);
+                       AttendanceManagement().launch(context);
                     },
                   ),
                 ],

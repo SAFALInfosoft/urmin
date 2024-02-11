@@ -8,7 +8,7 @@
 //
 // // ignore_for_file: library_private_types_in_public_api
 // class PaymentScreen extends StatefulWidget {
-//   const PaymentScreen({Key? key}) : super(key: key);
+//    PaymentScreen({Key? key}) : super(key: key);
 //
 //   @override
 //   _PaymentScreenState createState() => _PaymentScreenState();
@@ -30,7 +30,7 @@
 //         backgroundColor: kMainColor,
 //         elevation: 0.0,
 //         titleSpacing: 0.0,
-//         iconTheme: const IconThemeData(color: Colors.white),
+//         iconTheme:  IconThemeData(color: Colors.white),
 //         title: Text(
 //           'Payment',
 //           maxLines: 2,
@@ -41,20 +41,20 @@
 //         child: Column(
 //           crossAxisAlignment: CrossAxisAlignment.start,
 //           children: [
-//             const SizedBox(
+//              SizedBox(
 //               height: 20.0,
 //             ),
 //             Container(
 //               height: context.height(),
 //               width: context.width(),
-//               padding: const EdgeInsets.all(20.0),
-//               decoration: const BoxDecoration(
+//               padding:  EdgeInsets.all(20.0),
+//               decoration:  BoxDecoration(
 //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
 //                 color: Colors.white,
 //               ),
 //               child: Column(
 //                 children: [
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   CreditCardWidget(
@@ -71,7 +71,7 @@
 //                     isSwipeGestureEnabled: true,
 //                     onCreditCardWidgetChange: (CreditCardBrand creditCardBrand) {},
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   Row(
@@ -82,40 +82,40 @@
 //                       ),
 //                     ],
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   AppTextField(
 //                     textFieldType: TextFieldType.NAME,
-//                     decoration: const InputDecoration(
+//                     decoration:  InputDecoration(
 //                       labelText: 'Name',
 //                       hintText: 'MaanTeam',
 //                       border: OutlineInputBorder(),
 //                     ),
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   AppTextField(
 //                     textFieldType: TextFieldType.PHONE,
-//                     decoration: const InputDecoration(
+//                     decoration:  InputDecoration(
 //                       labelText: 'Amount',
 //                       hintText: '\$1000',
 //                       border: OutlineInputBorder(),
 //                     ),
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   AppTextField(
 //                     textFieldType: TextFieldType.NAME,
-//                     decoration: const InputDecoration(
+//                     decoration:  InputDecoration(
 //                       labelText: 'CardHolder name',
 //                       hintText: 'MaanTeam',
 //                       border: OutlineInputBorder(),
 //                     ),
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   ButtonGlobal(
@@ -133,34 +133,34 @@
 //                               height: 400.0,
 //                               child: Column(
 //                                 children: [
-//                                   const SizedBox(
+//                                    SizedBox(
 //                                     height: 20.0,
 //                                   ),
-//                                   const Image(
+//                                    Image(
 //                                     image: AssetImage('images/paymentsuccess.png'),
 //                                   ),
-//                                   const SizedBox(
+//                                    SizedBox(
 //                                     height: 5.0,
 //                                   ),
 //                                   Text(
 //                                     'Great',
 //                                     style: kTextStyle.copyWith(color: kMainColor),
 //                                   ),
-//                                   const SizedBox(
+//                                    SizedBox(
 //                                     height: 5.0,
 //                                   ),
 //                                   Text(
 //                                     'Payment Successful',
 //                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
 //                                   ),
-//                                   const SizedBox(
+//                                    SizedBox(
 //                                     height: 50.0,
 //                                   ),
 //                                   ButtonGlobal(
 //                                       buttontext: 'Back To Home',
 //                                       buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
 //                                       onPressed: () {
-//                                         const HomeScreen().launch(context);
+//                                          HomeScreen().launch(context);
 //                                       }),
 //                                 ],
 //                               ),

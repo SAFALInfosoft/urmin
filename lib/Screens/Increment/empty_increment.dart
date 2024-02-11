@@ -5,7 +5,7 @@ import 'add_increment.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class EmptyIncrement extends StatefulWidget {
-  const EmptyIncrement({Key? key}) : super(key: key);
+   EmptyIncrement({Key? key}) : super(key: key);
 
   @override
   _EmptyIncrementState createState() => _EmptyIncrementState();
@@ -17,10 +17,10 @@ class _EmptyIncrementState extends State<EmptyIncrement> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const AddIncrement().launch(context);
+           AddIncrement().launch(context);
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -32,7 +32,7 @@ class _EmptyIncrementState extends State<EmptyIncrement> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Empty Increment',
           maxLines: 2,
@@ -42,14 +42,14 @@ class _EmptyIncrementState extends State<EmptyIncrement> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
@@ -57,10 +57,10 @@ class _EmptyIncrementState extends State<EmptyIncrement> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Image(
+                   Image(
                     image: AssetImage('images/empty.png'),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Column(

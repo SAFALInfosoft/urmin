@@ -21,12 +21,12 @@ class Tools {
   void ShowDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
       content: Row(children: [
-        const CircularProgressIndicator(
+         CircularProgressIndicator(
           backgroundColor: Colors.red,
         ),
         Container(
-            margin: const EdgeInsets.only(left: 10),
-            child: const Text("Loading...")),
+            margin:  EdgeInsets.only(left: 10),
+            child:  Text("Loading...")),
       ]),
     );
 
@@ -45,7 +45,7 @@ class Tools {
         content: Row(mainAxisSize: MainAxisSize.min, children: [
           Center(
               child: Container(
-            margin: const EdgeInsets.all(50),
+            margin:  EdgeInsets.all(50),
             child: Lottie.asset(
               'images/loading.json',
               width: 100,

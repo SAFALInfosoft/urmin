@@ -6,7 +6,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class SettingScree extends StatefulWidget {
-  const SettingScree({Key? key}) : super(key: key);
+   SettingScree({Key? key}) : super(key: key);
 
   @override
   _SettingScreeState createState() => _SettingScreeState();
@@ -42,7 +42,7 @@ class _SettingScreeState extends State<SettingScree> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Settings',
           maxLines: 2,
@@ -52,19 +52,19 @@ class _SettingScreeState extends State<SettingScree> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
@@ -75,8 +75,8 @@ class _SettingScreeState extends State<SettingScree> {
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFFFD73B0),
@@ -86,26 +86,26 @@ class _SettingScreeState extends State<SettingScree> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/workinghour.png')),
+                          leading:  Image(image: AssetImage('images/workinghour.png')),
                           title: Text(
                             'Working Hours (8.0 Hours)',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontSize: 14.0),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFFFFCA05),
@@ -127,20 +127,20 @@ class _SettingScreeState extends State<SettingScree> {
                                   height: 300.0,
                                   child: Column(
                                     children: [
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 20.0,
                                       ),
-                                      const Image(
+                                       Image(
                                         image: AssetImage('images/clear.png'),
                                       ),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 50.0,
                                       ),
                                       Text(
                                         'Clear All Data',
                                         style: kTextStyle.copyWith(fontSize: 20.0, fontWeight: FontWeight.bold),
                                       ),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 5.0,
                                       ),
                                       Text(
@@ -149,7 +149,7 @@ class _SettingScreeState extends State<SettingScree> {
                                           color: kGreyTextColor,
                                         ),
                                       ),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 5.0,
                                       ),
                                       Text(
@@ -158,7 +158,7 @@ class _SettingScreeState extends State<SettingScree> {
                                           color: kGreyTextColor,
                                         ),
                                       ),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 20.0,
                                       ),
                                       ButtonGlobal(
@@ -172,13 +172,13 @@ class _SettingScreeState extends State<SettingScree> {
                                 ),
                               );
                             }),
-                        leading: const Image(image: AssetImage('images/cleardata.png')),
+                        leading:  Image(image: AssetImage('images/cleardata.png')),
                         title: Text(
                           'Clear All Data',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontSize: 14.0),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),

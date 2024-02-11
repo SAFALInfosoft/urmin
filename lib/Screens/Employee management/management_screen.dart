@@ -15,7 +15,7 @@ import '../Time Attendence/attendance_details.dart';
 import 'add_employee.dart';
 
 class EmployeeManagement extends StatefulWidget {
-  const EmployeeManagement({Key? key}) : super(key: key);
+   EmployeeManagement({Key? key}) : super(key: key);
 
   @override
   _EmployeeManagementState createState() => _EmployeeManagementState();
@@ -31,7 +31,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'S F A Management',
           maxLines: 2,
@@ -41,13 +41,13 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
@@ -57,8 +57,8 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFFFD73B0),
@@ -70,7 +70,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                       child: ListTile(
                         onTap: () {
                         },
-                        leading: const Image(image: AssetImage('images/attendance.png'),height: 40,width: 40,),
+                        leading:  Image(image: AssetImage('images/attendance.png'),height: 40,width: 40,),
                         title: Text(
                           'Daily Attendance',
                           maxLines: 2,
@@ -78,7 +78,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                         ),
                         trailing:  InkWell(
                           onTap: () {
-                            const AttendanceDetails().launch(context);
+                             AttendanceDetails().launch(context);
                           },
                           child: Container(
                             height: 30,
@@ -101,8 +101,8 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                       elevation: 2.0,
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFFFD73B0),
@@ -115,7 +115,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                           children: [
                             InkWell(
                               onTap: () {
-                                const AddEmployee().launch(context);
+                                 AddEmployee().launch(context);
                               },
                               child: Expanded(
                                 child: Container(
@@ -125,7 +125,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                                   ),
                                   child: ListTile(
                                     onTap: () {
-                                      const AddEmployee().launch(context);
+                                       AddEmployee().launch(context);
                                     },
                                     leading: Image.asset('images/attendance.png',height: 40,width: 40,),
                                     title: Text(
@@ -136,7 +136,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                                       "1:16 PM 26/10/2023",
                                       style: kTextStyle.copyWith(color: kGreyTextColor),
                                     ),
-                                    trailing: const Icon(
+                                    trailing:  Icon(
                                       Icons.check,
                                       color: Colors.green,
                                     ),
@@ -144,10 +144,10 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 10,),
+                             SizedBox(height: 10,),
                             InkWell(
                               onTap: () {
-                                const AddEmployee().launch(context);
+                                 AddEmployee().launch(context);
                               },
                               child: Expanded(
                                 child: Container(
@@ -157,7 +157,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                                   ),
                                   child: ListTile(
                                     onTap: () {
-                                      const AddEmployee().launch(context);
+                                       AddEmployee().launch(context);
                                     },
                                     leading: Image.asset('images/attendance.png',height: 40,width: 40,),
                                     title: Text(
@@ -168,7 +168,7 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                                       "Pending...",
                                       style: kTextStyle.copyWith(color: kGreyTextColor),
                                     ),
-                                    trailing: const Icon(
+                                    trailing:  Icon(
                                       Icons.access_time_sharp,
                                       color: kGreyTextColor,
                                     ),
@@ -182,19 +182,19 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                     ),
                   ),
 
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: GestureDetector(
                       onTap: () {
-                        const EmptyExpense().launch(context);
+                         EmptyExpense().launch(context);
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF7D6AEF),
@@ -204,26 +204,26 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/expensemanagement.png'),height: 40,width: 40,),
+                          leading:  Image(image: AssetImage('images/expensemanagement.png'),height: 40,width: 40,),
                           title: Text(
                             'Expanse Booking',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFF4CCEFA),
@@ -234,27 +234,27 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          const LeaveManagement().launch(context);
+                           LeaveManagement().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/leave.png'),height: 40,width: 40,),
+                        leading:  Image(image: AssetImage('images/leave.png'),height: 40,width: 40,),
                         title: Text(
                           'Leave Management',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFF4CCEFA),
@@ -265,15 +265,15 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          const LeaveManagement().launch(context);
+                           LeaveManagement().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/tourPlan.png'),height: 40,width: 40,),
+                        leading:  Image(image: AssetImage('images/tourPlan.png'),height: 40,width: 40,),
                         title: Text(
                           'Tour Plan',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),
@@ -281,12 +281,12 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                     elevation: 2.0,
                     child: GestureDetector(
                       onTap: () {
-                        const EmptyEmployeeScreen().launch(context);
+                         EmptyEmployeeScreen().launch(context);
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF7D6AEF),
@@ -296,29 +296,29 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/employeelist.png')),
+                          leading:  Image(image: AssetImage('images/employeelist.png')),
                           title: Text(
                             'Employee List',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFFF4C000),
@@ -329,27 +329,27 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          const EmptyEmployeeOvertime().launch(context);
+                           EmptyEmployeeOvertime().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/employeeovertime.png')),
+                        leading:  Image(image: AssetImage('images/employeeovertime.png')),
                         title: Text(
                           'Employee Overtime',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFFFD73B0),
@@ -360,27 +360,27 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          const EmptySalaryStatement().launch(context);
+                           EmptySalaryStatement().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/salarymanagement.png')),
+                        leading:  Image(image: AssetImage('images/salarymanagement.png')),
                         title: Text(
                           'Salary Statement',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: Container(
                       width: context.width(),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
+                      padding:  EdgeInsets.all(10.0),
+                      decoration:  BoxDecoration(
                         border: Border(
                           left: BorderSide(
                             color: Color(0xFF05B985),
@@ -391,15 +391,15 @@ class _EmployeeManagementState extends State<EmployeeManagement> {
                       ),
                       child: ListTile(
                         onTap: () {
-                          const EmptyReference().launch(context);
+                           EmptyReference().launch(context);
                         },
-                        leading: const Image(image: AssetImage('images/reference.png')),
+                        leading:  Image(image: AssetImage('images/reference.png')),
                         title: Text(
                           'Reference',
                           maxLines: 2,
                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                         ),
-                        trailing: const Icon(Icons.arrow_forward_ios),
+                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
                   ),*/

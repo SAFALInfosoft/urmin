@@ -8,7 +8,7 @@ import 'AddSalseManForm.dart';
 import 'addNewRouteForm.dart';
 
 class RouteManagementMenuScreen extends StatefulWidget {
-  const RouteManagementMenuScreen({Key? key}) : super(key: key);
+   RouteManagementMenuScreen({Key? key}) : super(key: key);
 
   @override
   _RouteManagementMenuScreenState createState() => _RouteManagementMenuScreenState();
@@ -24,7 +24,7 @@ class _RouteManagementMenuScreenState extends State<RouteManagementMenuScreen> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Route Management',
           maxLines: 2,
@@ -34,14 +34,14 @@ class _RouteManagementMenuScreenState extends State<RouteManagementMenuScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 10.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
@@ -49,19 +49,19 @@ class _RouteManagementMenuScreenState extends State<RouteManagementMenuScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20,
                   ),
                   Material(
                     elevation: 2.0,
                     child: GestureDetector(
                       onTap: () {
-                        const addNewRouteForm().launch(context);
+                         addNewRouteForm().launch(context);
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF7D6AEF),
@@ -71,30 +71,30 @@ class _RouteManagementMenuScreenState extends State<RouteManagementMenuScreen> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/addNewRoute.png'),height: 40,width: 40,),
+                          leading:  Image(image: AssetImage('images/addNewRoute.png'),height: 40,width: 40,),
                           title: Text(
                             'Add New Route',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: GestureDetector(
                       onTap: () {
-                        //const EmptyExpense().launch(context);
+                        // EmptyExpense().launch(context);
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF7D6AEF),
@@ -104,30 +104,30 @@ class _RouteManagementMenuScreenState extends State<RouteManagementMenuScreen> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/DaywiseRoute.png'),height: 40,width: 40,),
+                          leading:  Image(image: AssetImage('images/DaywiseRoute.png'),height: 40,width: 40,),
                           title: Text(
                             'Day Wise Route Assign',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold,overflow: TextOverflow.visible),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: GestureDetector(
                       onTap: () {
-                        //const EmptyExpense().launch(context);
+                        // EmptyExpense().launch(context);
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF7D6AEF),
@@ -137,30 +137,30 @@ class _RouteManagementMenuScreenState extends State<RouteManagementMenuScreen> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/addnewparty.png'),height: 40,width: 40,),
+                          leading:  Image(image: AssetImage('images/addnewparty.png'),height: 40,width: 40,),
                           title: Text(
                             'Add New Party',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Material(
                     elevation: 2.0,
                     child: GestureDetector(
                       onTap: () {
-                        const AddSalseManForm().launch(context);
+                         AddSalseManForm().launch(context);
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF7D6AEF),
@@ -170,13 +170,13 @@ class _RouteManagementMenuScreenState extends State<RouteManagementMenuScreen> {
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading: const Image(image: AssetImage('images/AddSalesMan.png'),height: 40,width: 40,),
+                          leading:  Image(image: AssetImage('images/AddSalesMan.png'),height: 40,width: 40,),
                           title: Text(
                             'Add New Salesman',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
-                          trailing: const Icon(Icons.arrow_forward_ios),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
                       ),
                     ),

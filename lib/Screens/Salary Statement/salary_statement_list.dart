@@ -6,7 +6,7 @@ import 'add_salary_statement.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class SalaryStatementList extends StatefulWidget {
-  const SalaryStatementList({Key? key}) : super(key: key);
+   SalaryStatementList({Key? key}) : super(key: key);
 
   @override
   _SalaryStatementListState createState() => _SalaryStatementListState();
@@ -19,10 +19,10 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const AddSalaryStatement().launch(context);
+           AddSalaryStatement().launch(context);
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -33,13 +33,13 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Reference List',
           maxLines: 2,
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: const [
+        actions:  [
           Image(
             image: AssetImage('images/employeesearch.png'),
           ),
@@ -48,21 +48,21 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -72,7 +72,7 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const SalaryStatementDetails().launch(context);
+                         SalaryStatementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp1.png'),
                       title: Text(
@@ -83,13 +83,13 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                         'Designer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -99,7 +99,7 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const SalaryStatementDetails().launch(context);
+                         SalaryStatementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp2.png'),
                       title: Text(
@@ -110,13 +110,13 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                         'Manager',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -126,7 +126,7 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const SalaryStatementDetails().launch(context);
+                         SalaryStatementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp3.png'),
                       title: Text(
@@ -137,13 +137,13 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                         'Developer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -153,7 +153,7 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const SalaryStatementDetails().launch(context);
+                         SalaryStatementDetails().launch(context);
                       },
                       leading: Image.asset('images/emp4.png'),
                       title: Text(
@@ -164,7 +164,7 @@ class _SalaryStatementListState extends State<SalaryStatementList> {
                         'Officer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),

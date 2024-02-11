@@ -9,7 +9,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class AddNotice extends StatefulWidget {
-  const AddNotice({Key? key}) : super(key: key);
+   AddNotice({Key? key}) : super(key: key);
 
   @override
   _AddNoticeState createState() => _AddNoticeState();
@@ -45,7 +45,7 @@ class _AddNoticeState extends State<AddNotice> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add Notice',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -55,19 +55,19 @@ class _AddNoticeState extends State<AddNotice> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -85,18 +85,18 @@ class _AddNoticeState extends State<AddNotice> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Title',
                       hintText: 'Cristmas Day',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
@@ -106,17 +106,17 @@ class _AddNoticeState extends State<AddNotice> {
                       labelText: 'Description',
                       hintText: description,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      border: const OutlineInputBorder(),
+                      border:  OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Save',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const NoticeList().launch(context);
+                       NoticeList().launch(context);
                     },
                   ),
                 ],

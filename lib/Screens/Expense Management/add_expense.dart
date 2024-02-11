@@ -13,7 +13,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'new_transaction.dart';
 
 class AddExpense extends StatefulWidget {
-  const AddExpense({Key? key}) : super(key: key);
+   AddExpense({Key? key}) : super(key: key);
 
   @override
   _AddExpenseState createState() => _AddExpenseState();
@@ -123,7 +123,7 @@ class _AddExpenseState extends State<AddExpense> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add Expense',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -131,14 +131,14 @@ class _AddExpenseState extends State<AddExpense> {
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.all(20.0),
-        decoration: const BoxDecoration(
+        padding:  EdgeInsets.all(20.0),
+        decoration:  BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
           color: Colors.white,
         ),
         child: Column(
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
@@ -160,14 +160,14 @@ class _AddExpenseState extends State<AddExpense> {
                   onTap: () {
                     Navigator.pop(context);
                   },
-                  child: const Icon(
+                  child:  Icon(
                     Icons.close,
                     color: Colors.black,
                   ),
                 ),
               ),
             ),
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Row(
@@ -175,7 +175,7 @@ class _AddExpenseState extends State<AddExpense> {
                 Expanded(
                   child: AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Start Town',
                       hintText: 'Town',
                       border: OutlineInputBorder(),
@@ -192,7 +192,7 @@ class _AddExpenseState extends State<AddExpense> {
                       dateController.text = date.toString().substring(0, 10);
                     },
                     controller: dateController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border: OutlineInputBorder(),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         suffixIcon: Icon(
@@ -205,7 +205,7 @@ class _AddExpenseState extends State<AddExpense> {
                 ),
               ],
             ),
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Row(
@@ -213,7 +213,7 @@ class _AddExpenseState extends State<AddExpense> {
                 Expanded(
                   child: AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'End Town',
                       hintText: 'Town',
                       border: OutlineInputBorder(),
@@ -230,7 +230,7 @@ class _AddExpenseState extends State<AddExpense> {
                       dateController.text = date.toString().substring(0, 10);
                     },
                     controller: dateController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border: OutlineInputBorder(),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         suffixIcon: Icon(
@@ -243,7 +243,7 @@ class _AddExpenseState extends State<AddExpense> {
                 ),
               ],
             ),
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Align(
@@ -267,7 +267,7 @@ class _AddExpenseState extends State<AddExpense> {
             //     Expanded(
             //       child: AppTextField(
             //         textFieldType: TextFieldType.PHONE,
-            //         decoration: const InputDecoration(
+            //         decoration:  InputDecoration(
             //           labelText: 'Ticket',
             //           hintText: 'Amount of ticket',
             //           border: OutlineInputBorder(),
@@ -278,7 +278,7 @@ class _AddExpenseState extends State<AddExpense> {
             //     Expanded(
             //       child: AppTextField(
             //         textFieldType: TextFieldType.PHONE,
-            //         decoration: const InputDecoration(
+            //         decoration:  InputDecoration(
             //           labelText: 'Private',
             //           hintText: 'Amount of Private',
             //           border: OutlineInputBorder(),
@@ -287,7 +287,7 @@ class _AddExpenseState extends State<AddExpense> {
             //     ),
             //   ],
             // ),
-            // const SizedBox(
+            //  SizedBox(
             //   height: 20.0,
             // ),
             // Row(
@@ -295,7 +295,7 @@ class _AddExpenseState extends State<AddExpense> {
             //     Expanded(
             //       child: AppTextField(
             //         textFieldType: TextFieldType.PHONE,
-            //         decoration: const InputDecoration(
+            //         decoration:  InputDecoration(
             //           labelText: 'Local Conveyance',
             //           hintText: 'Amount of LC',
             //           border: OutlineInputBorder(),
@@ -306,7 +306,7 @@ class _AddExpenseState extends State<AddExpense> {
             //     Expanded(
             //       child: AppTextField(
             //         textFieldType: TextFieldType.PHONE,
-            //         decoration: const InputDecoration(
+            //         decoration:  InputDecoration(
             //           labelText: 'Daily Allowance',
             //           hintText: 'Amount of DA',
             //           border: OutlineInputBorder(),
@@ -315,61 +315,61 @@ class _AddExpenseState extends State<AddExpense> {
             //     ),
             //   ],
             // ),
-            // const SizedBox(
+            //  SizedBox(
             //   height: 20.0,
             // ),
             // AppTextField(
             //   textFieldType: TextFieldType.PHONE,
-            //   decoration: const InputDecoration(
+            //   decoration:  InputDecoration(
             //     labelText: 'Mobile Recharge',
             //     hintText: 'Amount of bill',
             //     border: OutlineInputBorder(),
             //   ),
-            // ), const SizedBox(
+            // ),  SizedBox(
             //   height: 20.0,
             // ),
             // AppTextField(
             //   textFieldType: TextFieldType.PHONE,
-            //   decoration: const InputDecoration(
+            //   decoration:  InputDecoration(
             //     labelText: 'Photo Copy',
             //     hintText: 'Amount of Photo Copy',
             //     border: OutlineInputBorder(),
             //   ),
             // ),
-            // const SizedBox(
+            //  SizedBox(
             //   height: 20.0,
             // ),
             // AppTextField(
             //   textFieldType: TextFieldType.PHONE,
-            //   decoration: const InputDecoration(
+            //   decoration:  InputDecoration(
             //     labelText: 'Stationary',
             //     hintText: 'Amount of Stationary',
             //     border: OutlineInputBorder(),
             //   ),
             // ),
-            // const SizedBox(
+            //  SizedBox(
             //   height: 20.0,
             // ),
             // AppTextField(
             //   textFieldType: TextFieldType.PHONE,
-            //   decoration: const InputDecoration(
+            //   decoration:  InputDecoration(
             //     labelText: 'Expense Amount',
             //     hintText: '\$223',
             //     border: OutlineInputBorder(),
             //   ),
             // ),
-            // const SizedBox(
+            //  SizedBox(
             //   height: 20.0,
             // ),
             // AppTextField(
             //   textFieldType: TextFieldType.PHONE,
-            //   decoration: const InputDecoration(
+            //   decoration:  InputDecoration(
             //     labelText: 'Currier',
             //     hintText: 'Amount of Currier',
             //     border: OutlineInputBorder(),
             //   ),
             // ),
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
           ],

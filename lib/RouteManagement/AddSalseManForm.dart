@@ -7,7 +7,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class AddSalseManForm extends StatefulWidget {
-  const AddSalseManForm({Key? key}) : super(key: key);
+   AddSalseManForm({Key? key}) : super(key: key);
 
   @override
   _AddSalseManFormState createState() => _AddSalseManFormState();
@@ -78,7 +78,7 @@ class _AddSalseManFormState extends State<AddSalseManForm> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add New Sales Man',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -88,19 +88,19 @@ class _AddSalseManFormState extends State<AddSalseManForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -122,47 +122,47 @@ class _AddSalseManFormState extends State<AddSalseManForm> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Icon(
+                        child:  Icon(
                           Icons.close,
                           color: Colors.black,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Salesman Name',
                       hintText: '\$00.00',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Salesman Number',
                       hintText: '\$00.00',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Address',
                       hintText: '\$00.00',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
 
@@ -170,7 +170,7 @@ class _AddSalseManFormState extends State<AddSalseManForm> {
                     buttontext: 'Add Salesman',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const SalaryStatementList().launch(context);
+                       SalaryStatementList().launch(context);
                     },
                   ),
                 ],

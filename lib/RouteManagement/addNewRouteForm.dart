@@ -7,7 +7,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class addNewRouteForm extends StatefulWidget {
-  const addNewRouteForm({Key? key}) : super(key: key);
+   addNewRouteForm({Key? key}) : super(key: key);
 
   @override
   _addNewRouteFormState createState() => _addNewRouteFormState();
@@ -78,7 +78,7 @@ class _addNewRouteFormState extends State<addNewRouteForm> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add New Route',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -88,19 +88,19 @@ class _addNewRouteFormState extends State<addNewRouteForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -122,43 +122,43 @@ class _addNewRouteFormState extends State<addNewRouteForm> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Icon(
+                        child:  Icon(
                           Icons.close,
                           color: Colors.black,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Route Name',
                       hintText: '\$00.00',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Description',
                       hintText: '\$00.00',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Add Route',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const SalaryStatementList().launch(context);
+                       SalaryStatementList().launch(context);
                     },
                   ),
                 ],

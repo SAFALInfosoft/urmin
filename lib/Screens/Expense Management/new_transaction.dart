@@ -88,7 +88,7 @@ class _NewTransactionState extends State<NewTransaction> {
             controller: amountController,
             onSubmitted: (_) => _submitDate(),
           ),
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           SizedBox(
@@ -102,7 +102,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 hintText: 'No File Chosen',
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 prefixIcon: Image.asset('images/choosefile.png'),
-                border: const OutlineInputBorder(),
+                border:  OutlineInputBorder(),
               ),
             ),
           ),

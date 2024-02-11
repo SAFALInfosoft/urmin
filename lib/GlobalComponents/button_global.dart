@@ -18,7 +18,7 @@ class ButtonGlobal extends StatelessWidget {
       onPressed: onPressed,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+        padding:  EdgeInsets.only(top: 10.0, bottom: 10.0),
         decoration: buttonDecoration,
         child: Center(
           child: Text(
@@ -48,7 +48,7 @@ class ButtonGlobalWithoutIcon extends StatelessWidget {
       onPressed: onPressed,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+        padding:  EdgeInsets.only(top: 15.0, bottom: 15.0),
         decoration: buttonDecoration,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,19 +70,19 @@ void showLicense({required BuildContext context}){
     context: context,
     builder: (BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.all(30.0),
+        padding:  EdgeInsets.all(30.0),
         child: Center(
           child: Container(
             height: 180.0,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration:  BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(30)),
             ),
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding:  EdgeInsets.all(20),
                   child: Column(
                     children: [
                       Text('Please Check Your Purchase Code',style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),

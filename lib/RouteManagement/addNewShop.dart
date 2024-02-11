@@ -7,7 +7,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class addNewShop extends StatefulWidget {
-  const addNewShop({Key? key}) : super(key: key);
+   addNewShop({Key? key}) : super(key: key);
 
   @override
   _addNewShopState createState() => _addNewShopState();
@@ -78,7 +78,7 @@ class _addNewShopState extends State<addNewShop> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add New Shop',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -87,14 +87,14 @@ class _addNewShopState extends State<addNewShop> {
       body: SingleChildScrollView(
         child: Container(
           height: context.height(),
-          padding: const EdgeInsets.all(20.0),
-          decoration: const BoxDecoration(
+          padding:  EdgeInsets.all(20.0),
+          decoration:  BoxDecoration(
             borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
             color: Colors.white,
           ),
           child: Column(
             children: [
-              const SizedBox(
+               SizedBox(
                 height: 10.0,
               ),
               Container(
@@ -116,68 +116,68 @@ class _addNewShopState extends State<addNewShop> {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: const Icon(
+                    child:  Icon(
                       Icons.close,
                       color: Colors.black,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               AppTextField(
                 textFieldType: TextFieldType.USERNAME,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'Shop Name',
                   hintText: 'Shop Name',
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               AppTextField(
                 textFieldType: TextFieldType.PHONE,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'Owner Name',
                   hintText: 'Shop Address',
                   border: OutlineInputBorder(),
                 ),
-              ),const SizedBox(
+              ), SizedBox(
                 height: 20.0,
               ),
               AppTextField(
                 textFieldType: TextFieldType.PHONE,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'Address',
                   hintText: 'Shop Address',
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               AppTextField(
                 textFieldType: TextFieldType.PHONE,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'Mobile number',
                   hintText: '+91 00000 00000',
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               AppTextField(
                 textFieldType: TextFieldType.PHONE,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   labelText: 'Tax Number',
                   hintText: '1234567890',
                   border: OutlineInputBorder(),
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               SizedBox(
@@ -191,18 +191,18 @@ class _addNewShopState extends State<addNewShop> {
                     hintText: 'No File Chosen',
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     prefixIcon: Image.asset('images/choosefile.png'),
-                    border: const OutlineInputBorder(),
+                    border:  OutlineInputBorder(),
                   ),
                 ),
               ),
-              const SizedBox(
+               SizedBox(
                 height: 20.0,
               ),
               ButtonGlobal(
                 buttontext: 'Add Shop',
                 buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                 onPressed: () {
-                  const SalaryStatementList().launch(context);
+                   SalaryStatementList().launch(context);
                 },
               ),
             ],

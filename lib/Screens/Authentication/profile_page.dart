@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Profile',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -42,19 +42,19 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(20.0),
-            decoration: const BoxDecoration(
+            padding:  EdgeInsets.all(20.0),
+            decoration:  BoxDecoration(
               borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
               color: kBgColor,
             ),
             child: Padding(
-              padding: const EdgeInsets.only(
+              padding:  EdgeInsets.only(
                   top: 60, right: 20, left: 20, bottom: 25),
               child: Column(
                 children: [
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: const [
+                  //   children:  [
                   //     Text(
                   //       "User Profile",
                   //       style: TextStyle(
@@ -78,10 +78,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(
+                           SizedBox(
                             height: 20.0,
                           ),
-                          const CircleAvatar(
+                           CircleAvatar(
                             radius: 60.0,
                             backgroundColor: kMainColor,
                             backgroundImage: AssetImage(
@@ -148,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: const Icon(
+                        child:  Icon(
                           Icons.edit,
                           color: Colors.black,
                         ),

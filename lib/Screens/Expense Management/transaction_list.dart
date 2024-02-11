@@ -16,7 +16,7 @@ class TransactionList extends StatelessWidget {
        // mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding:  EdgeInsets.all(10.0),
               child:/* widget.data != null
                     ? buildOrderDueDataListing(context, widget.data)
                     :*/ Align(
@@ -24,7 +24,7 @@ class TransactionList extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children:  [
                     SizedBox(
                         height: 100,
                         width: 100,

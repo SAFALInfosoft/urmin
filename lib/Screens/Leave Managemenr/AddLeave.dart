@@ -10,7 +10,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class AddLeave extends StatefulWidget {
-  const AddLeave({Key? key}) : super(key: key);
+   AddLeave({Key? key}) : super(key: key);
 
   @override
   _AddLeaveState createState() => _AddLeaveState();
@@ -106,7 +106,7 @@ class _AddLeaveState extends State<AddLeave> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add Leave',
           style: kTextStyle.copyWith(
@@ -117,13 +117,13 @@ class _AddLeaveState extends State<AddLeave> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
@@ -131,7 +131,7 @@ class _AddLeaveState extends State<AddLeave> {
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -153,7 +153,7 @@ class _AddLeaveState extends State<AddLeave> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Row(
@@ -161,7 +161,7 @@ class _AddLeaveState extends State<AddLeave> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding:  EdgeInsets.all(8.0),
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width / 3,
                           child: ElevatedButton.icon(
@@ -183,7 +183,7 @@ class _AddLeaveState extends State<AddLeave> {
                               }
                             },
                             icon: Icon(Icons.calendar_month),
-                            label: const Text(
+                            label:  Text(
                               "Full Day",
                               style: TextStyle(color: Colors.white),
                             ),
@@ -191,7 +191,7 @@ class _AddLeaveState extends State<AddLeave> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding:  EdgeInsets.all(8.0),
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width / 3,
                           child: ElevatedButton.icon(
@@ -218,7 +218,7 @@ class _AddLeaveState extends State<AddLeave> {
                                       ),));*/
                             },
                             icon: Icon(Icons.calendar_month),
-                            label: const Text(
+                            label:  Text(
                               "Half Day",
                               style: TextStyle(color: Colors.white),
                             ),
@@ -237,9 +237,9 @@ class _AddLeaveState extends State<AddLeave> {
                   //   //animate: true,
                   //   // animationDuration: 4,
                   //   totalSwitches: 2,
-                  //   labels: const ['Full Day', 'Half Day'],
-                  //   icons: const [Icons.calendar_month, Icons.calendar_month],
-                  //   activeBgColors: const [
+                  //   labels:  ['Full Day', 'Half Day'],
+                  //   icons:  [Icons.calendar_month, Icons.calendar_month],
+                  //   activeBgColors:  [
                   //     [Colors.orange],
                   //     [Colors.orange]
                   //   ],
@@ -257,7 +257,7 @@ class _AddLeaveState extends State<AddLeave> {
                   //
                   //   },
                   // ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Visibility(
@@ -278,7 +278,7 @@ class _AddLeaveState extends State<AddLeave> {
                                   date.toString().substring(0, 10);
                             },
                             controller: dateController,
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 border: OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -307,7 +307,7 @@ class _AddLeaveState extends State<AddLeave> {
                                   date.toString().substring(0, 10);
                             },
                             controller: dateController,
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 border: OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -337,7 +337,7 @@ class _AddLeaveState extends State<AddLeave> {
                                   date.toString().substring(0, 10);
                             },
                             controller: timeController,
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 border: OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -361,7 +361,7 @@ class _AddLeaveState extends State<AddLeave> {
                               timeController.text;
                             },
                             controller: timeController,
-                            decoration: const InputDecoration(
+                            decoration:  InputDecoration(
                                 border: OutlineInputBorder(),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.always,
@@ -376,18 +376,18 @@ class _AddLeaveState extends State<AddLeave> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Description',
                       // hintText: '543223',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
@@ -395,7 +395,7 @@ class _AddLeaveState extends State<AddLeave> {
                     buttonDecoration:
                         kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const ExpenseList().launch(context);
+                       ExpenseList().launch(context);
                     },
                   ),
                 ],

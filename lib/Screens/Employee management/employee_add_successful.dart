@@ -7,7 +7,7 @@ import 'package:maan_hrm/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class EmployeeAddSuccessful extends StatefulWidget {
-  const EmployeeAddSuccessful({Key? key}) : super(key: key);
+   EmployeeAddSuccessful({Key? key}) : super(key: key);
 
   @override
   _EmployeeAddSuccessfulState createState() => _EmployeeAddSuccessfulState();
@@ -23,7 +23,7 @@ class _EmployeeAddSuccessfulState extends State<EmployeeAddSuccessful> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Employee Added Successfully',
           maxLines: 2,
@@ -33,26 +33,26 @@ class _EmployeeAddSuccessfulState extends State<EmployeeAddSuccessful> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: kBgColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -64,7 +64,7 @@ class _EmployeeAddSuccessfulState extends State<EmployeeAddSuccessful> {
                           'Please download app form Playstore',
                           style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         Text(
@@ -78,12 +78,12 @@ class _EmployeeAddSuccessfulState extends State<EmployeeAddSuccessful> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
                     width: context.width(),
-                    padding: const EdgeInsets.all(20.0),
+                    padding:  EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.white,
@@ -95,7 +95,7 @@ class _EmployeeAddSuccessfulState extends State<EmployeeAddSuccessful> {
                           'Employee Login details',
                           style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 10.0,
                         ),
                         RichText(
@@ -137,14 +137,14 @@ class _EmployeeAddSuccessfulState extends State<EmployeeAddSuccessful> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                       buttontext: 'Share Details With Employee',
                       buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                       onPressed: () {
-                        const EmployeeList().launch(context);
+                         EmployeeList().launch(context);
                       }),
                 ],
               ),

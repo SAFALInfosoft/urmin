@@ -13,7 +13,7 @@
 //
 // // ignore_for_file: library_private_types_in_public_api
 // class PayrollManagementScreen extends StatefulWidget {
-//   const PayrollManagementScreen({Key? key}) : super(key: key);
+//    PayrollManagementScreen({Key? key}) : super(key: key);
 //
 //   @override
 //   _PayrollManagementScreenState createState() => _PayrollManagementScreenState();
@@ -29,7 +29,7 @@
 //         backgroundColor: kMainColor,
 //         elevation: 0.0,
 //         titleSpacing: 0.0,
-//         iconTheme: const IconThemeData(color: Colors.white),
+//         iconTheme:  IconThemeData(color: Colors.white),
 //         title: Text(
 //           'Payroll Management',
 //           maxLines: 2,
@@ -39,31 +39,31 @@
 //       body: Column(
 //         crossAxisAlignment: CrossAxisAlignment.start,
 //         children: [
-//           const SizedBox(
+//            SizedBox(
 //             height: 20.0,
 //           ),
 //           Expanded(
 //             child: Container(
-//               padding: const EdgeInsets.all(20.0),
-//               decoration: const BoxDecoration(
+//               padding:  EdgeInsets.all(20.0),
+//               decoration:  BoxDecoration(
 //                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
 //                 color: Colors.white,
 //               ),
 //               child: Column(
 //                 children: [
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   Material(
 //                     elevation: 2.0,
 //                     child: GestureDetector(
 //                       onTap: () {
-//                         // const EmptyEmployeeScreen().launch(context);
+//                         //  EmptyEmployeeScreen().launch(context);
 //                       },
 //                       child: Container(
 //                         width: context.width(),
-//                         padding: const EdgeInsets.all(10.0),
-//                         decoration: const BoxDecoration(
+//                         padding:  EdgeInsets.all(10.0),
+//                         decoration:  BoxDecoration(
 //                           border: Border(
 //                             left: BorderSide(
 //                               color: Color(0xFF7D6AEF),
@@ -74,28 +74,28 @@
 //                         ),
 //                         child: ListTile(
 //                           onTap: () {
-//                             const EmptyIncrement().launch(context);
+//                              EmptyIncrement().launch(context);
 //                           },
-//                           leading: const Image(image: AssetImage('images/increment.png')),
+//                           leading:  Image(image: AssetImage('images/increment.png')),
 //                           title: Text(
 //                             'Increment',
 //                             maxLines: 2,
 //                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
 //                           ),
-//                           trailing: const Icon(Icons.arrow_forward_ios),
+//                           trailing:  Icon(Icons.arrow_forward_ios),
 //                         ),
 //                       ),
 //                     ),
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   Material(
 //                     elevation: 2.0,
 //                     child: Container(
 //                       width: context.width(),
-//                       padding: const EdgeInsets.all(10.0),
-//                       decoration: const BoxDecoration(
+//                       padding:  EdgeInsets.all(10.0),
+//                       decoration:  BoxDecoration(
 //                         border: Border(
 //                           left: BorderSide(
 //                             color: Color(0xFFFD73B0),
@@ -106,27 +106,27 @@
 //                       ),
 //                       child: ListTile(
 //                         onTap: () {
-//                           const PaymentEmployeeList().launch(context);
+//                            PaymentEmployeeList().launch(context);
 //                         },
-//                         leading: const Image(image: AssetImage('images/payment.png')),
+//                         leading:  Image(image: AssetImage('images/payment.png')),
 //                         title: Text(
 //                           'Payment',
 //                           maxLines: 2,
 //                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
 //                         ),
-//                         trailing: const Icon(Icons.arrow_forward_ios),
+//                         trailing:  Icon(Icons.arrow_forward_ios),
 //                       ),
 //                     ),
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   Material(
 //                     elevation: 2.0,
 //                     child: Container(
 //                       width: context.width(),
-//                       padding: const EdgeInsets.all(10.0),
-//                       decoration: const BoxDecoration(
+//                       padding:  EdgeInsets.all(10.0),
+//                       decoration:  BoxDecoration(
 //                         border: Border(
 //                           left: BorderSide(
 //                             color: Color(0xFF4CCEFA),
@@ -137,27 +137,27 @@
 //                       ),
 //                       child: ListTile(
 //                         onTap: () {
-//                           const AddSalarySheet().launch(context);
+//                            AddSalarySheet().launch(context);
 //                         },
-//                         leading: const Image(image: AssetImage('images/salarysheet.png')),
+//                         leading:  Image(image: AssetImage('images/salarysheet.png')),
 //                         title: Text(
 //                           'Salary Sheet',
 //                           maxLines: 2,
 //                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
 //                         ),
-//                         trailing: const Icon(Icons.arrow_forward_ios),
+//                         trailing:  Icon(Icons.arrow_forward_ios),
 //                       ),
 //                     ),
 //                   ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   Material(
 //                     elevation: 2.0,
 //                     child: Container(
 //                       width: context.width(),
-//                       padding: const EdgeInsets.all(10.0),
-//                       decoration: const BoxDecoration(
+//                       padding:  EdgeInsets.all(10.0),
+//                       decoration:  BoxDecoration(
 //                         border: Border(
 //                           left: BorderSide(
 //                             color: Color(0xFFF4C000),
@@ -168,27 +168,27 @@
 //                       ),
 //                       child: ListTile(
 //                         onTap: () {
-//                           const EmptyBonus().launch(context);
+//                            EmptyBonus().launch(context);
 //                         },
-//                         leading: const Image(image: AssetImage('images/bonus.png')),
+//                         leading:  Image(image: AssetImage('images/bonus.png')),
 //                         title: Text(
 //                           'Bonus',
 //                           maxLines: 2,
 //                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
 //                         ),
-//                         trailing: const Icon(Icons.arrow_forward_ios),
+//                         trailing:  Icon(Icons.arrow_forward_ios),
 //                       ),
 //                     ),
 //                   ),
-//                   // const SizedBox(
+//                   //  SizedBox(
 //                   //   height: 20.0,
 //                   // ),
 //                   // Material(
 //                   //   elevation: 2.0,
 //                   //   child: Container(
 //                   //     width: context.width(),
-//                   //     padding: const EdgeInsets.all(10.0),
-//                   //     decoration: const BoxDecoration(
+//                   //     padding:  EdgeInsets.all(10.0),
+//                   //     decoration:  BoxDecoration(
 //                   //       border: Border(
 //                   //         left: BorderSide(
 //                   //           color: Color(0xFFFD73B0),
@@ -199,9 +199,9 @@
 //                   //     ),
 //                   //     child: ListTile(
 //                   //       onTap: (){
-//                   //         // const AttendanceEmployeeList().launch(context);
+//                   //         //  AttendanceEmployeeList().launch(context);
 //                   //       },
-//                   //       leading: const Image(image: AssetImage('images/loan.png')),
+//                   //       leading:  Image(image: AssetImage('images/loan.png')),
 //                   //       title: Text(
 //                   //         'Loan',
 //                   //         maxLines: 2,
@@ -209,19 +209,19 @@
 //                   //             color: kTitleColor,
 //                   //             fontWeight: FontWeight.bold),
 //                   //       ),
-//                   //       trailing: const Icon(Icons.arrow_forward_ios),
+//                   //       trailing:  Icon(Icons.arrow_forward_ios),
 //                   //     ),
 //                   //   ),
 //                   // ),
-//                   const SizedBox(
+//                    SizedBox(
 //                     height: 20.0,
 //                   ),
 //                   Material(
 //                     elevation: 2.0,
 //                     child: Container(
 //                       width: context.width(),
-//                       padding: const EdgeInsets.all(10.0),
-//                       decoration: const BoxDecoration(
+//                       padding:  EdgeInsets.all(10.0),
+//                       decoration:  BoxDecoration(
 //                         border: Border(
 //                           left: BorderSide(
 //                             color: Color(0xFF05B985),
@@ -234,19 +234,19 @@
 //                         onTap: () async{
 //                           bool isValid = await PurchaseModel().isActiveBuyer();
 //                           if(isValid){
-//                             const EmptyProvidentFund().launch(context);
+//                              EmptyProvidentFund().launch(context);
 //                           } else{
 //                             showLicense(context: context);
 //                           }
 //
 //                         },
-//                         leading: const Image(image: AssetImage('images/providentfund.png')),
+//                         leading:  Image(image: AssetImage('images/providentfund.png')),
 //                         title: Text(
 //                           'Provident Fund',
 //                           maxLines: 2,
 //                           style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
 //                         ),
-//                         trailing: const Icon(Icons.arrow_forward_ios),
+//                         trailing:  Icon(Icons.arrow_forward_ios),
 //                       ),
 //                     ),
 //                   ),

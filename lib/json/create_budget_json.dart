@@ -1,4 +1,4 @@
-const List categories = [
+ List categories = [
   {"name": "Auto", "icon": "assets/images/auto.png"},
   {"name": "Bank", "icon": "assets/images/bank.png"},
   {"name": "Cash", "icon": "assets/images/cash.png"},

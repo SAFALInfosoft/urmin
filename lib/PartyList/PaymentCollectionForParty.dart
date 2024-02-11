@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 
 import 'afterCheckinMainPage.dart';
 class PaymentCollectionForParty extends StatefulWidget {
-  const PaymentCollectionForParty({Key? key}) : super(key: key);
+   PaymentCollectionForParty({Key? key}) : super(key: key);
 
   @override
   _PaymentCollectionForPartyState createState() => _PaymentCollectionForPartyState();
@@ -90,7 +90,7 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Payment Collection',
           style: kTextStyle.copyWith(
@@ -101,13 +101,13 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 10.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
@@ -123,8 +123,8 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                       },
                       child: Container(
                         width: context.width(),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: const BoxDecoration(
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
                               color: Color(0xFF7D6AEF),
@@ -134,7 +134,7 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                           color: Colors.white,
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding:  EdgeInsets.all(8.0),
                           child: Column(
                             children: [
                               Row(
@@ -143,7 +143,7 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                                     'Shop: Abc Shop',
                                     style: kTextStyle,
                                   ),
-                                  const Spacer(),
+                                   Spacer(),
                                   RichText(
                                     text: TextSpan(
                                       children: [
@@ -158,11 +158,11 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                                   ),
                                 ],
                               ),
-                              const Divider(
+                               Divider(
                                 thickness: 1.0,
                                 color: kGreyTextColor,
                               ),
-                              const SizedBox(
+                               SizedBox(
                                 height: 10.0,
                               ),
                               Row(
@@ -171,9 +171,9 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: const <Widget>[
+                                    children:  <Widget>[
                                       Text('Pending Payment'),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 5.0,
                                       ),
                                       Text('ToDay`s Order'),
@@ -183,9 +183,9 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: const <Widget>[
+                                    children:  <Widget>[
                                       Text('  \u{20B9} 15,000'),
-                                      const SizedBox(
+                                       SizedBox(
                                         height: 5.0,
                                       ),
                                       Text('  \u{20B9} 00'),
@@ -201,7 +201,7 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -222,18 +222,18 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Payment Reference number',
                       // hintText: '543223',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -247,22 +247,22 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                         hintText: 'No File Chosen',
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                         prefixIcon: Image.asset('images/choosefile.png'),
-                        border: const OutlineInputBorder(),
+                        border:  OutlineInputBorder(),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Remarks',
                       // hintText: '543223',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
@@ -270,7 +270,7 @@ class _PaymentCollectionForPartyState extends State<PaymentCollectionForParty> {
                     buttonDecoration:
                     kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const afterCheckinMainPage(),));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  afterCheckinMainPage(),));
                     },
                   ),
                 ],

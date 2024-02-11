@@ -6,7 +6,7 @@ import '../../constant.dart';
 
 // ignore_for_file: library_private_types_in_public_api
 class achivementDetailsPage extends StatefulWidget {
-  const achivementDetailsPage({Key? key}) : super(key: key);
+   achivementDetailsPage({Key? key}) : super(key: key);
 
   @override
   _achivementDetailsPageState createState() => _achivementDetailsPageState();
@@ -54,7 +54,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
           backgroundColor: kMainColor,
           elevation: 0.0,
           titleSpacing: 0.0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme:  IconThemeData(color: Colors.white),
           title: Text(
             'Your Achievement',
             maxLines: 2,
@@ -62,11 +62,11 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding:  EdgeInsets.only(top: 15.0),
           child: Container(
             width: context.width(),
-            padding: const EdgeInsets.all(20.0),
-            decoration: const BoxDecoration(
+            padding:  EdgeInsets.all(20.0),
+            decoration:  BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30.0),
                 topRight: Radius.circular(30.0),
@@ -79,7 +79,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
 
                 Container(
                   width: context.width(),
-                  padding: const EdgeInsets.all(20),
+                  padding:  EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: kBgColor,
                     borderRadius: BorderRadius.circular(10.0),
@@ -105,7 +105,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                             onTap: () {
                               Navigator.pop(context);
                             },
-                            child: const Icon(
+                            child:  Icon(
                               Icons.close,
                               color: Colors.black,
                             ),
@@ -119,7 +119,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                             'Working Hours',
                             style: kTextStyle,
                           ),
-                          const Spacer(),
+                           Spacer(),
                           RichText(
                             text: TextSpan(
                               children: [
@@ -129,7 +129,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                                     color: kGreyTextColor,
                                   ),
                                 ),
-                                const WidgetSpan(
+                                 WidgetSpan(
                                   child: Icon(
                                     Icons.date_range,
                                     color: kGreyTextColor,
@@ -140,7 +140,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Text(
@@ -151,7 +151,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                         'Today',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       TimeChart(
@@ -159,17 +159,17 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                         chartType: ChartType.amount,
                         viewMode: ViewMode.weekly,
                         barColor: kMainColor,
-                        timeChartSizeAnimationDuration: const Duration(milliseconds: 200),
+                        timeChartSizeAnimationDuration:  Duration(milliseconds: 200),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 20.0,
                 ),
                 Container(
                   width: context.width(),
-                  padding: const EdgeInsets.all(20),
+                  padding:  EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
@@ -182,7 +182,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                             'Collection Overview',
                             style: kTextStyle,
                           ),
-                          const Spacer(),
+                           Spacer(),
                           RichText(
                             text: TextSpan(
                               children: [
@@ -197,7 +197,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Row(
@@ -205,11 +205,11 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:  EdgeInsets.all(5.0),
                               child: Container(
-                                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                 decoration: BoxDecoration(
-                                  border: const Border(
+                                  border:  Border(
                                       top: BorderSide(
                                         color: kMainColor,
                                       )),
@@ -233,11 +233,11 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:  EdgeInsets.all(5.0),
                               child: Container(
-                                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                 decoration: BoxDecoration(
-                                  border: const Border(
+                                  border:  Border(
                                       top: BorderSide(
                                         color: kAlertColor,
                                       )),
@@ -261,22 +261,22 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:  EdgeInsets.all(5.0),
                               child: Container(
-                                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                 decoration: BoxDecoration(
-                                  border: const Border(
+                                  border:  Border(
                                       top: BorderSide(
                                         color: Color(0xFF4CE364),
                                       )),
-                                  color: const Color(0xFF4CE364).withOpacity(0.1),
+                                  color:  Color(0xFF4CE364).withOpacity(0.1),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       '47000',
-                                      style: kTextStyle.copyWith(color: const Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       'Average',
@@ -289,7 +289,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 10.0,
                       ),
                       Row(
@@ -297,11 +297,11 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:  EdgeInsets.all(5.0),
                               child: Container(
-                                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
+                                padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
                                 decoration: BoxDecoration(
-                                  border: const Border(
+                                  border:  Border(
                                       top: BorderSide(
                                         color: kHalfDay,
                                       )),
@@ -325,22 +325,22 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:  EdgeInsets.all(5.0),
                               child: Container(
-                                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
+                                padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
                                 decoration: BoxDecoration(
-                                  border: const Border(
+                                  border:  Border(
                                       top: BorderSide(
                                         color: Color(0xFF806DF0),
                                       )),
-                                  color: const Color(0xFF806DF0).withOpacity(0.1),
+                                  color:  Color(0xFF806DF0).withOpacity(0.1),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       '1',
-                                      style: kTextStyle.copyWith(color: const Color(0xFF806DF0), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      style: kTextStyle.copyWith(color:  Color(0xFF806DF0), fontSize: 18.0, fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       'WeekOff',
@@ -353,22 +353,22 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding:  EdgeInsets.all(5.0),
                               child: Container(
-                                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
+                                padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 15.0),
                                 decoration: BoxDecoration(
-                                  border: const Border(
+                                  border:  Border(
                                       top: BorderSide(
                                         color: Color(0xFF4ACDF9),
                                       )),
-                                  color: const Color(0xFF4ACDF9).withOpacity(0.1),
+                                  color:  Color(0xFF4ACDF9).withOpacity(0.1),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       '3',
-                                      style: kTextStyle.copyWith(color: const Color(0xFF4ACDF9), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                      style: kTextStyle.copyWith(color:  Color(0xFF4ACDF9), fontSize: 18.0, fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       'Leave',
@@ -384,12 +384,12 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                     ],
                   ),
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 20.0,
                 ),
                 Container(
                   width: context.width(),
-                  padding: const EdgeInsets.all(20),
+                  padding:  EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10.0),
@@ -402,7 +402,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                             'Basic Pay',
                             style: kTextStyle,
                           ),
-                          const Spacer(),
+                           Spacer(),
                           RichText(
                             text: TextSpan(
                               children: [
@@ -417,7 +417,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(
+                       SizedBox(
                         height: 20.0,
                       ),
                       Column(
@@ -445,11 +445,11 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                               ),
                             ],
                           ),
-                          const Divider(
+                           Divider(
                             thickness: 1.0,
                             color: kGreyTextColor,
                           ),
-                          const SizedBox(
+                           SizedBox(
                             height: 10.0,
                           ),
                           Row(
@@ -479,7 +479,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                     ],
                   ),
                 ),
-                const SizedBox(
+                 SizedBox(
                   height: 20.0,
                 ),
                 Row(
@@ -487,7 +487,7 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                     Expanded(
                       child: Container(
                         height: 60.0,
-                        padding: const EdgeInsets.all(10.0),
+                        padding:  EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
                           color: kMainColor,
@@ -499,13 +499,13 @@ class _achivementDetailsPageState extends State<achivementDetailsPage> {
                             )),
                       ),
                     ),
-                    const SizedBox(
+                     SizedBox(
                       width: 20.0,
                     ),
                     Expanded(
                       child: Container(
                         height: 60.0,
-                        padding: const EdgeInsets.all(10.0),
+                        padding:  EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5.0),
                           color: kMainColor.withOpacity(0.1),

@@ -4,12 +4,13 @@ import 'package:flutter/widgets.dart';
 
 import '../../constant.dart';
 
-const Color avtar_backGround = Color(0xFF2FCB72);
-const Color avtar_backGround1 = Color(0xFF0C3329);
-const Color prof_Card = Color(0xFF196F3D);
-const Color grade1 = Color(0xFF00b09b);
-const Color grade2 = Color(0xFF96c93d);
-const Color cool = Color(0xFF181A2F);
+ Color avtar_backGround = Color(0xFF2FCB72);
+ Color avtar_backGround1 = Color(0xFF0C3329);
+ Color prof_Card = Color(0xFF196F3D);
+ Color grade1 = Color(0xFF00b09b);
+ Color grade2 = Color(0xFF96c93d);
+ Color cool = Color(0xFF181A2F);
+
 const clickedColor = Color(0xFF0C3329);
 const unclickedColor = Color(0xFF196F3D);
 Color probtn = Color(0xFF0C3329);
@@ -99,7 +100,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.red,
@@ -183,7 +184,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 50.0),
+                      padding:  EdgeInsets.only(top: 50.0),
                       child: Text(
                         "LEADERBOARD",
                         style: TextStyle(
@@ -224,7 +225,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
     Widget listItem;
     if (ind == 1) {
       listItem = Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: gold,
@@ -250,7 +251,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
       );
     } else if (ind == 2) {
       listItem = Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: silver,
@@ -276,7 +277,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
       );
     } else if (ind == 3) {
       listItem = Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: bronze,
@@ -302,7 +303,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
       );
     } else {
       listItem = Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding:  EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),

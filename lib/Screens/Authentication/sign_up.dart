@@ -11,7 +11,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+   SignUp({Key? key}) : super(key: key);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -47,7 +47,7 @@ class _SignUpState extends State<SignUp> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Sign In',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -58,54 +58,54 @@ class _SignUpState extends State<SignUp> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding:  EdgeInsets.all(20.0),
               child: Text(
                 'Sign Up now to begin an amazing journey',
                 style: kTextStyle.copyWith(color: Colors.white),
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Company Name',
                       hintText: 'MaanTheme',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Owner/Admin name',
                       hintText: 'MaanTeam',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.EMAIL,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Email Address',
                       hintText: 'maantheme@maantheme.com',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -119,7 +119,7 @@ class _SignUpState extends State<SignUp> {
                         hintText: '1767 432556',
                         labelStyle: kTextStyle,
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        border: const OutlineInputBorder(),
+                        border:  OutlineInputBorder(),
                         // prefixIcon: CountryCodePicker(
                         //   padding: EdgeInsets.zero,
                         //   onChanged: print,
@@ -131,7 +131,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
@@ -140,10 +140,10 @@ class _SignUpState extends State<SignUp> {
                       labelText: 'Password',
                       labelStyle: kTextStyle,
                       hintText: 'Enter password',
-                      border: const OutlineInputBorder(),
+                      border:  OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -161,14 +161,14 @@ class _SignUpState extends State<SignUp> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Sign Up',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const HomeScreen().launch(context);
+                       HomeScreen().launch(context);
                     },
                   ),
                   RichText(
@@ -188,13 +188,13 @@ class _SignUpState extends State<SignUp> {
                               color: kMainColor,
                             ),
                           ).onTap(() {
-                            const SignIn().launch(context);
+                             SignIn().launch(context);
                           }),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Text(
@@ -207,14 +207,14 @@ class _SignUpState extends State<SignUp> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           child: Card(
                             elevation: 2.0,
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: const Padding(
+                            child:  Padding(
                               padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
                               child: Center(
                                   child: Icon(
@@ -231,7 +231,7 @@ class _SignUpState extends State<SignUp> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+                            padding:  EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
                             child: Center(
                               child: Image.asset(
                                 'images/google.png',
@@ -242,14 +242,14 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding:  EdgeInsets.all(10.0),
                           child: Card(
                             elevation: 2.0,
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            child: const Padding(
+                            child:  Padding(
                               padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
                               child: Center(
                                 child: Icon(

@@ -13,7 +13,7 @@
 //         drawHorizontalLine: true,
 //         getDrawingHorizontalLine: (value) {
 //           return FlLine(
-//             color: const Color(0xff37434d),
+//             color:  Color(0xff37434d),
 //             strokeWidth: 0.1,
 //           );
 //         }),
@@ -38,7 +38,7 @@
 //       ),
 //       leftTitles: SideTitles(
 //         showTitles: true,
-//         getTextStyles: (value) => const TextStyle(
+//         getTextStyles: (value) =>  TextStyle(
 //           color: Color(0xff67727d),
 //           fontSize: 12,
 //         ),

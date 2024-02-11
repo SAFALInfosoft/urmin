@@ -8,7 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class EmployeeOvertimeList extends StatefulWidget {
-  const EmployeeOvertimeList({Key? key}) : super(key: key);
+   EmployeeOvertimeList({Key? key}) : super(key: key);
 
   @override
   _EmployeeOvertimeListState createState() => _EmployeeOvertimeListState();
@@ -21,10 +21,10 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const AddEmployeeOvertime().launch(context);
+           AddEmployeeOvertime().launch(context);
         },
         backgroundColor: kMainColor,
-        child: const Icon(
+        child:  Icon(
           Icons.add,
           color: Colors.white,
         ),
@@ -35,13 +35,13 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Overtime List',
           maxLines: 2,
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: const [
+        actions:  [
           Image(
             image: AssetImage('images/employeesearch.png'),
           ),
@@ -50,21 +50,21 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(
+           SizedBox(
             height: 20.0,
           ),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -74,7 +74,7 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeOvertimeDetails().launch(context);
+                         EmployeeOvertimeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp1.png'),
                       title: Text(
@@ -85,13 +85,13 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                         'Designer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -101,7 +101,7 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeOvertimeDetails().launch(context);
+                         EmployeeOvertimeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp2.png'),
                       title: Text(
@@ -112,13 +112,13 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                         'Manager',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -128,7 +128,7 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeOvertimeDetails().launch(context);
+                         EmployeeOvertimeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp3.png'),
                       title: Text(
@@ -139,13 +139,13 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                         'Developer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   Container(
@@ -155,7 +155,7 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        const EmployeeOvertimeDetails().launch(context);
+                         EmployeeOvertimeDetails().launch(context);
                       },
                       leading: Image.asset('images/emp4.png'),
                       title: Text(
@@ -166,7 +166,7 @@ class _EmployeeOvertimeListState extends State<EmployeeOvertimeList> {
                         'Officer',
                         style: kTextStyle.copyWith(color: kGreyTextColor),
                       ),
-                      trailing: const Icon(
+                      trailing:  Icon(
                         Icons.arrow_forward_ios,
                         color: kGreyTextColor,
                       ),

@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+   EditProfile({Key? key}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -45,7 +45,7 @@ class _EditProfileState extends State<EditProfile> {
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Edit Profile',
           maxLines: 2,
@@ -56,63 +56,63 @@ class _EditProfileState extends State<EditProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               width: context.width(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
-                  const Image(
+                   Image(
                     image: AssetImage(
                       'images/employeeaddimage.png',
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Company Name',
                       hintText: 'MaanTheme',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Owner/Admin name',
                       hintText: 'MaanTeam',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.EMAIL,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Email Address',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       hintText: 'maantheme@maantheme.com',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
@@ -122,24 +122,24 @@ class _EditProfileState extends State<EditProfile> {
                       labelText: 'Phone Number',
                       hintText: '+8801767 432556',
                       labelStyle: kTextStyle,
-                      border: const OutlineInputBorder(),
+                      border:  OutlineInputBorder(),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     // ignore: deprecated_member_use
                     textFieldType: TextFieldType.ADDRESS,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Company Address',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       hintText: '112/3 Green Road',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -157,7 +157,7 @@ class _EditProfileState extends State<EditProfile> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(

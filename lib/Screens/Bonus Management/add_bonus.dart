@@ -7,7 +7,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
 
 class AddBonus extends StatefulWidget {
-  const AddBonus({Key? key}) : super(key: key);
+   AddBonus({Key? key}) : super(key: key);
 
   @override
   _AddBonusState createState() => _AddBonusState();
@@ -77,7 +77,7 @@ class _AddBonusState extends State<AddBonus> {
       appBar: AppBar(
         backgroundColor: kMainColor,
         elevation: 0.0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         title: Text(
           'Add Bonus',
           style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
@@ -87,19 +87,19 @@ class _AddBonusState extends State<AddBonus> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
+             SizedBox(
               height: 20.0,
             ),
             Container(
               height: context.height(),
-              padding: const EdgeInsets.all(20.0),
-              decoration: const BoxDecoration(
+              padding:  EdgeInsets.all(20.0),
+              decoration:  BoxDecoration(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -117,18 +117,18 @@ class _AddBonusState extends State<AddBonus> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.NAME,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Bonus Name',
                       hintText: 'Good Work',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   SizedBox(
@@ -146,18 +146,18 @@ class _AddBonusState extends State<AddBonus> {
                       },
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
                     textFieldType: TextFieldType.PHONE,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       labelText: 'Bonus Amount',
                       hintText: '\$223',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   AppTextField(
@@ -168,7 +168,7 @@ class _AddBonusState extends State<AddBonus> {
                       dateController.text = date.toString().substring(0, 10);
                     },
                     controller: dateController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                         border: OutlineInputBorder(),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         suffixIcon: Icon(
@@ -178,14 +178,14 @@ class _AddBonusState extends State<AddBonus> {
                         labelText: 'Select Month',
                         hintText: '11/09/2021'),
                   ),
-                  const SizedBox(
+                   SizedBox(
                     height: 20.0,
                   ),
                   ButtonGlobal(
                     buttontext: 'Save',
                     buttonDecoration: kButtonDecoration.copyWith(color: kMainColor),
                     onPressed: () {
-                      const BonusList().launch(context);
+                       BonusList().launch(context);
                     },
                   ),
                 ],
