@@ -38,6 +38,12 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
 
   List poList = [];
   List temppoList = [];
+  var _currentSelectedValue="Draft";
+  var _currencies = [
+    "Draft",
+    "In Process",
+    "Completed",
+  ];
   @override
   void initState() {
     CheckUserConnection().then((value) {
@@ -237,7 +243,138 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
               ),
               child: Column(
                   children: [
-                  //Button Details
+
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FormField<String>(
+                            builder: (FormFieldState<String> state) {
+                              return Container(
+                                //width: MediaQuery.of(context).size.width! * 0.90,
+                                child: InputDecorator(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 15),
+                                    /*contentPadding:
+                                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),*/
+                                    isDense: true,
+                                    errorStyle: TextStyle(
+                                        color: Colors.redAccent,
+                                        fontSize: 16.0),
+                                    hintText: 'Please select expense',
+                                    labelStyle: TextStyle(
+                                        color: Colors.green),
+                                    hintStyle: TextStyle(
+                                        color: Colors.white),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(
+                                        color: Colors.blueAccent,
+                                      ),
+                                    ),
+                                  ),
+                                  isEmpty: _currentSelectedValue == '',
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      icon: Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color:  Colors.blueAccent,
+                                      ),
+                                      hint: Text(
+                                        'Please select status',
+                                        style: TextStyle(
+                                            color: Colors.blue),
+                                      ),
+                                      value: _currentSelectedValue,
+                                      isDense: true,
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _currentSelectedValue = newValue!;
+                                          state.didChange(newValue);
+                                          setState(() {
+                                            //_selectedValueIndex = index;
+                                            if (_currentSelectedValue == "Draft") {
+                                              poList = temppoList
+                                                  .where((item) => item["PO_Status"]
+                                                  .toLowerCase()
+                                                  .contains("Draft".toLowerCase()))
+                                                  .toList();
+                                              //customerTicketData(Recordlength, selectedType, Status, searchText);
+                                            }
+                                            if (_currentSelectedValue == "In Process") {
+                                              setState(() {
+                                                poList = temppoList
+                                                    .where((item) => item["PO_Status"]
+                                                    .toLowerCase().contains("RSM_Approved".toLowerCase()) ||
+                                                    item["PO_Status"].toLowerCase().contains("Reject".toLowerCase())||
+                                                    item["PO_Status"].toLowerCase().contains("RSM Approval".toLowerCase())||
+                                                    item["PO_Status"].toLowerCase().contains("Hold".toLowerCase())||
+                                                    item["PO_Status"].toLowerCase().contains("1".toLowerCase()))
+                                                    .toList();
+                                                // isDateVisible = false;
+                                                //  customerTicketData(Recordlength, selectedType, Status, searchText);
+                                              });
+
+                                            }
+                                            if (_currentSelectedValue == "Completed") {
+                                              poList = temppoList
+                                                  .where((item) => item["PO_Status"]
+                                                  .toLowerCase().contains("....Demoo".toLowerCase()) )
+                                                  .toList();
+
+                                              //customerTicketData(Recordlength, selectedType, Status, searchText);
+                                            }
+                                          });
+                                        });
+                                      },
+                                      items: _currencies.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text("${value} (${poList.length})"),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding:  EdgeInsets.only(left: 5, right: 10),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {});
+                              if (isVisible == true) {
+                                isVisible = false;
+                              } else {
+                                isVisible = true;
+                              }
+                            },
+                            child: Container(
+                              //width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(12)),
+                                border:
+                                Border.all(color: Colors.black, width: 1.1),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                  padding:  EdgeInsets.all(11.0),
+                                  child: Icon(Icons.date_range)),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+/*
+                    //Button Details
                   Row(
                     children: [
                       ...List.generate(
@@ -274,7 +411,7 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                         ),
                       )
                     ],
-                  ),
+                  ),*/
                   SizedBox(
                     height: 5,
                   ),
@@ -432,7 +569,8 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                             "Hold"
                                                             ?Colors.blue:poList[index]['PO_Status'] ==
                                                             "Reject"
-                                                            ?Colors.orange:Colors.yellow,
+                                                            ?Colors.orange:poList[index]['PO_Status'] ==
+                                                            "1"?Colors.green:Colors.yellow,
                                                         width: 3.0,
                                                       ),
                                                     ),
@@ -613,7 +751,8 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                               Flexible(
                                                                 child: Container(
                                                                   height: 25,
-                                                                   decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),color: poList[index]['PO_Status'] ==
+                                                                   decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
+                                                                     color: poList[index]['PO_Status'] ==
                                                                        "Draft"
                                                                        ? Colors
                                                                        .red:poList[index]['PO_Status'] ==
@@ -623,7 +762,9 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                        "Hold"
                                                                        ?Colors.blue:poList[index]['PO_Status'] ==
                                                                        "Reject"
-                                                                       ?Colors.orange:Colors.yellow,),
+                                                                       ?Colors.orange:poList[index]['PO_Status'] ==
+                                                                     "1"?Colors.green:Colors.yellow,
+                                                                   ),
 
                                                                     alignment:
                                                                         Alignment
@@ -635,7 +776,8 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
                                                                               left:
                                                                                   0),
                                                                       child: Text(
-                                                                          poList[index]['PO_Status'],
+                                                                          poList[index]['PO_Status'] ==
+                                                                              "RSM Approval"?"RSM Approval":poList[index]['PO_Status']=="RSM_Approved"?"Do Pending":poList[index]['PO_Status']=="HOld"?"Hold":poList[index]['PO_Status']=="1"?"DO Created":poList[index]['PO_Status'],
                                                                           style: TextStyle(
                                                                               color:/* poList[index]['PO_Status'] ==
                                                                                   "Draft"

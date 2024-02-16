@@ -12,6 +12,7 @@ import '../../../constant.dart';
 import '../../Screens/Employee management/add_employee.dart';
 import '../../Screens/Expense Management/empty_expense.dart';
 
+import 'PO/pendingPO.dart';
 import 'PO/purchaseOrderMainScreen.dart';
 import 'PendingGRN/pendingGRNMainScreen.dart';
 import 'Salse Return/SalseReturnMainScreen.dart';
@@ -27,6 +28,7 @@ class PRIMARY_SALES_MENU extends StatefulWidget {
 class _PRIMARY_SALES_MENUState extends State<PRIMARY_SALES_MENU> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,
@@ -81,6 +83,38 @@ class _PRIMARY_SALES_MENUState extends State<PRIMARY_SALES_MENU> {
                           leading:  Image(image: AssetImage('images/add-to-cart (1).png'),height: 40,width: 40,),
                           title: Text(
                             'Purchase Order',
+                            maxLines: 2,
+                            style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                          ),
+                          trailing:  Icon(Icons.arrow_forward_ios),
+                        ),
+                      ),
+                    ),
+                  ),
+                   SizedBox(
+                    height: 20.0,
+                  ),Material(
+                    elevation: 2.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        pendingPO().launch(context);
+                      },
+                      child: Container(
+                        width: context.width(),
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Color(0xFF7D6AEF),
+                              width: 3.0,
+                            ),
+                          ),
+                          color: Colors.white,
+                        ),
+                        child: ListTile(
+                          leading:  Image(image: AssetImage('images/add-to-cart (1).png'),height: 40,width: 40,),
+                          title: Text(
+                            'Pending Purchase Order',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),

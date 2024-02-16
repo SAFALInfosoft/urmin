@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:http/http.dart' as http;
 import '../../../GlobalComponents/PreferenceManager.dart';
 import '../../../constant.dart';
 import '../PendingGRN/summeryScreen.dart';
+import 'package:intl/intl.dart';
 
 class addNewOrderForPo extends StatefulWidget {
   addNewOrderForPo({Key? key}) : super(key: key);
@@ -33,7 +35,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   double GST = 0.0;
   double TCS = 0.0;
   late Item item;
-  List<Item> ArrayItem =[];
+  List<Item> ArrayItem = [];
   double total = 0.0;
   double CGST = 0.0;
   double SGST = 0.0;
@@ -42,6 +44,8 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   double Total_Other_discount_Amount = 0.0;
   double Total_Trade_discount_Amount = 0.0;
   double totalSchemeDiscountAmount = 0.0;
+  double Carton_weight = 0.0;
+  double unit_weight = 0.0;
 
   var Distributor_state_code;
 
@@ -49,7 +53,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
 
   double orderTotal = 0.0;
 
-  List<Object?>? itmval;
+  List<dynamic?> itmval = [];
 
   var TCS_Applicable;
 
@@ -58,10 +62,26 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   String selectedCetagory = '';
 
   List filterList = [];
-  List selectionItems=[];
+  List selectionItems = [];
 
   TextEditingController Parent_NameController = TextEditingController();
   TextEditingController SubCategory_NameController = TextEditingController();
+
+  List<Item> itemList = [];
+
+  Iterable<String> FieldString = [];
+
+  String? companyId, factoryId;
+
+  var UR_CODE;
+
+  Box? box;
+
+  double UnitWeight=0.0;
+  double CartonWeight=0.0;
+  double unitQantity=0.0;
+  double cartonQantity=0.0;
+  double boxQantity=0.0;
   openHiveBox() async {
     var box = await Hive.openBox('erpApiMainData');
     var bookmark = box.get('erpApiMainData');
@@ -96,8 +116,20 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
     log("??????????????????" + offlineItem.toList().toString());
   }
 
+  var list;
+  String formattedDate="";
+  String formattedDateTime="";
   @override
   void initState() {
+    DateTime now = DateTime.now();
+
+     formattedDate = DateFormat('yyyy-MM-dd').format(now);
+     formattedDateTime = DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(now);
+    print(formattedDate);
+     box = Hive.box('PO_OfflineJson');
+     Hive.openBox('PO_OfflineJson');
+     var List=box!.get('PO_OfflineJson');
+     log("POLISTJSON ${List}");
     CheckUserConnection().then((value) {
       if (ActiveConnection == true) {
       } else {
@@ -105,17 +137,36 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
       }
     });
     openHiveBox();
+    PreferenceManager.instance
+        .getStringValue("factoryId")
+        .then((value) => setState(() {
+              factoryId = value;
+              print("factoryId" + value);
+            }));
+    PreferenceManager.instance
+        .getStringValue("companyCode")
+        .then((value) => setState(() {
+              companyId = value;
+              print("companyId" + value);
+            }));
     openHiveBoxFORfshipmasterData();
     openHiveBoxFORITEMSData();
+    PreferenceManager.instance
+        .getStringValue("distributorId")
+        .then((value) => setState(() {
+              UR_CODE = value;
+              print("companyId" + value);
+            }));
+
     PreferenceManager.instance
         .getStringValue("companyStateCode")
         .then((value) => setState(() {
               companyStateCode = value;
               print(value);
             }));
-   // fpricelist();
+    // fpricelist();
     //fshipmaster();
-   // fitemmaster();
+    // fitemmaster();
     //var box = Hive.box('erpApiMainData');
     //var box=  Hive.openBox('erpApiMainData');
 
@@ -126,7 +177,6 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   bool ActiveConnection = false;
   String T = "";
 
-
   List<Map<String, dynamic>> cart = [];
   Future CheckUserConnection() async {
     try {
@@ -134,12 +184,14 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         setState(() {
           ActiveConnection = true;
+          kMainColor = Color(0xFF2957a4);
           T = "Turn off the data and repress again";
         });
       }
     } on SocketException catch (_) {
       setState(() {
         ActiveConnection = false;
+        kMainColor = Colors.red;
         T = "Turn On the data and repress again";
       });
     }
@@ -152,6 +204,8 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   var selectedWareHouse;
   @override
   Widget build(BuildContext context) {
+    CheckUserConnection();
+
     Set<String> uniqueValues = Set<String>();
     Set<String> uniqueValues2 = Set<String>();
     return Scaffold(
@@ -181,6 +235,61 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                   ),
                 ),
         ],
+      ),
+      drawer: SafeArea(
+        child: Drawer(
+          child: Column(
+            children: [
+              Card(
+                color: Colors.white,
+                elevation: 3,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)),
+                  child: Container(
+                    // height: 65,
+                    margin: EdgeInsets.symmetric(
+                        vertical: 8, horizontal: 8),
+                    child: ListTile(
+                      leading: Icon(CupertinoIcons.cart),
+                      title: Text("Cart Items ${itemList.length==0?"":itemList.length}"),
+                    ),
+                  )
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: itemList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Card(
+                        color: Colors.white,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Container(
+                    // height: 65,
+                    margin: EdgeInsets.symmetric(
+                    vertical: 8, horizontal: 8),
+                      child: ListTile(
+                        title: Text(itemList[index].it_name.toString()),
+                        subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("QTY: "+itemList[index].quantity.toString()),
+                            Text("UOM: "+itemList[index].UOM.toString()),
+                          ],
+                        ),
+                        onTap: () {
+                          // Handle tap on drawer item
+                          Navigator.pop(context); // Close the drawer
+                          // You can add additional functionality here when an item is tapped
+                        },
+                      ),
+                    ));
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,9 +382,21 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                   ),*/
                   Padding(
                     padding: EdgeInsets.all(5.0),
+                    child: CupertinoTextField(
+
+                      //controller: controller,
+                      readOnly: true,
+                      placeholder: "Item Count :- ${offlineItem.length}",
+                      placeholderStyle: TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
                     child: CupertinoSearchTextField(
                       //controller: controller,
                       onChanged: (value) {
+                        _controllers.clear();
                         setState(() {});
                         offlineItem = tempItem
                             .where((item) => item["Item_name"]
@@ -288,6 +409,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                       // autocorrect: true,
                     ),
                   ),
+
                   /*idLoading
                       ?  Center(child: CircularProgressIndicator())
                       :*/
@@ -311,7 +433,9 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                         ),
                         child: Column(
                           children: [
-                            SizedBox(height: 3,),
+                            SizedBox(
+                              height: 3,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -319,7 +443,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                   child: TextField(
                                     readOnly: true,
                                     decoration: InputDecoration(
-                                      label: Text("Billing Address"),
+                                        label: Text("Billing Address"),
                                         hintText: "Select Billing Address",
                                         border: InputBorder.none),
                                     style: TextStyle(
@@ -328,41 +452,45 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                     // decoration: InputDecoration(
                                   ),
                                 ),
-                                selectionItems.length > 1?
-                                PopupMenuButton(
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  onSelected: (value) {
-                                    setState(() {
-                                      var selectedItem = selectionItems.firstWhere((item) => item["Warehouse_Name"] == value
-                                      );
-                                      compneyNameController.text =
-                                          value.toString();
-                                      selectedWareHouse =
-                                      selectedItem["Warehouse_id"];
-                                      log(selectedWareHouse);
-                                    });
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    return selectionItems
-                                        .map<PopupMenuItem>((value) {
-                                      return PopupMenuItem(
-                                          height: 50,
-                                          value: value['Warehouse_Name'],
-                                          child: Row(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                EdgeInsets.only(left: 8.0),
-                                                child: Text(
-                                                    value['Warehouse_Name'],
-                                                    style:
-                                                    TextStyle(fontSize: 12)),
-                                              ),
-                                            ],
-                                          ));
-                                    }).toList();
-                                  },
-                                ):Container(),
+                                selectionItems.length > 1
+                                    ? PopupMenuButton(
+                                        icon: Icon(Icons.arrow_drop_down),
+                                        onSelected: (value) {
+                                          setState(() {
+                                            var selectedItem = selectionItems
+                                                .firstWhere((item) =>
+                                                    item["Warehouse_Name"] ==
+                                                    value);
+                                            compneyNameController.text =
+                                                value.toString();
+                                            selectedWareHouse =
+                                                selectedItem["Warehouse_id"];
+                                            log(selectedWareHouse);
+                                          });
+                                        },
+                                        itemBuilder: (BuildContext context) {
+                                          return selectionItems
+                                              .map<PopupMenuItem>((value) {
+                                            return PopupMenuItem(
+                                                height: 50,
+                                                value: value['Warehouse_Name'],
+                                                child: Row(
+                                                  children: [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: 8.0),
+                                                      child: Text(
+                                                          value[
+                                                              'Warehouse_Name'],
+                                                          style: TextStyle(
+                                                              fontSize: 12)),
+                                                    ),
+                                                  ],
+                                                ));
+                                          }).toList();
+                                        },
+                                      )
+                                    : Container(),
                               ],
                             ),
                             Divider(),
@@ -386,6 +514,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                   icon: Icon(Icons.arrow_drop_down),
                                   onSelected: (value) {
                                     setState(() {
+
                                       // var selectedItem = offlineItem.firstWhere(
                                       //       (item) => item["Parent_Name"] == value,
                                       // );
@@ -396,10 +525,11 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                     });
                                   },
                                   itemBuilder: (BuildContext context) {
-                                    offlineItem.sort((a, b) => a["Parent_Name"].compareTo(b["Parent_Name"]));
+                                    offlineItem.sort((a, b) => a["Parent_Name"]
+                                        .compareTo(b["Parent_Name"]));
                                     return offlineItem
                                         .where((value) => uniqueValues
-                                        .add(value["Parent_Name"]))
+                                            .add(value["Parent_Name"]))
                                         .map<PopupMenuItem>((value) {
                                       return PopupMenuItem(
                                           height: 50,
@@ -408,10 +538,11 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                             children: [
                                               Padding(
                                                 padding:
-                                                EdgeInsets.only(left: 8.0),
-                                                child: Text(value["Parent_Name"],
-                                                    style:
-                                                    TextStyle(fontSize: 12)),
+                                                    EdgeInsets.only(left: 8.0),
+                                                child: Text(
+                                                    value["Parent_Name"],
+                                                    style: TextStyle(
+                                                        fontSize: 12)),
                                               ),
                                             ],
                                           ));
@@ -423,7 +554,8 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                     readOnly: true,
                                     decoration: InputDecoration(
                                         label: Text(
-                                            SubCategory_NameController.text == ""
+                                            SubCategory_NameController.text ==
+                                                    ""
                                                 ? "Sub Category"
                                                 : ""),
                                         border: InputBorder.none),
@@ -447,21 +579,20 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                         // var selectedItem = offlineItem.firstWhere(
                                         //       (item) => item["Parent_Name"] == value,
                                         // );
-
+                                        _controllers.clear();
                                         if (SubCategory_NameController.text ==
                                             "") {
                                           SubCategory_NameController.text =
                                               value.toString();
                                           offlineItem = tempItem
                                               .where((item) => item[
-                                          "Category_Name"]
-                                              .toLowerCase()
-                                              .contains(
-                                              SubCategory_NameController
-                                                  .text
-                                                  .toLowerCase()))
+                                                      "Category_Name"]
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      SubCategory_NameController
+                                                          .text
+                                                          .toLowerCase()))
                                               .toList();
-
                                         } else {
                                           //  SubCategory_NameController.clear();
                                           offlineItem = tempItem;
@@ -472,13 +603,15 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                       });
                                     },
                                     itemBuilder: (BuildContext context) {
-                                      offlineItem.sort((a, b) => a["Category_Name"].compareTo(b["Category_Name"]));
+                                      offlineItem.sort((a, b) =>
+                                          a["Category_Name"]
+                                              .compareTo(b["Category_Name"]));
                                       return offlineItem
                                           .where((value) => uniqueValues2.add(
-                                          Parent_NameController.text ==
-                                              value["Parent_Name"]
-                                              ? value["Category_Name"]
-                                              : "No Data"))
+                                              Parent_NameController.text ==
+                                                      value["Parent_Name"]
+                                                  ? value["Category_Name"]
+                                                  : "No Data"))
                                           .map<PopupMenuItem>((value) {
                                         return PopupMenuItem(
                                             height: 50,
@@ -486,8 +619,8 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                             child: Row(
                                               children: [
                                                 Padding(
-                                                  padding:
-                                                  EdgeInsets.only(left: 8.0),
+                                                  padding: EdgeInsets.only(
+                                                      left: 8.0),
                                                   child: Text(
                                                       value["Category_Name"],
                                                       style: TextStyle(
@@ -501,14 +634,14 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                     },
                                   ),
                                 ),
-
                                 InkWell(
                                     onTap: () {
                                       setState(() {});
                                       SubCategory_NameController.clear();
                                       Parent_NameController.clear();
                                       offlineItem = tempItem;
-                                      offlineItem.sort((a, b) => a["Item_name"].compareTo(b["Item_name"]));
+                                      offlineItem.sort((a, b) => a["Item_name"]
+                                          .compareTo(b["Item_name"]));
                                     },
                                     child: Icon(CupertinoIcons.delete))
                               ],
@@ -522,13 +655,13 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                       child: offlineItem == [] || offlineItem == null
                           ? CircularProgressIndicator()
                           : ListView.builder(
-
                               itemCount:
                                   offlineItem == null || offlineItem == []
                                       ? 0
                                       : offlineItem.length,
                               itemBuilder: (ctx, itemIndex) {
-                                offlineItem.sort((a, b) => a["Item_name"].compareTo(b["Item_name"]));
+                                offlineItem.sort((a, b) =>
+                                    a["Item_name"].compareTo(b["Item_name"]));
                                 // _controllers.clear();
                                 for (int i = 0; i < offlineItem!.length; i++) {
                                   if (offlineItem != null) {
@@ -646,9 +779,14 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                                         itemIndex],
                                                     onChanged:
                                                         (String? newValue) {
+                                                      _controllers[itemIndex]
+                                                          .clear();
                                                       setState(() {
-                                                        dropdownValue0[itemIndex] = newValue!;
-                                                       log (dropdownValue0[itemIndex]);
+                                                        dropdownValue0[
+                                                                itemIndex] =
+                                                            newValue!;
+                                                        log(dropdownValue0[
+                                                            itemIndex]);
                                                       });
                                                     },
                                                     items: <String>[
@@ -687,231 +825,376 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                                   onChanged: (value) async {
                                                     String str = value;
                                                     if (value == '') {
-                                                      value = '0';
+                                                      print(
+                                                          'removed!! ${itemList.map((e) => e.UOM)}');
+                                                      print(
+                                                          'removed 11 !! ${itemList.map((e) => e.quantity)}');
+                                                      itemList.removeWhere((element) =>
+                                                          (element.itemCode == offlineItem[itemIndex]["Item_id"]) &&
+                                                          (element.UOM == dropdownValue0[itemIndex]));
+                                                      print('removed!! ${itemList.map((e) => e.UOM)}');
+                                                      print('removed 11 !! ${itemList.map((e) => e.quantity)}');
+
+                                                      log("FieldString" +
+                                                          FieldString
+                                                              .toString() +
+                                                          "itemList langth" +
+                                                          itemList.length
+                                                              .toString());
+                                                      log("itemList langth" +
+                                                          itemList.length
+                                                              .toString());
                                                     }
-                                                    if (value != "" ||
-                                                        value != null) {
-                                                      log(str.toString());
-                                                      int qty = int.parse(str);
-                                                      // cartArray.add(offlineItem[
-                                                      //     itemIndex]);
-                                                      // cart.add(offlineItem[
-                                                      //     itemIndex]);
-                                                      log("CartArray" +
-                                                          cart.toString());
-                                                      log(dropdownValue0[itemIndex]);
+                                                    if (value.isNotEmpty) {
 
-                                                      var scdc = offlineItem[
-                                                                      itemIndex]
-                                                                  [
-                                                                  'Trade_Disc'] ==
-                                                              ""
-                                                          ? 0.0
-                                                          : offlineItem[
-                                                                      itemIndex]
-                                                                  [
-                                                                  'Trade_Disc'] ==
-                                                              "";
-                                                      var scmdc = offlineItem[
-                                                                      itemIndex]
-                                                                  [
-                                                                  'Scheme_Disc'] ==
-                                                              ""
-                                                          ? 0.0
-                                                          : offlineItem[
-                                                                      itemIndex]
-                                                                  [
-                                                                  'Scheme_Disc'] ==
-                                                              "";
-                                                      var otrdc = offlineItem[
-                                                                      itemIndex]
-                                                                  [
-                                                                  'Other_Disc'] ==
-                                                              ""
-                                                          ? 0.0
-                                                          : offlineItem[
-                                                                      itemIndex]
-                                                                  [
-                                                                  'Other_Disc'] ==
-                                                              "";
-                                                      double WSP = double.parse(
-                                                          offlineItem[itemIndex]
-                                                              ['WSP']);
-                                                      double Tax_Rate =
-                                                          double.parse(offlineItem[itemIndex]['Tax_Rate']);
-                                                      double Unit_Per_Carton =
-                                                          double.parse(offlineItem[
-                                                                  itemIndex][
-                                                              'Unit_Per_Carton']);
-                                                      double Unit_Per_Box = double
-                                                          .parse(offlineItem[
-                                                                  itemIndex]
-                                                              ['Unit_Per_Box']);
-                                                      double Scheme_Disc =
-                                                          double.parse(
-                                                              scmdc.toString());
-                                                      double Trade_Disc =
-                                                          double.parse(
-                                                              scdc.toString());
-                                                      double Other_Disc =
-                                                          double.parse(
-                                                              otrdc.toString());
-                                                      log("WSP" +
-                                                          WSP.toString());
-                                                      item = Item(
-                                                        itemCode: offlineItem[itemIndex]['Item_id'],
-                                                        UOM:dropdownValue0[itemIndex],
-                                                        wspRate: WSP,
-                                                        gstPer: Tax_Rate,
-                                                        priceCalc: offlineItem[itemIndex]['Price_Calc'],
-                                                        unitPerCarton: Unit_Per_Carton,
-                                                        quantity: qty,
-                                                        unitPerBox: Unit_Per_Box,
-                                                        schemeDisc: Scheme_Disc,
-                                                        tradeDisc: Trade_Disc,
-                                                        otherDisc: Other_Disc,
-                                                      );
-                                                      ArrayItem.clear();
-                                                      ArrayItem.add(item);
+                                                        log(str.toString());
+                                                        int qty =
+                                                        int.parse(value);
+                                                        // cartArray.add(offlineItem[
+                                                        //     itemIndex]);
+                                                        // cart.add(offlineItem[
+                                                        //     itemIndex]);
+                                                        log("CartArray" +
+                                                            cart.toString());
+                                                        log(dropdownValue0[
+                                                        itemIndex]);
+                                                        var scdc = offlineItem[
+                                                        itemIndex]
+                                                        [
+                                                        'Trade_Disc'] ==
+                                                            ""
+                                                            ? 0.0
+                                                            : offlineItem[
+                                                        itemIndex]
+                                                        ['Trade_Disc'];
+                                                        var scmdc = offlineItem[
+                                                        itemIndex]
+                                                        [
+                                                        'Scheme_Disc'] ==
+                                                            ""
+                                                            ? 0.0
+                                                            : offlineItem[
+                                                        itemIndex]
+                                                        ['Scheme_Disc'];
+                                                        var otrdc = offlineItem[
+                                                        itemIndex]
+                                                        [
+                                                        'Other_Disc'] ==
+                                                            ""
+                                                            ? 0.0
+                                                            : offlineItem[
+                                                        itemIndex]
+                                                        ['Other_Disc'];
+                                                        double WSP = double.parse(
+                                                            offlineItem[itemIndex]
+                                                            ['WSP']);
+                                                        double Tax_Rate =
+                                                        double.parse(
+                                                            offlineItem[
+                                                            itemIndex]
+                                                            ['Tax_Rate']);
+                                                        double Unit_Per_Carton =
+                                                        double.parse(offlineItem[
+                                                        itemIndex][
+                                                        'Unit_Per_Carton']);
+                                                        double Unit_Per_Box = double
+                                                            .parse(offlineItem[
+                                                        itemIndex]
+                                                        ['Unit_Per_Box']);
+                                                        double Scheme_Disc =
+                                                        double.parse(
+                                                            scmdc.toString());
+                                                        double Trade_Disc =
+                                                        double.parse(
+                                                            scdc.toString());
+                                                        double Other_Disc =
+                                                        double.parse(
+                                                            otrdc.toString());
+                                                        double Weight_Per_Carton =
+                                                        double.parse(offlineItem[
+                                                        itemIndex]
+                                                        [
+                                                        'Weight_Per_Carton']
+                                                            .toString());
+                                                        double MRP = double.parse(
+                                                            offlineItem[itemIndex]
+                                                            ['MRP']
+                                                                .toString());
+                                                        double Weight_Per_Unit =
+                                                        double.parse(offlineItem[
+                                                        itemIndex]
+                                                        [
+                                                        'Weight_Per_Unit']
+                                                            .toString());
+                                                        log("WSP" +
+                                                            WSP.toString());
+                                                        Item item = Item(
+                                                          itemCode: offlineItem[
+                                                          itemIndex]
+                                                          ['Item_id'],
+                                                          it_name: offlineItem[
+                                                          itemIndex]
+                                                          ['Item_name'],
+                                                          UOM: dropdownValue0[
+                                                          itemIndex],
+                                                          rate: MRP,
+                                                          wspRate: WSP,
+                                                          gstPer: Tax_Rate,
+                                                          priceCalc: offlineItem[
+                                                          itemIndex]
+                                                          ['Price_Calc'],
+                                                          unitPerCarton:
+                                                          Unit_Per_Carton,
+                                                          Weight_Per_Carton:
+                                                          Weight_Per_Carton,
+                                                          Weight_Per_Unit:
+                                                          Weight_Per_Unit,
+                                                          quantity: qty,
+                                                          HSN_CODE: offlineItem[
+                                                          itemIndex]['HSN'],
+                                                          unitPerBox:
+                                                          Unit_Per_Box,
+                                                          schemeDisc: Scheme_Disc,
+                                                          tradeDisc: Trade_Disc,
+                                                          otherDisc: Other_Disc,
+                                                          total: total,
+                                                          totalSchemeDiscountAmount:
+                                                          totalSchemeDiscountAmount,
+                                                          Total_Trade_discount_Amount:
+                                                          Total_Trade_discount_Amount,
+                                                          Total_Other_discount_Amount:
+                                                          Total_Other_discount_Amount,
+                                                          TotalAfterDiscount:
+                                                          TotalAfterDiscount,
+                                                          GST: GST,
+                                                          SGST: SGST,
+                                                          IGST: IGST,
+                                                          CGST: CGST,
+                                                          TCS: TCS,
+                                                          UnitWeight:UnitWeight,
+                                                          CartonWeight:CartonWeight,
+                                                            boxQantity:boxQantity,
+                                                            cartonQantity:cartonQantity,
+                                                            unitQantity:unitQantity
+                                                        );
+                                                        item.UOM =dropdownValue0[itemIndex];
 
-                                                      //   SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                      //   prefs.setStringList("cartProducts", item as List<String>);
-                                                      // var cartProducts= prefs.getStringList("cartProducts");
-                                                      // setState(() {
-                                                      //  var listItems = cartProducts;
-                                                      //  log(listItems);
-                                                      // });
+                                                        //   SharedPreferences prefs = await SharedPreferences.getInstance();
+                                                        //   prefs.setStringList("cartProducts", item as List<String>);
 
-                                                      for (int i = 0; i < ArrayItem.length; i++) {
-                                                        print('Index ${[i]}');
-                                                      }
-                                                      log(ArrayItem[0].toString());
-                                                      itmval = [
-                                                        item.itemCode,
-                                                        item.wspRate,
-                                                        item.gstPer,
-                                                        item.priceCalc,
-                                                        item.unitPerCarton,
-                                                        item.quantity,
-                                                        item.unitPerBox,
-                                                        item.schemeDisc,
-                                                        item.tradeDisc,
-                                                        item.otherDisc
-                                                      ];
+                                                        /*var box = Hive.box('PO_OfflineJson');
+                                                      box.put('added_itemjsonData', itmval);
+                                                      await Hive.openBox('added_itemjsonData');
+                                                      var List=box.get('added_itemjsonData');
+                                                      log(List);*/
 
-                                                      total = calculateTotal(item);
-                                                      if(item.UOM.toString()=="Carton") {
-                                                        totalSchemeDiscountAmount = (item
-                                                                    .quantity! *
-                                                                item.unitPerCarton! /
-                                                                item.unitPerBox! *
-                                                                item.schemeDisc!) ??
-                                                            0;
-                                                        Total_Trade_discount_Amount = (item
-                                                                    .quantity! *
-                                                                item.unitPerCarton! /
-                                                                item.unitPerBox! *
-                                                                item.tradeDisc!) ??
-                                                            0;
-                                                        Total_Other_discount_Amount = (item
-                                                                    .quantity! *
-                                                                item.unitPerCarton! /
-                                                                item.unitPerBox! *
-                                                                item.otherDisc!) ??
-                                                            0;
-                                                      }else{
-                                                        totalSchemeDiscountAmount = (item
-                                                            .quantity! *
-                                                            item.unitPerCarton! /
-                                                            item.unitPerBox! *
-                                                            item.schemeDisc!) ??
-                                                            0;
-                                                        Total_Trade_discount_Amount = (item
-                                                            .quantity! *
-                                                            item.unitPerCarton! /
-                                                            item.unitPerBox! *
-                                                            item.tradeDisc!) ??
-                                                            0;
-                                                        Total_Other_discount_Amount = (item
-                                                            .quantity! *
-                                                            item.unitPerCarton! /
-                                                            item.unitPerBox! *
-                                                            item.otherDisc!) ??
-                                                            0;
-                                                      }
-                                                      TotalAfterDiscount =
-                                                          calculateTotalAfterDiscount(
-                                                              item);
+                                                        total = calculateTotal(item);
+                                                       unitQantity = calculateUnitQuantity(item);
+                                                       cartonQantity= calculateCartonQuantity(item);
+                                                       boxQantity= calculateBoxQuantity(item);
+                                                        CartonWeight=  calculateCartonWeight(item);
+                                                        UnitWeight= calculateUnitWeight(item);
+                                                        if (item.UOM.toString() ==
+                                                            "Carton") {
+                                                          Carton_weight = (item
+                                                              .quantity! *
+                                                              item.Weight_Per_Carton!);
+                                                          unit_weight = ((item
+                                                              .quantity! *
+                                                              item.unitPerCarton!) *
+                                                              item.Weight_Per_Unit!);
+                                                        } else {
+                                                          Carton_weight = ((item
+                                                              .quantity! /
+                                                              item.unitPerCarton!) *
+                                                              item.Weight_Per_Carton!);
+                                                          unit_weight = ((item
+                                                              .quantity! *
+                                                              item.Weight_Per_Unit!));
+                                                        }
 
-                                                      var GST1 =
-                                                          calculateGstCharge(
-                                                              item);
-                                                      GST = double.parse(GST1
-                                                          .toStringAsFixed(2));
-                                                      // IGST = calculateIGSTAmount(item,item.gstPer);
-                                                      // log("IGST"+IGST.toString());
-                                                      // CGST = calculateCGSTAmount(item,item.gstPer);
-                                                      // SGST = calculateSGSTAmount(item,item.gstPer);
-                                                      log("companyStateCode ${companyStateCode} Distributor_state_code ${Distributor_state_code}");
+                                                        if (item.UOM.toString() ==
+                                                            "Carton") {
+                                                          totalSchemeDiscountAmount = (item
+                                                              .quantity! *
+                                                              item.unitPerCarton! /
+                                                              item.unitPerBox! *
+                                                              item.schemeDisc!) ??
+                                                              0;
+                                                          Total_Trade_discount_Amount = (item
+                                                              .quantity! *
+                                                              item.unitPerCarton! /
+                                                              item.unitPerBox! *
+                                                              item.tradeDisc!) ??
+                                                              0;
+                                                          Total_Other_discount_Amount = (item
+                                                              .quantity! *
+                                                              item.unitPerCarton! /
+                                                              item.unitPerBox! *
+                                                              item.otherDisc!) ??
+                                                              0;
+                                                        } else {
+                                                          totalSchemeDiscountAmount = (item
+                                                              .quantity! /
+                                                              item.unitPerBox! *
+                                                              item.schemeDisc!) ??
+                                                              0;
+                                                          Total_Trade_discount_Amount = (item
+                                                              .quantity! /
+                                                              item.unitPerBox! *
+                                                              item.tradeDisc!) ??
+                                                              0;
+                                                          Total_Other_discount_Amount = (item
+                                                              .quantity! /
+                                                              item.unitPerBox! *
+                                                              item.otherDisc!) ??
+                                                              0;
+                                                        }
+                                                        TotalAfterDiscount =
+                                                            calculateTotalAfterDiscount(
+                                                                item);
 
-                                                      if (companyStateCode == Distributor_state_code || (Distributor_state_code == "24" && companyStateCode == "24")) {
-                                                        log("CGST---SGST");
-                                                        CGST = calculateCGSTAmount(item, item.gstPer);
-                                                        CGST = double.parse(CGST.toStringAsFixed(2));
-                                                        SGST = calculateSGSTAmount(item, item.gstPer);
-                                                        SGST = double.parse(SGST.toStringAsFixed(2));
-                                                        log("CGST ${CGST}---SGST${SGST}");
-                                                        TCS = calculateRowTCS(totalSchemeDiscountAmount, Total_Trade_discount_Amount, Total_Other_discount_Amount, SGST, CGST, IGST);
-                                                        TCS = double.parse(
-                                                            TCS.toStringAsFixed(
-                                                                2));
-                                                        calculateOrderTotal(
-                                                            totalSchemeDiscountAmount,
-                                                            Total_Trade_discount_Amount,
-                                                            Total_Other_discount_Amount,
-                                                            SGST,
-                                                            CGST,
-                                                            IGST);
-                                                      } else {
-                                                        log("IGST");
-                                                        IGST =
-                                                            calculateIGSTAmount(
-                                                                item,
-                                                                item.gstPer);
-                                                        IGST = double.parse(IGST
-                                                            .toStringAsFixed(
-                                                                2));
-                                                        log("IGST" +
-                                                            IGST.toString());
-                                                        if (TCS_Applicable ==
-                                                            "Yes") {
-                                                          TCS = calculateRowTCS(
+                                                        var GST1 =
+                                                        calculateGstCharge(
+                                                            item,
+                                                            item.gstPer);
+                                                        GST = double.parse(GST1
+                                                            .toStringAsFixed(2));
+
+                                                        log("companyStateCode ${companyStateCode} Distributor_state_code ${Distributor_state_code}");
+
+                                                        if (companyStateCode ==
+                                                            Distributor_state_code ||
+                                                            (Distributor_state_code ==
+                                                                "24" &&
+                                                                companyStateCode ==
+                                                                    "24")) {
+                                                          log("CGST---SGST");
+                                                          CGST =
+                                                              calculateGstCharge(
+                                                                  item,
+                                                                  item.gstPer);
+                                                          CGST = double.parse(CGST
+                                                              .toStringAsFixed(
+                                                              2));
+                                                          SGST =
+                                                              calculateGstCharge(
+                                                                  item,
+                                                                  item.gstPer);
+                                                          SGST = double.parse(SGST
+                                                              .toStringAsFixed(
+                                                              2));
+                                                          log("CGST ${CGST}---SGST${SGST}");
+                                                          if (TCS_Applicable ==
+                                                              "Yes") {
+                                                            TCS = calculateRowTCS(
+                                                                totalSchemeDiscountAmount,
+                                                                Total_Trade_discount_Amount,
+                                                                Total_Other_discount_Amount,
+                                                                SGST,
+                                                                CGST,
+                                                                IGST);
+                                                            TCS = double.parse(
+                                                                TCS.toString());
+                                                          }
+                                                          calculateOrderTotal(
                                                               totalSchemeDiscountAmount,
                                                               Total_Trade_discount_Amount,
                                                               Total_Other_discount_Amount,
                                                               SGST,
                                                               CGST,
                                                               IGST);
-                                                          log("TCS" +
-                                                              TCS.toString());
+                                                        } else {
+                                                          log("IGST");
+                                                          IGST =
+                                                              calculateIGSTAmount(
+                                                                  item,
+                                                                  item.gstPer);
+                                                          IGST = double.parse(IGST
+                                                              .toStringAsFixed(
+                                                              2));
+                                                          log("TCS_Applicable" +
+                                                              TCS_Applicable
+                                                                  .toString());
+                                                          if (TCS_Applicable ==
+                                                              "Yes") {
+                                                            TCS = calculateRowTCS(
+                                                                totalSchemeDiscountAmount,
+                                                                Total_Trade_discount_Amount,
+                                                                Total_Other_discount_Amount,
+                                                                SGST,
+                                                                CGST,
+                                                                IGST);
+                                                            log("TCS" +
+                                                                TCS.toString());
+                                                          }
+                                                          orderTotal = calculateOrderTotal(
+                                                              totalSchemeDiscountAmount,
+                                                              Total_Trade_discount_Amount,
+                                                              Total_Other_discount_Amount,
+                                                              SGST,
+                                                              CGST,
+                                                              IGST);
+                                                          log(orderTotal);
+                                                          //orderTotal= double.parse(orderTotal.toStringAsFixed(2));
+
+                                                          //CGST = calculateCGSTAmount(item,item.gstPer);
+                                                          //SGST = calculateSGSTAmount(item,item.gstPer);
+                                                          //log("SGST"+SGST.toString());
+                                                          //log("CGST"+CGST.toString());
                                                         }
-                                                        orderTotal = calculateOrderTotal(
-                                                            totalSchemeDiscountAmount,
-                                                            Total_Trade_discount_Amount,
-                                                            Total_Other_discount_Amount,
-                                                            SGST,
-                                                            CGST,
-                                                            IGST);
-                                                        log(orderTotal);
-                                                        //orderTotal= double.parse(orderTotal.toStringAsFixed(2));
+                                                        setState(() {
+                                                          item.total = total;
+                                                          item.totalSchemeDiscountAmount = totalSchemeDiscountAmount;
+                                                          item.Total_Trade_discount_Amount = Total_Trade_discount_Amount;
+                                                          item.Total_Other_discount_Amount = Total_Other_discount_Amount;
+                                                          item.TotalAfterDiscount = TotalAfterDiscount;
+                                                          item.GST = GST;
+                                                          item.SGST = SGST;
+                                                          item.IGST = IGST;
+                                                          item.CGST = CGST;
+                                                          item.TCS = TCS;
+                                                          item.UOM=dropdownValue0[itemIndex];
+                                                          item.UnitWeight=unit_weight;
+                                                          item.CartonWeight=unit_weight;
+                                                          item.unitQantity=unitQantity;
+                                                          item.cartonQantity=cartonQantity;
+                                                          item.boxQantity=boxQantity;
+                                                        });
 
-                                                        //CGST = calculateCGSTAmount(item,item.gstPer);
-                                                        //SGST = calculateSGSTAmount(item,item.gstPer);
-                                                        //log("SGST"+SGST.toString());
-                                                        //log("CGST"+CGST.toString());
+                                                        if ((itemList.indexWhere((element) =>
+                                                        element
+                                                            .itemCode ==
+                                                            offlineItem[
+                                                            itemIndex]
+                                                            [
+                                                            "Item_id"]) !=
+                                                            -1) &&
+                                                            (itemList.indexWhere(
+                                                                    (element) =>
+                                                                element.UOM == dropdownValue0[itemIndex])) !=
+                                                                -1) {
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].quantity = int.parse(value);
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].total = total;
+
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].totalSchemeDiscountAmount = totalSchemeDiscountAmount;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Trade_discount_Amount = Total_Trade_discount_Amount;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Other_discount_Amount = Total_Other_discount_Amount;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].TotalAfterDiscount = TotalAfterDiscount;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].GST = GST;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].SGST = SGST;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].IGST = IGST;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].CGST = CGST;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].TCS = TCS;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].UnitWeight = UnitWeight;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].CartonWeight = CartonWeight;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].unitQantity = unitQantity;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].cartonQantity = cartonQantity;
+                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].boxQantity = boxQantity;
+                                                        } else {
+                                                          itemList.add(item);
+                                                        }
                                                       }
-
-                                                    }
                                                   },
                                                   inputFormatters: [
                                                     FilteringTextInputFormatter
@@ -926,257 +1209,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                     ),
                                   ),
                                 );
-                              })
-                      /*FutureBuilder(
-                              future: DefaultAssetBundle.of(context)
-                                  .loadString('images/Results.json'),
-                              builder: (context, snapshot) {
-                                // Decode the JSON
-                                var newData = json.decode(snapshot.data.toString());
-                                return ListView.builder(
-                                    itemCount: newData == null ? 0 : newData.length,
-                                    itemBuilder: (ctx, itemIndex) {
-                                     // _controllers.clear();
-                                      for (int i = 0;
-                                          i < newData!.length;
-                                          i++) {
-                                        if (newData != null) {
-                                          _controllers.add(TextEditingController(
-                                              */ /* text: fpricelist_Items[i].qty.toString() == '0'
-                                        ? ''
-                                        : fpricelist_Items[i].qty.toString()*/ /*
-                                              ));
-                                          _controllers[i].selection =
-                                              TextSelection.fromPosition(TextPosition(offset: _controllers[i].text.length));
-                                        }
-                                      }
-                                      return Card(
-                                        color: Colors.white,
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Container(
-                                          // height: 65,
-                                          margin:  EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 8),
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: <Widget>[
-                                                  Container(
-                                                    width: 60,
-                                                    height: 60,
-                                                    decoration: BoxDecoration(
-                                                        image:  DecorationImage(
-                                                            image: NetworkImage(
-                                                                "https://urminstore.com/pub/media/catalog/product/cache/835e48150b5844ff4116c639e4c3d879/f/a/farali-tikha-front.jpg")),
-                                                        border: Border.all(
-                                                            color: Colors.grey,
-                                                            width: 1),
-                                                        borderRadius:
-                                                             BorderRadius
-                                                                .all(
-                                                                Radius.circular(
-                                                                    10))),
-                                                  ),
-                                                  Expanded(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        Padding(
-                                                          padding:
-                                                               EdgeInsets
-                                                                  .only(
-                                                                  left: 10,
-                                                                  right: 0),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: <Widget>[
-                                                              Flexible(
-                                                                child: Text(
-                                                                    newData[itemIndex]
-                                                                        [
-                                                                        'it_name'],
-                                                                    style:  TextStyle(
-                                                                        fontSize:
-                                                                            14,
-                                                                        fontWeight:
-                                                                            FontWeight.bold)),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                         EdgeInsets.only(
-                                                            left: 10,
-                                                            right: 7,
-                                                            top: 5),
-                                                    child: Text(
-                                                      '\u{20B9} ${newData[itemIndex]['rate']}',
-                                                      style:  TextStyle(
-                                                          fontSize: 15),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Container(
-                                                margin:
-                                                     EdgeInsets.symmetric(
-                                                        vertical: 2,
-                                                        horizontal: 5),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Flexible(
-                                                      child:
-                                                          DropdownButtonHideUnderline(
-                                                        child:
-                                                            DropdownButtonFormField(
-                                                          decoration:
-                                                               InputDecoration
-                                                                  .collapsed(
-                                                                  hintText: ''),
-
-                                                          // decoration: InputDecoration(
-                                                          //   enabledBorder: OutlineInputBorder(
-                                                          //     //<-- SEE HERE
-                                                          //     borderSide: BorderSide(color: Colors.black,),
-                                                          //   ),
-                                                          //   focusedBorder: OutlineInputBorder(
-                                                          //     //<-- SEE HERE
-                                                          //     borderSide: BorderSide(color: Colors.black,),
-                                                          //   ),
-                                                          //   filled: true,
-                                                          //   // fillColor: Colors.white,
-                                                          // ),
-                                                          // dropdownColor: Colors.white,
-                                                          value: dropdownValue0,
-                                                          onChanged: (String?
-                                                              newValue) {
-                                                            setState(() {
-                                                              dropdownValue0 =
-                                                                  newValue!;
-                                                            });
-                                                          },
-                                                          items: <String>[
-                                                            'Carton',
-                                                            'Unit'
-                                                          ].map<
-                                                              DropdownMenuItem<
-                                                                  String>>((String
-                                                              value) {
-                                                            return DropdownMenuItem<
-                                                                String>(
-                                                              value: value,
-                                                              child: Text(
-                                                                value,
-                                                                style:
-                                                                     TextStyle(),
-                                                              ),
-                                                            );
-                                                          }).toList(),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                     SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Flexible(
-                                                      child: TextFormField(
-                                                        controller: _controllers[itemIndex],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        decoration:
-                                                             InputDecoration(
-                                                          enabled: true,
-                                                          border:
-                                                              InputBorder.none,
-                                                          // enabledBorder: OutlineInputBorder(),
-                                                          // labelText: 'Nos',
-                                                          hintText: 'Nos',
-                                                        ),
-                                                        onChanged: (value){
-                                                          String str = value;
-                                                          int qty = int.parse(str);
-                                                           item = Item(
-                                                            itemCode: newData[itemIndex]['IT_CODE'],
-                                                            wspRate: newData[itemIndex]['Wsp_rate'],
-                                                            gstPer: newData[itemIndex]['GST_PER'],
-                                                            priceCalc: newData[itemIndex]['Price_Calc'],
-                                                            unitPerCarton: newData[itemIndex]['Unit_Per_Carton'],
-                                                            quantity: qty,
-                                                            unitPerBox: newData[itemIndex]['Unit_Per_Box'],
-                                                            schemeDisc: 0.0,
-                                                            tradeDisc:0.0,
-                                                            otherDisc: 0.0,
-                                                          );
-                                                            itmval=[item.itemCode,item.wspRate,item.gstPer,item.priceCalc,item.unitPerCarton,item.quantity,item.unitPerBox,item.schemeDisc,item.tradeDisc,item.otherDisc];
-
-                                                           total = calculateTotal(item);
-                                                           totalSchemeDiscountAmount = (item.quantity!* item.unitPerCarton! /item.unitPerBox! * item.schemeDisc!) ?? 0;
-                                                           Total_Trade_discount_Amount  = (item.quantity!* item.unitPerCarton! /item.unitPerBox! * item.tradeDisc!) ?? 0;
-                                                           Total_Other_discount_Amount  = (item.quantity!* item.unitPerCarton! /item.unitPerBox! * item.otherDisc!) ?? 0;
-                                                           TotalAfterDiscount= calculateTotalAfterDiscount(item);
-
-                                                           GST = calculateGstCharge(item);
-                                                          // IGST = calculateIGSTAmount(item,item.gstPer);
-                                                          // log("IGST"+IGST.toString());
-                                                          // CGST = calculateCGSTAmount(item,item.gstPer);
-                                                          // SGST = calculateSGSTAmount(item,item.gstPer);
-                                                           log("companyStateCode ${companyStateCode} Distributor_state_code ${Distributor_state_code}");
-
-                                                           if(companyStateCode==Distributor_state_code||(Distributor_state_code=="24"&&companyStateCode=="24")){
-                                                             log("CGST---SGST");
-                                                             CGST = calculateCGSTAmount(item,item.gstPer);
-                                                             SGST = calculateSGSTAmount(item,item.gstPer);
-                                                             TCS=  calculateRowTCS(totalSchemeDiscountAmount,Total_Trade_discount_Amount,Total_Other_discount_Amount,SGST,CGST,IGST);
-                                                             log("TCS"+TCS.toString());
-                                                             calculateOrderTotal(totalSchemeDiscountAmount,Total_Trade_discount_Amount,Total_Other_discount_Amount,SGST,CGST,IGST);
-                                                           }else{
-                                                             log("IGST");
-                                                             IGST = calculateIGSTAmount(item,item.gstPer);
-                                                             log("IGST"+IGST.toString());
-                                                             TCS=  calculateRowTCS(totalSchemeDiscountAmount,Total_Trade_discount_Amount,Total_Other_discount_Amount,SGST,CGST,IGST);
-                                                             log("TCS"+TCS.toString());
-                                                             orderTotal= calculateOrderTotal(totalSchemeDiscountAmount,Total_Trade_discount_Amount,Total_Other_discount_Amount,SGST,CGST,IGST);
-                                                             log(orderTotal);
-                                                             //CGST = calculateCGSTAmount(item,item.gstPer);
-                                                             //SGST = calculateSGSTAmount(item,item.gstPer);
-                                                             //log("SGST"+SGST.toString());
-                                                             //log("CGST"+CGST.toString());
-                                                           }
-                                                        },
-                                                        inputFormatters: [
-                                                          FilteringTextInputFormatter
-                                                              .digitsOnly
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    });
-                              }),*/
-                      ),
+                              })),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
@@ -1185,51 +1218,180 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(CupertinoIcons.cart,color: Colors.white,),
-                                SizedBox(width: 5,),
+                                Icon(
+                                  CupertinoIcons.cart,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
                                 Text('Add to cart',
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.white)),
                               ],
                             ),
                             onPressed: () {
-                              /*showModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  Item item = Item(
-                                    itemCode: 'ac72bcee66c0630b38a71e45fde76e76',
-                                    wspRate: 31.03,
-                                    gstPer: 12.0,
-                                    priceCalc: 'box',
-                                    unitPerCarton: 6120.0,
-                                    quantity: 10,
-                                    unitPerBox: 60.0,
-                                    schemeDisc: 0.0,
-                                    tradeDisc: 0.0,
-                                    otherDisc: 0.0,
-                                  );
-                                  double gstCharge = calculateGstCharge(item);
-                                  double total = calculateTotal(item);
-                                  return Wrap(
-                                    children: [
-                                      ListTile(
-                                        leading: Text('Total'),
-                                        title: Text(total.toString()),
-                                      ),
-                                      ListTile(
-                                        leading: Text('GST'),
-                                        title: Text(gstCharge.toString()),
-                                      ),
-                                      ListTile(
-                                        leading: Text('Share'),
-                                        title: Text('Share'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );*/
-                              showSummaryDialog();
-                            },
+                              if(selectedWareHouse!=""&&itemList.length != 0) {
+                                var totalofwsp = 0.0;
+                                double totalofIgst = 0.0;
+                                double totalofcgst = 0.0;
+                                double totalofsgst = 0.0;
+                                double totalofgst = 0.0;
+                                double totalofScemeDiscount = 0.0;
+                                double totaloftredDiscount = 0.0;
+                                double totalofotherDiscount = 0.0;
+                                double totalOrderValue = 0.0;
+                                double totalOFtcs = 0.0;
+                                double temp_roundoff = 0.0;
+                                double roundOff = 0.0;
+                                double totalCarton = 0.0;
+                                double total = 0.0;
+                                var LocalFieldString;
+                                setState(() {
+                                  for (var item in itemList) {
+                                    totalofcgst += item.CGST!;
+                                    totalofsgst += item.SGST!;
+                                    totalofIgst += item.IGST!;
+                                    if (item.UOM == "Carton") {
+                                      //totalCarton = item.UOM!.length as double;
+                                    } else {
+                                      // totalCarton = item.UOM!.length as double;
+                                    }
+                                    totalofScemeDiscount +=
+                                    item.totalSchemeDiscountAmount!;
+                                    totaloftredDiscount +=
+                                    item.Total_Trade_discount_Amount!;
+                                    totalofotherDiscount +=
+                                    item.Total_Other_discount_Amount!;
+                                    totalOFtcs += item.TCS!;
+                                    totalofgst =
+                                        totalofcgst + totalofsgst + totalofIgst;
+
+                                    totalofwsp += item.total;
+                                    totalOrderValue = totalofwsp -
+                                        (totalofScemeDiscount +
+                                            totaloftredDiscount +
+                                            totalofotherDiscount) +
+                                        totalOFtcs +
+                                        totalofcgst +
+                                        totalofsgst +
+                                        totalofIgst;
+                                    roundOff =
+                                        totalofwsp + totalofgst + totalOFtcs;
+                                    log(roundOff);
+                                    double value = roundOff;
+                                    double decimalPart = getDecimalPart(value);
+                                    log("RoundOffValue" +
+                                        decimalPart.toString());
+
+                                    if (decimalPart < 0.5) {
+                                      temp_roundoff = decimalPart;
+                                    } else {
+                                      temp_roundoff = 1 - decimalPart;
+                                    }
+                                    log("Final Round off" +
+                                        temp_roundoff.toString());
+                                  }
+                                  log("totalCarton" + totalCarton.toString());
+                                  //FieldString=  itemList.map((e) => "{'${"CO_CODE"}':'${companyId}', '${"UR_CODE"}':'${UR_CODE}', '${"cur_date"}':'${""}', ${"cur_time"}:'${""}', ${"URN_NO"}:'${""}','${"IT_CODE"}': '${e.itemCode}', '${"it_name"}':'${e.it_name}', '${"rate"}':${e.rate}, UOM: '${e.UOM}', quantity: ${e. quantity}, '${"total"}':${e.total}, '${"Wsp_rate"}': ${e.wspRate}, GST_PER: ${e.gstPer}, GST_Charge: ${e.GST},Unit_Per_Box: ${e.unitPerBox}, Unit_Per_Carton: ${e.unitPerCarton}, Weight_Per_Unit: ${e.Weight_Per_Unit},Weight_Per_Carton: ${e.Weight_Per_Carton}, Carton_quantity: '${""}', Box_quantity: '${""}', Unit_quantity: '${""}', Price_Calc: ${e. priceCalc}, Carton_weight: ${e.HSN_CODE}, Unit_weight: '${""}', CGST: '${e.gstPer!/2}', SGST: '${e.gstPer!/2}', IGST: '${e.gstPer!}', Scheme_discount: ${e.schemeDisc}, Trade_Disc: ${e.tradeDisc}, Other_Disc: ${e. otherDisc}, CGST_Amount: ${e.CGST}, SGST_Amount: ${e.SGST}, IGST_Amount: ${e.IGST}, Total_scheme_discount_Amount: ${e.totalSchemeDiscountAmount}, Total_Trade_discount_Amount: ${e.Total_Trade_discount_Amount}, Total_Other_discount_Amount: ${e.Total_Other_discount_Amount}, TCS:'${e.TCS}', HSN_CODE: ${e.HSN_CODE}, Freight_Amt: ${e.Freight_Amt??0.0}, Std_Amt: ${e.Std_Amt??0.0}, NCC_Duty: ${e.NCC_Duty??"0"}, total_after_discount: ${TotalAfterDiscount} }");
+                                  FieldString = itemList.map((e) =>
+                                  '{"${"CO_CODE"}":"${companyId}", "${"UR_CODE"}":"${UR_CODE}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}","${"URN_NO"}": "${""}","${"IT_CODE"}": "${e
+                                      .itemCode}", "${"it_name"}":"${e
+                                      .it_name}", "${"rate"}":"${e
+                                      .rate}", "${"UOM"}": "${e
+                                      .UOM}", "${"quantity"}": "${e
+                                      .quantity}", "${"total"}":"${e
+                                      .total}", "${"Wsp_rate"}": "${e
+                                      .wspRate}", "${"GST_PER"}": "${e
+                                      .gstPer}", "${"GST_Charge"}": "${e
+                                      .GST}","${"Unit_Per_Box"}": "${e
+                                      .unitPerBox}", "${"Unit_Per_Carton"}": "${e
+                                      .unitPerCarton}", "${"Weight_Per_Unit"}": "${e
+                                      .Weight_Per_Unit}","${"Weight_Per_Carton"}": "${e
+                                      .Weight_Per_Carton}", "${"Carton_quantity"}": "${e
+                                      .cartonQantity}", "${"Box_quantity"}": "${e
+                                      .boxQantity}", "${"Unit_quantity"}": "${e
+                                      .unitQantity}", "${"Price_Calc"}": "${e
+                                      .priceCalc}", "${"Carton_weight"}": "${e
+                                      .CartonWeight}", "${"Unit_weight"}": "${e
+                                      .UnitWeight}", "${"CGST"}": "${e.gstPer! /
+                                      2}", "${"SGST"}": "${e.gstPer! /
+                                      2}", "${"IGST"}": "${e
+                                      .gstPer!}", "${"Scheme_discount"}": "${e
+                                      .schemeDisc}", "${"Trade_Disc"}": "${e
+                                      .tradeDisc}", "${"Other_Disc"}": "${e
+                                      .otherDisc}", "${"CGST_Amount"}": "${e
+                                      .CGST}", "${"SGST_Amount"}": "${e
+                                      .SGST}", "${"IGST_Amount"}": "${e
+                                      .IGST}", "${"Total_scheme_discount_Amount"}": "${e
+                                      .totalSchemeDiscountAmount}", "${"Total_Trade_discount_Amount"}": "${e
+                                      .Total_Trade_discount_Amount}", "${"Total_Other_discount_Amount"}": "${e
+                                      .Total_Other_discount_Amount}", "${"TCS"}":"${e
+                                      .TCS}", "${"HSN_CODE"}": "${e
+                                      .HSN_CODE}", "${"Freight_Amt"}": "${e
+                                      .Freight_Amt ??
+                                      0.0}", "${"Std_Amt"}": "${e.Std_Amt ??
+                                      0.0}", "${"NCC_Duty"}": "${e.NCC_Duty ??
+                                      "0"}", "${"total_after_discount"}": "${TotalAfterDiscount}" }');
+                                  String stringWithoutParentheses =
+                                  FieldString.toString()
+                                      .replaceAll('(', '')
+                                      .replaceAll(')', '');
+                                  log("stringWithoutParentheses" +
+                                      stringWithoutParentheses.toString());
+                                  //var LocalFieldString = "[{'${"CO_CODE"}':'${companyId}', '${"UR_CODE"}':'${UR_CODE}', '${"Factory_id"}':'${factoryId}', '${"business_id"}':'${""}', '${"cur_date"}':'${""}', '${"cur_time"}':'${""}', '${"URN_NO"}':${"1"}, ${"billing_address"}:'${selectedWareHouse}', ${"SR_NO"}:'${""}', ${"Remarks_dealer"}: '${""}', ${"Remarks_rsm"}:'${""}', ${"PO_Status"}:${"RSM_Approval"}, ${"Fyear"}:'${"2023-2024"}', ${"Round_Off"}:'${temp_roundoff}', ${"Order_Total"}:'${totalOrderValue}', ${"Reason"}:'${""}', ${"shipping_address"}:'${selectedWareHouse}', ${"PO_approval_date"}:'${""}', ${"ERP_URN"}:'${""}', ${"DO_NO"}:'${""}', ${"Do_Date"}:'${""}',Item: [${stringWithoutParentheses.toString()}]}]";
+                                  LocalFieldString =
+                                  '{"${"CO_CODE"}":"${companyId}", "${"UR_CODE"}":"${UR_CODE}", "${"Factory_id"}":"${factoryId}", "${"business_id"}":"${""}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}", "${"URN_NO"}":"${""}", "${"billing_address"}":"${selectedWareHouse}", "${"SR_NO"}":"${""}", "${"Remarks_dealer"}": "${""}", "${"Remarks_rsm"}":"${""}", "${"PO_Status"}":"${"RSM Approval"}", "${"Fyear"}":"${"2023-2024"}", "${"Round_Off"}":"${temp_roundoff}", "${"Order_Total"}":"${totalOrderValue}", "${"Reason"}":"${""}", "${"shipping_address"}":"${selectedWareHouse}", "${"PO_approval_date"}":"${""}", "${"ERP_URN"}":"${""}", "${"DO_NO"}":"${""}", "${"Do_Date"}":"${""}","${"Item"}": [${stringWithoutParentheses
+                                      .toString()}]}';
+                                  log(LocalFieldString);
+                                  log("FieldString" +
+                                      FieldString.toString() +
+                                      "itemList langth" +
+                                      itemList.length.toString());
+                                  log(itemList.length.toString());
+                                });
+
+                                showSummaryDialog(
+                                    totalofcgst,
+                                    totalofsgst,
+                                    totalofIgst,
+                                    totalofgst,
+                                    totalofwsp,
+                                    totalOrderValue,
+                                    temp_roundoff,
+                                    LocalFieldString);
+                              }else{
+                                if(selectedWareHouse==""){
+                                  Fluttertoast.showToast(
+                                      msg: "Please Select Billing Address!",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      backgroundColor: Colors.red,
+                                      timeInSecForIosWeb: 1,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }else if(itemList.length == 0){
+                                  Fluttertoast.showToast(
+                                      msg: "Please Add item in cart for place order!",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      backgroundColor: Colors.red,
+                                      timeInSecForIosWeb: 1,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }else{
+                                  Fluttertoast.showToast(
+                                      msg: "Please Select Billing Address and Add item in cart for place order!",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.CENTER,
+                                      backgroundColor: Colors.red,
+                                      timeInSecForIosWeb: 1,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+
+                              }
+                              },
                             style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStatePropertyAll(kMainColor)),
@@ -1243,150 +1405,205 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
     );
   }
 
+  double getDecimalPart(double value) {
+    // Convert the double to a string and split it using the decimal point
+    List<String> parts = value.toString().split('.');
+
+    // If the double has no decimal part, return 0
+    if (parts.length != 2) {
+      return 0.0;
+    }
+
+    // Parse the decimal part and return it as a double
+    double decimal = double.parse('0.${parts[1]}');
+    return decimal;
+  }
+
   double calculateRowTCS(totalSchemeDiscountAmount, Total_Trade_discount_Amount,
       Total_Other_discount_Amount, sgstAmount, cgstAmount, igstAmount) {
-    double rowTCS = (total - totalSchemeDiscountAmount -
-            Total_Trade_discount_Amount -
-            Total_Other_discount_Amount +
+    double rowTCS = (total -
+            (totalSchemeDiscountAmount +
+                Total_Trade_discount_Amount +
+                Total_Other_discount_Amount) +
             sgstAmount +
             cgstAmount +
             igstAmount) *
         0.001;
 
-    return rowTCS.roundToDouble();
+    return rowTCS;
+  }
+  double calculateCartonWeight(Item item) {
+    if (item.UOM.toString() ==
+        "Carton") {
+
+    return (item.quantity!  * item.Weight_Per_Carton!).roundToDouble();
+    } else {
+      return ((item.quantity! / item.unitPerCarton!) * item.Weight_Per_Carton!).roundToDouble();
+    }
+
   }
 
+  double calculateUnitWeight(Item item) {
+    if (item.UOM.toString() ==
+        "Carton") {
+      return ((item.quantity! * item.Weight_Per_Carton!)*item.Weight_Per_Unit! ).roundToDouble();
+    } else {
+      return (item.quantity! * item.Weight_Per_Unit!).roundToDouble();
+    }
+  }
+  double calculateCartonQuantity(Item item) {
+    if (item.UOM.toString() ==
+        "Carton") {
+      return item.quantity!.roundToDouble();
+    } else {
+      //panding
+      return (item.quantity! / item.unitPerCarton!).roundToDouble();
+    }
+
+  }
+
+  double calculateBoxQuantity(Item item) {
+    if (item.UOM.toString() ==
+        "Carton") {
+      return ((item.quantity! * item.unitPerCarton!) / item.unitPerBox!);
+    } else {
+      //pending
+      return (item.quantity! * item.unitPerBox!).roundToDouble();
+    }
+  }
+
+  double calculateUnitQuantity(Item item) {
+    if (item.UOM.toString() ==
+        "Carton") {
+      return (item.quantity! * item.unitPerCarton!);
+    } else {
+      //pending
+      return (item.quantity!).roundToDouble();
+    }
+  }
+// Uom Done
   double calculateIGSTAmount(Item item, gstper) {
     double IGST = gstper / 100;
     log(IGST.toString());
-    if(item.UOM.toString()=="Carton") {
+    if (item.UOM.toString() == "Carton") {
       if (item.priceCalc == 'unit') {
-      double baseAmount = ((((item.unitPerCarton! *
-                      item.quantity! *
-                      item.wspRate!) -
-                  ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      item.schemeDisc!) -
-                  ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      item.tradeDisc!) -
-                  ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      item.otherDisc!)) *
-              gstper!) /
-          100);
-      return baseAmount > 0 ? baseAmount : 0;
-    } else if (item.priceCalc == 'box') {
-      double baseAmount =
-          (((((item.quantity! * item.unitPerCarton! / item.unitPerBox!) -
-                          item.schemeDisc!) -
-                      item.tradeDisc! -
-                      item.otherDisc!) *
-                  item.wspRate! *
-                  gstper) /
-              100);
-      return baseAmount > 0 ? baseAmount : 0;
-    } else {
-      return 0;
-    }}else{
-      if (item.priceCalc == 'unit') {
-        double baseAmount = ((((
-            item.quantity! *
-            item.wspRate!) -
-            ((item.quantity!  / item.unitPerBox!) *
-                item.schemeDisc!) +
-            ((item.quantity!  / item.unitPerBox!) *
-                item.tradeDisc!) +
-            ((item.quantity! / item.unitPerBox!) *
-                item.otherDisc!)) *
-            gstper!) /
+        double baseAmount = ((((item.unitPerCarton! *
+                        item.quantity! *
+                        item.wspRate!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.schemeDisc!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.tradeDisc!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.otherDisc!)) *
+                gstper!) /
             100);
         return baseAmount > 0 ? baseAmount : 0;
+      } else if (item.priceCalc == 'box') {
+        double baseAmount =
+            (((((item.quantity! * item.unitPerCarton! / item.unitPerBox!) -
+                            item.schemeDisc!) -
+                        item.tradeDisc! -
+                        item.otherDisc!) *
+                    item.wspRate! *
+                    gstper) /
+                100);
+        return baseAmount > 0 ? baseAmount : 0;
+      } else {
+        return 0;
       }
-      else if (item.priceCalc == 'box') {
-        double baseAmount = ((((
-            (item.quantity!/item.unitPerBox! )* item.wspRate!) -
-            ((item.quantity!  / item.unitPerBox!) *
-                item.schemeDisc!) +
-            ((item.quantity!  / item.unitPerBox!) *
-                item.tradeDisc!) +
-            ((item.quantity! / item.unitPerBox!) *
-                item.otherDisc!)) *
-            gstper!) /
+    } else {
+      if (item.priceCalc == 'unit') {
+        double baseAmount = ((((item.quantity! * item.wspRate!) -
+                    ((item.quantity! / item.unitPerBox!) * item.schemeDisc!) +
+                    ((item.quantity! / item.unitPerBox!) * item.tradeDisc!) +
+                    ((item.quantity! / item.unitPerBox!) * item.otherDisc!)) *
+                gstper!) /
             100);
         return baseAmount > 0 ? baseAmount : 0;
-         } else {
+      } else if (item.priceCalc == 'box') {
+        double baseAmount = (((((item.quantity! / item.unitPerBox!) *
+                        item.wspRate!) -
+                    ((item.quantity! / item.unitPerBox!) * item.schemeDisc!) +
+                    ((item.quantity! / item.unitPerBox!) * item.tradeDisc!) +
+                    ((item.quantity! / item.unitPerBox!) * item.otherDisc!)) *
+                gstper!) /
+            100);
+        return baseAmount > 0 ? baseAmount : 0;
+      } else {
         return 0;
       }
     }
   }
 
+// Uom Done
   double calculateSGSTAmount(Item item, gstper) {
-    double Sgst = gstper / 2;
-    if(item.UOM.toString()=="Carton") {
-
-      if (item.priceCalc == 'unit') {
-      double baseAmount = (item.unitPerCarton! *
-              item.quantity! *
-              item.wspRate!) -
-          (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      (item.schemeDisc ?? 0) +
-                  (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      (item.tradeDisc ?? 0) +
-                  (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      (item.otherDisc ?? 0)) *
-              Sgst /
-              100);
-      return baseAmount > 0 ? baseAmount : 0;
-    }
-      else if (item.priceCalc == 'box') {
-      double baseAmount =
-          (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      item.wspRate!) -
-                  ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                              (item.schemeDisc ?? 0) +
-                          (item.quantity! *
-                                  item.unitPerCarton! /
-                                  item.unitPerBox!) *
-                              (item.tradeDisc ?? 0) +
-                          (item.quantity! *
-                                  item.unitPerCarton! /
-                                  item.unitPerBox!) *
-                              (item.otherDisc ?? 0)) *
-                      Sgst /
-                      100) ??
-              0;
-      return baseAmount > 0 ? baseAmount : 0;
-    } else {
-      return 0;
-    }}else{
+    var Sgst = gstper / 2;
+    if (item.UOM.toString() == "Carton") {
       if (item.priceCalc == 'unit') {
         double baseAmount = (item.unitPerCarton! *
-            item.quantity! *
-            item.wspRate!) -
+                item.quantity! *
+                item.wspRate!) -
             (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                (item.schemeDisc ?? 0) +
-                (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                    (item.tradeDisc ?? 0) +
-                (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                    (item.otherDisc ?? 0)) *
+                        (item.schemeDisc ?? 0) +
+                    (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        (item.tradeDisc ?? 0) +
+                    (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        (item.otherDisc ?? 0)) *
                 Sgst /
                 100);
         return baseAmount > 0 ? baseAmount : 0;
-      }
-      else if (item.priceCalc == 'box') {
+      } else if (item.priceCalc == 'box') {
         double baseAmount =
             (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.wspRate!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                                (item.schemeDisc ?? 0) +
+                            (item.quantity! *
+                                    item.unitPerCarton! /
+                                    item.unitPerBox!) *
+                                (item.tradeDisc ?? 0) +
+                            (item.quantity! *
+                                    item.unitPerCarton! /
+                                    item.unitPerBox!) *
+                                (item.otherDisc ?? 0)) *
+                        Sgst /
+                        100) ??
+                0;
+        return baseAmount > 0 ? baseAmount : 0;
+      } else {
+        return 0;
+      }
+    } else {
+      if (item.priceCalc == 'unit') {
+        double baseAmount = (item.unitPerCarton! *
+                item.quantity! *
                 item.wspRate!) -
-                ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                    (item.schemeDisc ?? 0) +
-                    (item.quantity! *
-                        item.unitPerCarton! /
-                        item.unitPerBox!) *
+            (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        (item.schemeDisc ?? 0) +
+                    (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
                         (item.tradeDisc ?? 0) +
-                    (item.quantity! *
-                        item.unitPerCarton! /
-                        item.unitPerBox!) *
+                    (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
                         (item.otherDisc ?? 0)) *
-                    Sgst /
-                    100) ??
+                Sgst /
+                100);
+        return baseAmount > 0 ? baseAmount : 0;
+      } else if (item.priceCalc == 'box') {
+        double baseAmount =
+            (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.wspRate!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                                (item.schemeDisc ?? 0) +
+                            (item.quantity! *
+                                    item.unitPerCarton! /
+                                    item.unitPerBox!) *
+                                (item.tradeDisc ?? 0) +
+                            (item.quantity! *
+                                    item.unitPerCarton! /
+                                    item.unitPerBox!) *
+                                (item.otherDisc ?? 0)) *
+                        Sgst /
+                        100) ??
                 0;
         return baseAmount > 0 ? baseAmount : 0;
       } else {
@@ -1395,60 +1612,67 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
     }
   }
 
+// Uom Done
   double calculateCGSTAmount(Item item, gstper) {
-    double Cgst = gstper / 2;
-    log("gstper" + gstper.toString() + "Cgst" + Cgst.toString());
-    if(item.UOM.toString()=="Carton") {
+    var Cgst = gstper / 2;
+    log(Cgst);
+    if (item.UOM.toString() == "Carton") {
       if (item.priceCalc == 'unit') {
-      double baseAmount = ((((item.unitPerCarton! * item.quantity! * item.wspRate!) -
-          ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-              item.schemeDisc!) -
-          ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-              item.tradeDisc!) -
-          ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-              item.otherDisc!)) *
-          item.gstPer!) /
-          100);
-      return baseAmount > 0 ? baseAmount : 0;
-    } else if (item.priceCalc == 'box') {
-      double baseAmount =
-          (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                      item.wspRate!) -
-                  ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                              (item.schemeDisc ?? 0) +
-                          (item.quantity! *
-                                  item.unitPerCarton! /
-                                  item.unitPerBox!) *
-                              (item.tradeDisc ?? 0) +
-                          (item.quantity! *
-                                  item.unitPerCarton! /
-                                  item.unitPerBox!) *
-                              (item.otherDisc ?? 0)) *
-                      Cgst /
-                      100) ??
-              0;
-      return baseAmount > 0 ? baseAmount : 0;
+        double baseAmount = ((((item.unitPerCarton! *
+                        item.quantity! *
+                        item.wspRate!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.schemeDisc!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.tradeDisc!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.otherDisc!)) *
+                Cgst) /
+            100);
+        return baseAmount > 0 ? baseAmount : 0;
+      } else if (item.priceCalc == 'box') {
+        double baseAmount =
+            (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.wspRate!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                                (item.schemeDisc ?? 0) +
+                            (item.quantity! *
+                                    item.unitPerCarton! /
+                                    item.unitPerBox!) *
+                                (item.tradeDisc ?? 0) +
+                            (item.quantity! *
+                                    item.unitPerCarton! /
+                                    item.unitPerBox!) *
+                                (item.otherDisc ?? 0)) *
+                        Cgst /
+                        100) ??
+                0;
+        return baseAmount > 0 ? baseAmount : 0;
+      } else {
+        return 0;
+      }
     } else {
-      return 0;
-    }}
-    else{
       if (item.priceCalc == 'unit') {
-        log (item.quantity! * item.wspRate!);
-        log ((item.quantity! / item.unitPerBox!) * (item.schemeDisc ?? 0));
+        log(item.quantity! * item.wspRate!);
+        log((item.quantity!) * (item.schemeDisc ?? 0));
         double baseAmount = (item.quantity! * item.wspRate!) -
             ((((item.quantity! / item.unitPerBox!) * (item.schemeDisc ?? 0)) +
-                ((item.quantity!/ item.unitPerBox!) * (item.tradeDisc ?? 0)) +
-                ((item.quantity! / item.unitPerBox!) * (item.otherDisc ?? 0))) *
-                (Cgst /
-                100));
+                    ((item.quantity! / item.unitPerBox!) *
+                        (item.tradeDisc ?? 0)) +
+                    ((item.quantity! / item.unitPerBox!) *
+                        (item.otherDisc ?? 0))) *
+                (Cgst / 100));
         return baseAmount > 0 ? baseAmount : 0;
       } else if (item.priceCalc == 'box') {
         double baseAmount =
             (((item.quantity! / item.unitPerBox!) * item.wspRate!) -
-                (((item.quantity!  / item.unitPerBox!) * (item.schemeDisc ?? 0)) +
-                    ((item.quantity!  / item.unitPerBox!) * (item.tradeDisc ?? 0)) +
-                    ((item.quantity!  / item.unitPerBox!) * (item.otherDisc ?? 0))) *
-                    (Cgst / 100)) ??
+                    (((item.quantity! / item.unitPerBox!) *
+                                (item.schemeDisc ?? 0)) +
+                            ((item.quantity! / item.unitPerBox!) *
+                                (item.tradeDisc ?? 0)) +
+                            ((item.quantity! / item.unitPerBox!) *
+                                (item.otherDisc ?? 0))) *
+                        (Cgst / 100)) ??
                 0;
         return baseAmount > 0 ? baseAmount : 0;
       } else {
@@ -1457,8 +1681,9 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
     }
   }
 
+// Uom Done
   double calculateTotalAfterDiscount(Item item) {
-    if(item.UOM.toString()=="Carton") {
+    if (item.UOM.toString() == "Carton") {
       if (item.priceCalc == 'unit') {
         double baseAmount =
             (item.unitPerCarton! * item.quantity! * item.wspRate!) -
@@ -1483,12 +1708,12 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
       } else {
         return 0;
       }
-    }else{
+    } else {
       if (item.priceCalc == 'unit') {
         double baseAmount =
             (item.unitPerCarton! * item.quantity! * item.wspRate!) -
                 ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                    (item.schemeDisc ?? 0) +
+                        (item.schemeDisc ?? 0) +
                     (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
                         (item.tradeDisc ?? 0) +
                     (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
@@ -1497,9 +1722,9 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
       } else if (item.priceCalc == 'box') {
         double baseAmount =
             ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                item.wspRate!) -
+                    item.wspRate!) -
                 ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                    (item.schemeDisc ?? 0) +
+                        (item.schemeDisc ?? 0) +
                     (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
                         (item.tradeDisc ?? 0) +
                     (item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
@@ -1511,63 +1736,54 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
     }
   }
 
-  double calculateGstCharge(Item item) {
+// Uom Done
+  double calculateGstCharge(Item item, gstper) {
+    var Cgst = gstper / 2;
     double gstCharge;
-    if(item.UOM.toString()=="Carton") {
+    if (item.UOM.toString() == "Carton") {
       if (item.priceCalc == 'unit') {
         gstCharge = ((((item.unitPerCarton! * item.quantity! * item.wspRate!) -
-            ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                item.schemeDisc!) -
-            ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                item.tradeDisc!) -
-            ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
-                item.otherDisc!)) *
-            item.gstPer!) /
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.schemeDisc!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.tradeDisc!) -
+                    ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+                        item.otherDisc!)) *
+                Cgst) /
             100);
-      }
-      else if (item.priceCalc == 'box') {
+      } else if (item.priceCalc == 'box') {
         gstCharge =
-        (((((item.quantity! * item.unitPerCarton! / item.unitPerBox!) -
-            item.schemeDisc!) -
-            item.tradeDisc! -
-            item.otherDisc!) *
-            item.wspRate! *
-            item.gstPer!) /
-            100);
-      }
-      else {
+            (((((item.quantity! * item.unitPerCarton! / item.unitPerBox!) -
+                            item.schemeDisc!) -
+                        item.tradeDisc! -
+                        item.otherDisc!) *
+                    item.wspRate! *
+                    Cgst) /
+                100);
+      } else {
         // Handle the case when priceCalc is neither 'unit' nor 'box'
         gstCharge =
-        0.0; // You may want to choose a default value or handle this case differently
+            0.0; // You may want to choose a default value or handle this case differently
       }
-    }else{
+    } else {
       if (item.priceCalc == 'unit') {
         gstCharge = ((((item.unitPerCarton! * item.wspRate!) -
-            ((item.quantity! / item.unitPerBox!) *
-                item.schemeDisc!) -
-            ((item.quantity!  / item.unitPerBox!) *
-                item.tradeDisc!) -
-            ((item.quantity! / item.unitPerBox!) *
-                item.otherDisc!)) *
-            item.gstPer!) /
+                    ((item.quantity! / item.unitPerBox!) * item.schemeDisc!) -
+                    ((item.quantity! / item.unitPerBox!) * item.tradeDisc!) -
+                    ((item.quantity! / item.unitPerBox!) * item.otherDisc!)) *
+                Cgst!) /
             100);
-      }
-      else if (item.priceCalc == 'box') {
-
-        gstCharge = (((((item.quantity!/item.unitPerBox!) * item.wspRate!) -
-            ((item.quantity! / item.unitPerBox!) *
-                item.schemeDisc!) +
-            ((item.quantity! / item.unitPerBox!) *
-                item.tradeDisc!) +
-            ((item.quantity! / item.unitPerBox!) *
-                item.otherDisc!)) *
-            item.gstPer!) /
+      } else if (item.priceCalc == 'box') {
+        gstCharge = (((((item.quantity! / item.unitPerBox!) * item.wspRate!) -
+                    ((item.quantity! / item.unitPerBox!) * item.schemeDisc!) +
+                    ((item.quantity! / item.unitPerBox!) * item.tradeDisc!) +
+                    ((item.quantity! / item.unitPerBox!) * item.otherDisc!)) *
+                Cgst!) /
             100);
-      }
-      else {
+      } else {
         // Handle the case when priceCalc is neither 'unit' nor 'box'
         gstCharge =
-        0.0; // You may want to choose a default value or handle this case differently
+            0.0; // You may want to choose a default value or handle this case differently
       }
     }
     return gstCharge;
@@ -1587,91 +1803,52 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
         cgstAmount +
         sgstAmount +
         igstAmount;
-
     return orderTotal;
   }
 
-  /* double calculateGstCharge(Item item,TotalAfterDiscount) {
-    double gstCharge;
-
-    if (item.priceCalc == 'unit') {
-      gstCharge = ((
-          ((item.unitPerCarton! * item.quantity! * item.wspRate!) -
-              ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) * item.schemeDisc!) -
-              ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) * item.tradeDisc!) -
-              ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) * item.otherDisc!)) *
-              item.gstPer!) /
-          100);
-    } else if (item.priceCalc == 'box') {
-      gstCharge = ((
-          (((item.quantity! * item.unitPerCarton! / item.unitPerBox!) - item.schemeDisc!) -
-              item.tradeDisc! -
-              item.otherDisc!) *
-              item.wspRate! *
-              item.gstPer!) /
-          100);
-    } else {
-      // Handle the case when priceCalc is neither 'unit' nor 'box'
-      gstCharge = 0.0; // You may want to choose a default value or handle this case differently
-    }
-
-    return gstCharge;
-  }*/
+  // Uom Done
   double calculateTotal(Item item) {
     double total;
     log(item.UOM.toString());
-    if(item.UOM.toString()=="Carton") {
+    if (item.UOM.toString() == "Carton") {
       log("Nakul");
       if (item.priceCalc == 'unit') {
         total = (item.unitPerCarton! * item.quantity! * item.wspRate!);
       } else if (item.priceCalc == 'box') {
-        total = ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) * item.wspRate!);
+        total = ((item.quantity! * item.unitPerCarton! / item.unitPerBox!) *
+            item.wspRate!);
       } else {
-        total = 0.0; // You may want to choose a default value or handle this case differently
+        total =
+            0.0; // You may want to choose a default value or handle this case differently
       }
-    }else{
+    } else {
       log("Nakul..........");
       if (item.priceCalc == 'unit') {
-        total = ( item.quantity! * item.wspRate!);
+        total = (item.quantity! * item.wspRate!);
       } else if (item.priceCalc == 'box') {
-        total = ((item.quantity!  / item.unitPerBox!) * item.wspRate!);
+        total = ((item.quantity! / item.unitPerBox!) * item.wspRate!);
       } else {
-        total = 0.0; // You may want to choose a default value or handle this case differently
+        total =
+            0.0; // You may want to choose a default value or handle this case differently
       }
     }
     return total;
   }
 
-  // double calculateTotal(priceCalc,unitPerCarton,quantity,wspRate,unitPerBox) {
-  //   double total;
-  //
-  //   if (priceCalc == 'unit') {
-  //     total = (unitPerCarton! * quantity! * wspRate!).roundToDouble();
-  //     var totall=total;
-  //     log("Total"+totall.toString());
-  //   } else if (priceCalc == 'box') {
-  //
-  //     total = ((quantity! * unitPerCarton! / unitPerBox!) * wspRate!).roundToDouble();
-  //     var totall=total;
-  //     log("Total"+totall.toString());
-  //   } else {
-  //     total = 0.0; // You may want to choose a default value or handle this case differently
-  //   }
-  //
-  //   return total;
-  // }
-  void showSummaryDialog() async {
+  void showSummaryDialog(totalofcgst, totalofsgst, totalofIgst, totalofgst,
+      totalofwsp, totalOrderValue, temp_roundoff,LocalFieldString) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) => OrderSummaryScreen(
-            total.toString(),
-            GST.toString(),
-            CGST.toString(),
-            SGST.toString(),
-            IGST.toString(),
+            totalofwsp.toString(),
+            totalofgst.toString(),
+            totalofcgst.toString(),
+            totalofsgst.toString(),
+            totalofIgst.toString(),
             TCS.toString(),
-            orderTotal,
-            itmval));
+            totalOrderValue,
+            itmval,
+            temp_roundoff,LocalFieldString));
   }
 
   openHiveBoxFORfshipmasterData() async {
@@ -1682,11 +1859,11 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
       if (key == 'docs') {
         debugPrint("DATA ${value[0]}");
         selectionItems = value;
-        print("selectionItems.length "+selectionItems.length.toString());
+        print("selectionItems.length " + selectionItems.length.toString());
         if (selectionItems.length == 1) {
           compneyNameController.text = selectionItems[0]['Warehouse_Name'];
-          selectedWareHouse=selectionItems[0]['Warehouse_id'];
-         // selectedCode = selectionItems[0]['Select_Value_Code'];
+          selectedWareHouse = selectionItems[0]['Warehouse_id'];
+          // selectedCode = selectionItems[0]['Select_Value_Code'];
         }
         log(selectionItems);
         // setState(() {
@@ -1928,6 +2105,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
 class Item {
   String? itemCode;
   String? it_name;
+  double? rate;
   String? UOM;
   String? NCC_Duty;
   double? wspRate;
@@ -1945,10 +2123,21 @@ class Item {
   double? tradeDisc;
   double? otherDisc;
   int? cgst;
+  dynamic total;
+  double? totalSchemeDiscountAmount;
+  double? Total_Trade_discount_Amount;
+  double? Total_Other_discount_Amount;
+  double? TotalAfterDiscount;
+  double? GST;
+  double? SGST;
+  double? IGST;
+  double? CGST;
+  double? TCS;double? CartonWeight;double? UnitWeight;double? unitQantity;double? cartonQantity;double? boxQantity;
 
   Item({
     this.itemCode,
     this.it_name,
+    this.rate,
     this.UOM,
     this.NCC_Duty,
     this.wspRate,
@@ -1966,6 +2155,46 @@ class Item {
     this.tradeDisc,
     this.otherDisc,
     this.cgst,
+    this.total,
+    this.CGST,
+    this.SGST,
+    this.IGST,
+    this.totalSchemeDiscountAmount,
+    this.TotalAfterDiscount,
+    this.Total_Other_discount_Amount,
+    this.Total_Trade_discount_Amount,
+    this.GST,
+    this.TCS,
+    this.CartonWeight,
+    this.UnitWeight,
+    this.boxQantity,
+    this.cartonQantity,
+    this.unitQantity
   });
-}
 
+  // Method to convert Item object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'itemCode': itemCode,
+      'it_name': it_name,
+      'rate': rate,
+      'UOM': UOM,
+      'NCC_Duty': NCC_Duty,
+      'wspRate': wspRate,
+      'gstPer': gstPer,
+      'priceCalc': priceCalc,
+      'HSN_CODE': HSN_CODE,
+      'unitPerCarton': unitPerCarton,
+      'Std_Amt': Std_Amt,
+      'Freight_Amt': Freight_Amt,
+      'Weight_Per_Unit': Weight_Per_Unit,
+      'Weight_Per_Carton': Weight_Per_Carton,
+      'quantity': quantity,
+      'unitPerBox': unitPerBox,
+      'schemeDisc': schemeDisc,
+      'tradeDisc': tradeDisc,
+      'otherDisc': otherDisc,
+      'cgst': cgst,
+    };
+  }
+}

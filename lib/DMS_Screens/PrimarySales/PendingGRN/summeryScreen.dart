@@ -6,6 +6,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../GlobalComponents/PreferenceManager.dart';
 import '../../../GlobalComponents/button_global.dart';
 import '../../../constant.dart';
+import '../PO/purchaseOrderMainScreen.dart';
 
 
 
@@ -17,8 +18,8 @@ class OrderSummaryScreen extends StatefulWidget {
 String total;
 String gstCharge,CGST,SGST,IGST,TCS;
 double orderTotal;
-var item;
-   OrderSummaryScreen( this.total, this.gstCharge,this.CGST,this.SGST,this.IGST,this.TCS,this.orderTotal,this.item,
+var item; double temp_roundoff; var LocalFieldString;
+   OrderSummaryScreen( this.total, this.gstCharge,this.CGST,this.SGST,this.IGST,this.TCS,this.orderTotal,this.item,this.temp_roundoff,this.LocalFieldString,
 
       {Key? key,
 
@@ -49,6 +50,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
 List selectionItems=[];
 
   var selectedWareHouse;
+  List<String>? existingData;
 
   int grandTotal=0;
 
@@ -91,31 +93,12 @@ List selectionItems=[];
       }
     });
   }
-  DropdownButton<String> getLeaveType() {
-    List<DropdownMenuItem<String>> dropDownItems = [];
-    for (String gender in paymentModes) {
-      var item = DropdownMenuItem(
-        value: gender,
-        child: Text(gender),
-      );
-      dropDownItems.add(item);
-    }
-    return DropdownButton(
-      items: dropDownItems,
-      value: purpose,
-      onChanged: (value) {
-        setState(() {
-          purpose = value!;
-        });
-      },
-    );
-  }
-
-  TextEditingController compneyNameController = TextEditingController();
+   TextEditingController compneyNameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    log("FieldString"+widget.item.toString());
     PreferenceManager.instance
         .getStringValue("companyStateCode")
         .then((value) => setState(() {
@@ -124,6 +107,7 @@ List selectionItems=[];
     }));
     openHiveBoxFORfshipmasterData();
     openHiveBox();
+    log((widget.item.length));
 //     for (var i = 0; i < widget.item.length; i++) {
 // log(i.toString());
 //     }
@@ -152,6 +136,7 @@ List selectionItems=[];
   }
   @override
   Widget build(BuildContext context) {
+
     return AlertDialog(
       title:  Text('Order Summary'),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
@@ -204,7 +189,27 @@ List selectionItems=[];
                   ),
                 ),
                 onTap: () =>
-                {/*widget.onSubmitCallBack(summary),*/ Navigator.pop(context)},
+                {
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                existingData = prefs.getStringList("POLISTJSON") ?? [];
+                // bool timeExists = existingData!.contains([{"CO_CODE":"1a36b22bdd89ffd361644e6ea06c2394", "UR_CODE":"50c60cdef1e5286ef69f0256ab03c577", "Factory_id":"8101b2c0a710849dc04f61cc3c07cb9a", "business_id":"", "cur_date":"", "cur_time":"", "URN_NO":1, "billing_address":"null", "SR_NO":"", "Remarks_dealer": "", "Remarks_rsm":"", "PO_Status":"RSM_Approval", "Fyear":"2023-2024", "Round_Off":"0.40486", "Order_Total":"3548.40486", "Reason":"", "shipping_address":"null", "PO_approval_date":"", "ERP_URN":"", "DO_NO":"", "Do_Date":"","Item": [{"CO_CODE":"1a36b22bdd89ffd361644e6ea06c2394", "UR_CODE":"50c60cdef1e5286ef69f0256ab03c577", "cur_date":"", "cur_time":"","URN_NO":"","IT_CODE": "0b51ad7a885d3218329fada00f5618b4", "it_name":"BAGHBAN BILAS REFRESH 1.8 GMS POUCH50+10FREE =60 POUCH", "rate":50.0, "UOM": "Carton", "quantity": 1, "total":3165.06, "Wsp_rate": 31.03, "GST_PER": 12.0, "GST_Charge": 189.9,"Unit_Per_Box": 60.0, "Unit_Per_Carton": 6120.0, "Weight_Per_Unit": 1.8,"Weight_Per_Carton": 13.77, "Carton_quantity": "", "Box_quantity": "", "Unit_quantity": "", "Price_Calc": box, "Carton_weight": 200819, "Unit_weight": "", "CGST": "6.0", "SGST": "6.0", "IGST": "12.0", "Scheme_discount": 0.0, "Trade_Disc": 0.0, "Other_Disc": 0.0, "CGST_Amount": 189.9, "SGST_Amount": 189.9, "IGST_Amount": 0.0, "Total_scheme_discount_Amount": 0.0, "Total_Trade_discount_Amount": 0.0, "Total_Other_discount_Amount": 0.0, "TCS":"3.5448600000000003", "HSN_CODE": 200819, "Freight_Amt": 0.0, "Std_Amt": 0.0, "NCC_Duty": 0, "total_after_discount": 3165.06 }]}]);
+                // log(timeExists);
+                // Add new entry (current time) to the existing data
+                existingData!.add(widget.LocalFieldString);
+
+                // Save the modified data back to SharedPreferences
+                prefs.setStringList("POLISTJSON", existingData!);
+                print(existingData!.length.toString());
+                Navigator.push(context,MaterialPageRoute(builder: (context) =>purchaseOrderMainScreen()));
+                Fluttertoast.showToast(
+                    msg: "Successfully PO added to cart",
+                    textColor: Colors.white,
+                    backgroundColor: Colors.green,
+                    gravity: ToastGravity.CENTER,
+                    toastLength: Toast.LENGTH_LONG);
+                })
+                  },
               ),
             ),
           ],
@@ -305,11 +310,11 @@ List selectionItems=[];
                       SizedBox(
                         height: 5.0,
                       ),
-                      Text('  \u{20B9}${roundOff.toDouble().toStringAsFixed(2)}'),
+                      Text('  \u{20B9}${widget.temp_roundoff}'),
                       SizedBox(
                         height: 5.0,
                       ),
-                      Text('  \u{20B9}${grandTotal.ceil()}',style: TextStyle(overflow: TextOverflow.ellipsis)),
+                      Text('  \u{20B9}${widget.orderTotal.toInt()}',style: TextStyle(overflow: TextOverflow.ellipsis)),
 
 
                     ],

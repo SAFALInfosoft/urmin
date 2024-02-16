@@ -6,10 +6,12 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:maan_hrm/Screens/Splash%20Screen/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'RESPONSE/Item.dart';
 import 'RESPONSE/Itemlistresponse.dart';
 import 'RESPONSE/erpApiMainDataResponse.dart';
 import 'RESPONSE/fshipmasterResponse.dart';
 import 'RESPONSE/poListRespose.dart';
+import 'RESPONSE/po_offline_json.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +26,10 @@ Future<void> main() async {
   await Hive.openBox('ItemList');
   Hive.registerAdapter(PurchaseOrderAdapter());
   await Hive.openBox('poList');
+  Hive.registerAdapter(ItemAdapter());
+  await Hive.openBox('added_itemjsonData');
+  Hive.registerAdapter(POOfflineJsonAdapter());
+  await Hive.openBox('PO_OfflineJson');
   //Hive.registerAdapter(ErpApiMainDataResponse(docs: [], bookmark: '', warning: '') as TypeAdapter);
   runApp( MyApp());
 }

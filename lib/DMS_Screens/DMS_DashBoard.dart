@@ -173,7 +173,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-
+    CheckUserConnection();
     //DateTime today = DateTime.now();
     //String dateStr = "${today.day}-${today.month}-${today.year}";
     DateTime now = DateTime.now();
@@ -929,12 +929,14 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         setState(() {
           ActiveConnection = true;
+          kMainColor = Color(0xFF2957a4);
           T = "Turn off the data and repress again";
         });
       }
     } on SocketException catch (_) {
       setState(() {
         ActiveConnection = false;
+        kMainColor = Colors.red;
         T = "Turn On the data and repress again";
       });
     }
