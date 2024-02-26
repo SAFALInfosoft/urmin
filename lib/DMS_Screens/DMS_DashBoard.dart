@@ -32,6 +32,7 @@ import '../GlobalComponents/NetworkConnectivity.dart';
 import '../GlobalComponents/PreferenceManager.dart';
 import '../GlobalComponents/Tools.dart';
 import '../PartyList/MyPartyListPage.dart';
+import '../RESPONSE/offline_PODATA_Response.dart';
 import '../achivementDetailsPage.dart';
 import '../constant.dart';
 import '../viewOrders.dart';
@@ -77,11 +78,15 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
 
   String? clientUrl;
 
-  var poList;
+  List poList=[];
 
   String? distributorId;
 
   String? Price_id;
+
+  List items=[];
+
+  var Company_Name;
   @override
   void initState() {
     // TODO: implement initState
@@ -90,6 +95,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
 
     PreferenceManager.instance
         .getStringValue("ClintUrl")
+
         .then((value) => setState(() {
       clientUrl = value;
       print(value);
@@ -134,6 +140,20 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
           setState(() {
             openHiveBox();
           });
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+           List poList = prefs.getStringList("POLISTJSON") ?? [];
+            // poList= jsonEncode(poList1);
+            log(poList.toList().toString());
+           var jsonString = "${poList.toString()}";
+            log(jsonString.toString());
+            var jsonList = json.decode(jsonString);
+
+            // Parse JSON data into a list of Item objects
+            items = jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
+
+            //fetchData();
+          });
           fshipmaster().then((value) => fetch_polist());
 
         }));
@@ -145,6 +165,76 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
             backgroundColor: Colors.red,
             gravity: ToastGravity.CENTER,
             toastLength: Toast.LENGTH_SHORT);
+        PreferenceManager.instance
+            .getStringValue("Role_Type")
+            .then((value) => setState(() {
+          RoleType=value;
+          print(value);
+        }));
+        if(Company_Name!=""){
+          PreferenceManager.instance
+            .getStringValue("Company_Name")
+            .then((value) => setState(() {
+          Company_Name=value;
+          print(value);
+        }));
+        }
+        PreferenceManager.instance
+            .getStringValue("distributorName")
+            .then((value) => setState(() {
+          distributorName=value;
+          print("distributorName"+value);
+        }));PreferenceManager.instance
+            .getStringValue("factoryId")
+            .then((value) => setState(() {
+          factoryId=value;
+          print("factoryId"+value);
+        }));
+        PreferenceManager.instance
+            .getStringValue("companyCode")
+            .then((value) => setState(() {
+          companyId=value;
+          print("companyId"+value);
+        }));
+        PreferenceManager.instance
+            .getStringValue("distributorId")
+            .then((value) => setState(() {
+          distributorId=value;
+          print("companyId"+value);
+        }));
+        PreferenceManager.instance
+            .getStringValue("accessToken")
+            .then((value) => setState(() {
+          token =Uri.encodeComponent(value.toString());
+          log(token);
+          setState(() {
+            openHiveBoxWhenOffline();
+
+          });
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            List poList = prefs.getStringList("POLISTJSON") ?? [];
+            // poList= jsonEncode(poList1);
+            log(poList.toList().toString());
+            var jsonString = "${poList.toString()}";
+            log(jsonString.toString());
+            var jsonList = json.decode(jsonString);
+            // Parse JSON data into a list of Item objects
+            items = jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
+
+            //fetchData();
+          });
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+
+            var box = await Hive.openBox('poList');
+            var bookmark = box.get('poList');
+            poList=bookmark;
+            //fetchData();
+          });
+      //    fshipmaster().then((value) => fetch_polist());
+
+        }));
       }
     });
 
@@ -160,9 +250,28 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
         debugPrint("erpApiMainData  ${value[0]}");
         setState(() {
           log("TCS"+value[0]['TCS_Applicable']);
-          PreferenceManager.instance
-              .setStringValue("TCS_Applicable", value[0]['TCS_Applicable']);
+          Company_Name=value[0]['Company_Name'];
+          PreferenceManager.instance.setStringValue("TCS_Applicable", value[0]['TCS_Applicable']);
+          PreferenceManager.instance.setStringValue("Company_Name", value[0]['Company_Name']);
           fpricelist(value[0]['Price_id'],value[0]['Factory_id']);
+        });
+      }
+    });
+  }
+  openHiveBoxWhenOffline() async {
+
+    var box = await Hive.openBox('erpApiMainData');
+    var bookmark = box.get('erpApiMainData');
+    bookmark.forEach((key, value) {
+      log(key.toString());
+      if (key == 'docs') {
+        debugPrint("erpApiMainData  ${value[0]}");
+        setState(() {
+          log("TCS"+value[0]['TCS_Applicable']);
+          Company_Name=value[0]['Company_Name'];
+          PreferenceManager.instance.setStringValue("TCS_Applicable", value[0]['TCS_Applicable']);
+          PreferenceManager.instance.setStringValue("Company_Name", value[0]['Company_Name']);
+
         });
       }
     });
@@ -242,9 +351,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                              SizedBox(
                               height: 10.0,
                             ),
-                            Text(
-                              distributorName.toString(),
-                              style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
+                            Column(
+                              children: [
+                                Text(
+                                  Company_Name??"".toString(),
+                                  style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
+                                ),Text(
+                                  distributorName.toString(),
+                                  style: kTextStyle.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
                             // Text(
                             //   'Admin',
@@ -452,26 +568,26 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
               //     color: kGreyTextColor,
               //   ),
               // ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>  SignIn()),
-                  );
-                },
-                leading:  Icon(
-                  FontAwesomeIcons.signOutAlt,
-                  color: kGreyTextColor,
-                ),
-                title: Text(
-                  'Logout',
-                  style: kTextStyle.copyWith(color: kGreyTextColor),
-                ),
-                trailing:  Icon(
-                  Icons.arrow_forward_ios,
-                  color: kGreyTextColor,
-                ),
-              ),
+              // ListTile(
+              //   onTap: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) =>  SignIn()),
+              //     );
+              //   },
+              //   leading:  Icon(
+              //     FontAwesomeIcons.signOutAlt,
+              //     color: kGreyTextColor,
+              //   ),
+              //   title: Text(
+              //     'Logout',
+              //     style: kTextStyle.copyWith(color: kGreyTextColor),
+              //   ),
+              //   trailing:  Icon(
+              //     Icons.arrow_forward_ios,
+              //     color: kGreyTextColor,
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -517,7 +633,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                    text: '30 May, 2021 ',
+                                    text: dateStr,
                                     style: kTextStyle.copyWith(
                                       color: kGreyTextColor,
                                     ),
@@ -541,16 +657,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                   decoration: BoxDecoration(
                                     border:  Border(
                                         top: BorderSide(
-                                          color: kMainColor,
+                                          color: Color(0xFF4CE364),
                                         )),
-                                    color: kMainColor.withOpacity(0.1),
+                                    color: Color(0xFF4CE364).withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '18982',
-                                        style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        '${poList.length}',
+                                        style: kTextStyle.copyWith(color: Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Total Purchase Order',
@@ -569,44 +685,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                   decoration: BoxDecoration(
                                     border:  Border(
                                         top: BorderSide(
-                                          color: Color(0xFF4CE364),
+                                          color: Colors.red,
                                         )),
-                                    color:  Color(0xFF4CE364).withOpacity(0.1),
+                                    color:  Colors.red.withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '2',
-                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        'Pending Purchase Order',
-                                        style: kTextStyle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:  EdgeInsets.all(5.0),
-                                child: Container(
-                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                  decoration: BoxDecoration(
-                                    border:  Border(
-                                        top: BorderSide(
-                                          color: Color(0xFFFD72AF),
-                                        )),
-                                    color:  Color(0xFFFD72AF).withOpacity(0.1),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '2',
-                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        items.length.toString(),
+                                        style: kTextStyle.copyWith(color:  Colors.red, fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Pending Purchase Order',
@@ -633,16 +721,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                   decoration: BoxDecoration(
                                     border:  Border(
                                         top: BorderSide(
-                                          color: kMainColor,
+                                          color: Color(0xFF4CE364),
                                         )),
-                                    color: kMainColor.withOpacity(0.1),
+                                    color: Color(0xFF4CE364).withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '18982',
-                                        style: kTextStyle.copyWith(color: kMainColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        style: kTextStyle.copyWith(color: Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Total GRN',
@@ -661,16 +749,16 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                   decoration: BoxDecoration(
                                     border:  Border(
                                         top: BorderSide(
-                                          color: Color(0xFF4CE364),
+                                          color: Colors.red,
                                         )),
-                                    color:  Color(0xFF4CE364).withOpacity(0.1),
+                                    color:  Colors.red.withOpacity(0.1),
                                   ),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         '2',
-                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
+                                        style: kTextStyle.copyWith(color: Colors.red, fontSize: 18.0, fontWeight: FontWeight.bold),
                                       ),
                                       Text(
                                         'Pending GRN',
@@ -681,34 +769,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                 ),
                               ),
                             ),
-                            Expanded(
-                              child: Padding(
-                                padding:  EdgeInsets.all(5.0),
-                                child: Container(
-                                  padding:  EdgeInsets.only(top: 10.0, bottom: 10.0, left: 10.0, right: 20.0),
-                                  decoration: BoxDecoration(
-                                    border:  Border(
-                                        top: BorderSide(
-                                          color: Color(0xFFFD72AF),
-                                        )),
-                                    color:  Color(0xFFFD72AF).withOpacity(0.1),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '2',
-                                        style: kTextStyle.copyWith(color:  Color(0xFF4CE364), fontSize: 18.0, fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        'Pending GRN',
-                                        style: kTextStyle,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+
                           ],
                         ),
                       ],
@@ -747,7 +808,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                 Padding(
                                   padding:  EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Primary Sales',
+                                    'Primary\nSales',
                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                                   ),
                                 ),
@@ -871,7 +932,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                                 Padding(
                                   padding:  EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Van Sales',
+                                    'Van\nSales',
                                     style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                                   ),
                                 ),

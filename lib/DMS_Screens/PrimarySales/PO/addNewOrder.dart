@@ -63,13 +63,14 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
 
   List filterList = [];
   List selectionItems = [];
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController Parent_NameController = TextEditingController();
   TextEditingController SubCategory_NameController = TextEditingController();
 
   List<Item> itemList = [];
 
-  Iterable<String> FieldString = [];
+  String FieldString="";
 
   String? companyId, factoryId;
 
@@ -82,6 +83,12 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   double unitQantity=0.0;
   double cartonQantity=0.0;
   double boxQantity=0.0;
+
+  int selectedTile = -1;
+
+  List<String> ? existingData;
+
+  String? role;
   openHiveBox() async {
     var box = await Hive.openBox('erpApiMainData');
     var bookmark = box.get('erpApiMainData');
@@ -156,6 +163,11 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
         .then((value) => setState(() {
               UR_CODE = value;
               print("companyId" + value);
+            }));PreferenceManager.instance
+        .getStringValue("role")
+        .then((value) => setState(() {
+      role = value;
+              print("role" + value);
             }));
 
     PreferenceManager.instance
@@ -209,9 +221,11 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
     Set<String> uniqueValues = Set<String>();
     Set<String> uniqueValues2 = Set<String>();
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,
       appBar: AppBar(
+leading: Icon(CupertinoIcons.cart),
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
@@ -223,6 +237,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
               color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
+
           ActiveConnection
               ? Container()
               : Padding(
@@ -259,31 +274,70 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                 child: ListView.builder(
                   itemCount: itemList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                        color: Colors.white,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Container(
-                    // height: 65,
-                    margin: EdgeInsets.symmetric(
-                    vertical: 8, horizontal: 8),
-                      child: ListTile(
-                        title: Text(itemList[index].it_name.toString()),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("QTY: "+itemList[index].quantity.toString()),
-                            Text("UOM: "+itemList[index].UOM.toString()),
-                          ],
+                    return Container(
+                      child: Card(
+                          color: Colors.white,
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Container(
+                      // height: 65,
+                      margin: EdgeInsets.symmetric(
+                      vertical: 8, horizontal: 8),
+                        child: Theme(
+                          data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                          child: ExpansionTile(
+
+                            key: Key(selectedTile.toString()), //attention
+                            initiallyExpanded: index == selectedTile,
+
+                            onExpansionChanged: ((newState){
+                                if(newState)
+                                  setState(() {
+                                    Duration(seconds:  20000);
+                                    selectedTile = index;
+                                  });
+                                else setState(() {
+                                  selectedTile = -1;
+                                });
+                              }),
+                            title: Text("${itemList[index].it_name.toString()} (QTY: ${itemList[index].quantity.toString()})"),
+                            children: [
+                              Divider(),
+                            Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("QTY: "+itemList[index].quantity.toString()),
+                              Text("UOM: "+itemList[index].UOM.toString()),
+                            ],
+                          ),
+                              Divider(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("WSP: "+itemList[index].wspRate.toString()),
+                                  Text("VALUE OF SUPPLY: "+itemList[index].total.toStringAsFixed(2).toString(),overflow: TextOverflow.ellipsis,),
+                                ],
+                              ), Divider(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("CARTON: "+itemList[index].cartonQantity.toString()),
+                                  Text("BOX: "+itemList[index].boxQantity.toString(),overflow: TextOverflow.ellipsis,),
+                                ],
+                              ), Divider(),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("UNIT: "+itemList[index].unitQantity.toString()),
+                                  Text("WEIGHT: 0.0 KG"/*+itemList[index].Weight_Per_Carton.toString()*/,overflow: TextOverflow.ellipsis,),
+                                ],
+                              ),
+                              ],
+                          ),
                         ),
-                        onTap: () {
-                          // Handle tap on drawer item
-                          Navigator.pop(context); // Close the drawer
-                          // You can add additional functionality here when an item is tapped
-                        },
-                      ),
-                    ));
+                      )),
+                    );
                   },
                 ),
               ),
@@ -306,91 +360,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
               ),
               child: Column(
                 children: <Widget>[
-                  /*  Padding(
-                    padding:  EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Flexible(
-                          child: DropdownButtonFormField(
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                //<-- SEE HERE
-                                borderSide: BorderSide(color: Colors.black, width: 2),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                //<-- SEE HERE
-                                borderSide: BorderSide(color: Colors.black, width: 2),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            dropdownColor: Colors.white,
-                            value: dropdownValue,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue = newValue!;
-                              });
-                            },
-                            fpricelist_Items: <String>['All', 'Chikki', 'Khakhra', 'Krunchips','Namkeen']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                        SizedBox(width: 5,),
-                        Flexible(
-                          child: DropdownButtonFormField(
-                            decoration: InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                //<-- SEE HERE
-                                borderSide: BorderSide(color: Colors.black, width: 2),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                //<-- SEE HERE
-                                borderSide: BorderSide(color: Colors.black, width: 2),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            dropdownColor: Colors.white,
-                            value: dropdownValue0,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                dropdownValue0 = newValue!;
-                              });
-                            },
-                            fpricelist_Items: <String>['All', 'Food Products', 'Tingels Jaljira', 'Bilas Namkeen']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),*/
-                  Padding(
-                    padding: EdgeInsets.all(5.0),
-                    child: CupertinoTextField(
 
-                      //controller: controller,
-                      readOnly: true,
-                      placeholder: "Item Count :- ${offlineItem.length}",
-                      placeholderStyle: TextStyle(color: Colors.grey),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
                   Padding(
                     padding: EdgeInsets.all(5.0),
                     child: CupertinoSearchTextField(
@@ -410,9 +380,6 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                     ),
                   ),
 
-                  /*idLoading
-                      ?  Center(child: CircularProgressIndicator())
-                      :*/
                   Card(
                     color: Colors.white,
                     elevation: 3,
@@ -660,8 +627,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                       ? 0
                                       : offlineItem.length,
                               itemBuilder: (ctx, itemIndex) {
-                                offlineItem.sort((a, b) =>
-                                    a["Item_name"].compareTo(b["Item_name"]));
+                                offlineItem.sort((a, b) => a["Item_name"].compareTo(b["Item_name"]));
                                 // _controllers.clear();
                                 for (int i = 0; i < offlineItem!.length; i++) {
                                   if (offlineItem != null) {
@@ -696,7 +662,9 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                                     decoration: BoxDecoration(
                                                         image: DecorationImage(
                                                             image: NetworkImage(
-                                                                "https://urminstore.com/pub/media/catalog/product/cache/835e48150b5844ff4116c639e4c3d879/f/a/farali-tikha-front.jpg")),
+                                                                "http://docs.urmingroup.co.in/images/${offlineItem[itemIndex]['Item_code']}.jpg"),onError: (exception, stackTrace) {
+                                                                  Icon(Icons.signal_cellular_connected_no_internet_0_bar);
+                                                                },),
                                                         border: Border.all(
                                                             color: Colors.grey,
                                                             width: 1),
@@ -753,13 +721,37 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                                 ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 10, right: 7, top: 5),
-                                              child: Text(
-                                                '\u{20B9} ${offlineItem[itemIndex]['MRP']}',
-                                                style: TextStyle(fontSize: 15),
-                                              ),
+                                            Column(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 5, right: 7, top: 5),
+                                                  child: Text(
+                                                    '\u{20B9}${offlineItem[itemIndex]['MRP']}',
+                                                    style: TextStyle(fontSize: 15,color: Colors.green),
+                                                  ),
+                                                ), Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 5, right: 7, top: 5),
+                                                  child: Text(
+                                                    '\u{20B9}${offlineItem[itemIndex]['WSP']}',
+                                                    style: TextStyle(fontSize: 15,color: kMainColor),
+                                                  ),
+                                                ), Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 5, right: 7, top: 5),
+                                                  child: Text(
+                                                    'Per ${
+                                                      offlineItem[itemIndex]
+                                                              ['Price_Calc']
+                                                          .toUpperCase()
+                                                    }',
+                                                    style: TextStyle(fontSize: 15,color: Colors.red),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
@@ -1162,21 +1154,9 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                                           item.boxQantity=boxQantity;
                                                         });
 
-                                                        if ((itemList.indexWhere((element) =>
-                                                        element
-                                                            .itemCode ==
-                                                            offlineItem[
-                                                            itemIndex]
-                                                            [
-                                                            "Item_id"]) !=
-                                                            -1) &&
-                                                            (itemList.indexWhere(
-                                                                    (element) =>
-                                                                element.UOM == dropdownValue0[itemIndex])) !=
-                                                                -1) {
+                                                        if ((itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"]) != -1) && (itemList.indexWhere((element) => element.UOM == dropdownValue0[itemIndex])) != -1) {
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].quantity = int.parse(value);
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].total = total;
-
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].totalSchemeDiscountAmount = totalSchemeDiscountAmount;
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Trade_discount_Amount = Total_Trade_discount_Amount;
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Other_discount_Amount = Total_Other_discount_Amount;
@@ -1191,8 +1171,10 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].unitQantity = unitQantity;
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].cartonQantity = cartonQantity;
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].boxQantity = boxQantity;
+
                                                         } else {
                                                           itemList.add(item);
+
                                                         }
                                                       }
                                                   },
@@ -1210,192 +1192,303 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
                                   ),
                                 );
                               })),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  CupertinoIcons.cart,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text('Add to cart',
-                                    style: TextStyle(
-                                        fontSize: 20, color: Colors.white)),
-                              ],
-                            ),
-                            onPressed: () {
-                              if(selectedWareHouse!=""&&itemList.length != 0) {
-                                var totalofwsp = 0.0;
-                                double totalofIgst = 0.0;
-                                double totalofcgst = 0.0;
-                                double totalofsgst = 0.0;
-                                double totalofgst = 0.0;
-                                double totalofScemeDiscount = 0.0;
-                                double totaloftredDiscount = 0.0;
-                                double totalofotherDiscount = 0.0;
-                                double totalOrderValue = 0.0;
-                                double totalOFtcs = 0.0;
-                                double temp_roundoff = 0.0;
-                                double roundOff = 0.0;
-                                double totalCarton = 0.0;
-                                double total = 0.0;
-                                var LocalFieldString;
+                  Container(
+                    width: context.width(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment:
+                      CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding:  EdgeInsets.all(5.0),
+                          child: SizedBox(
+                            // width: MediaQuery.of(context).size.width / 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                  Colors.blue),
+                              onPressed: () {
                                 setState(() {
-                                  for (var item in itemList) {
-                                    totalofcgst += item.CGST!;
-                                    totalofsgst += item.SGST!;
-                                    totalofIgst += item.IGST!;
-                                    if (item.UOM == "Carton") {
-                                      //totalCarton = item.UOM!.length as double;
-                                    } else {
-                                      // totalCarton = item.UOM!.length as double;
-                                    }
-                                    totalofScemeDiscount +=
-                                    item.totalSchemeDiscountAmount!;
-                                    totaloftredDiscount +=
-                                    item.Total_Trade_discount_Amount!;
-                                    totalofotherDiscount +=
-                                    item.Total_Other_discount_Amount!;
-                                    totalOFtcs += item.TCS!;
-                                    totalofgst =
-                                        totalofcgst + totalofsgst + totalofIgst;
-
-                                    totalofwsp += item.total;
-                                    totalOrderValue = totalofwsp -
-                                        (totalofScemeDiscount +
-                                            totaloftredDiscount +
-                                            totalofotherDiscount) +
-                                        totalOFtcs +
-                                        totalofcgst +
-                                        totalofsgst +
-                                        totalofIgst;
-                                    roundOff =
-                                        totalofwsp + totalofgst + totalOFtcs;
-                                    log(roundOff);
-                                    double value = roundOff;
-                                    double decimalPart = getDecimalPart(value);
-                                    log("RoundOffValue" +
-                                        decimalPart.toString());
-
-                                    if (decimalPart < 0.5) {
-                                      temp_roundoff = decimalPart;
-                                    } else {
-                                      temp_roundoff = 1 - decimalPart;
-                                    }
-                                    log("Final Round off" +
-                                        temp_roundoff.toString());
-                                  }
-                                  log("totalCarton" + totalCarton.toString());
-                                  //FieldString=  itemList.map((e) => "{'${"CO_CODE"}':'${companyId}', '${"UR_CODE"}':'${UR_CODE}', '${"cur_date"}':'${""}', ${"cur_time"}:'${""}', ${"URN_NO"}:'${""}','${"IT_CODE"}': '${e.itemCode}', '${"it_name"}':'${e.it_name}', '${"rate"}':${e.rate}, UOM: '${e.UOM}', quantity: ${e. quantity}, '${"total"}':${e.total}, '${"Wsp_rate"}': ${e.wspRate}, GST_PER: ${e.gstPer}, GST_Charge: ${e.GST},Unit_Per_Box: ${e.unitPerBox}, Unit_Per_Carton: ${e.unitPerCarton}, Weight_Per_Unit: ${e.Weight_Per_Unit},Weight_Per_Carton: ${e.Weight_Per_Carton}, Carton_quantity: '${""}', Box_quantity: '${""}', Unit_quantity: '${""}', Price_Calc: ${e. priceCalc}, Carton_weight: ${e.HSN_CODE}, Unit_weight: '${""}', CGST: '${e.gstPer!/2}', SGST: '${e.gstPer!/2}', IGST: '${e.gstPer!}', Scheme_discount: ${e.schemeDisc}, Trade_Disc: ${e.tradeDisc}, Other_Disc: ${e. otherDisc}, CGST_Amount: ${e.CGST}, SGST_Amount: ${e.SGST}, IGST_Amount: ${e.IGST}, Total_scheme_discount_Amount: ${e.totalSchemeDiscountAmount}, Total_Trade_discount_Amount: ${e.Total_Trade_discount_Amount}, Total_Other_discount_Amount: ${e.Total_Other_discount_Amount}, TCS:'${e.TCS}', HSN_CODE: ${e.HSN_CODE}, Freight_Amt: ${e.Freight_Amt??0.0}, Std_Amt: ${e.Std_Amt??0.0}, NCC_Duty: ${e.NCC_Duty??"0"}, total_after_discount: ${TotalAfterDiscount} }");
-                                  FieldString = itemList.map((e) =>
-                                  '{"${"CO_CODE"}":"${companyId}", "${"UR_CODE"}":"${UR_CODE}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}","${"URN_NO"}": "${""}","${"IT_CODE"}": "${e
-                                      .itemCode}", "${"it_name"}":"${e
-                                      .it_name}", "${"rate"}":"${e
-                                      .rate}", "${"UOM"}": "${e
-                                      .UOM}", "${"quantity"}": "${e
-                                      .quantity}", "${"total"}":"${e
-                                      .total}", "${"Wsp_rate"}": "${e
-                                      .wspRate}", "${"GST_PER"}": "${e
-                                      .gstPer}", "${"GST_Charge"}": "${e
-                                      .GST}","${"Unit_Per_Box"}": "${e
-                                      .unitPerBox}", "${"Unit_Per_Carton"}": "${e
-                                      .unitPerCarton}", "${"Weight_Per_Unit"}": "${e
-                                      .Weight_Per_Unit}","${"Weight_Per_Carton"}": "${e
-                                      .Weight_Per_Carton}", "${"Carton_quantity"}": "${e
-                                      .cartonQantity}", "${"Box_quantity"}": "${e
-                                      .boxQantity}", "${"Unit_quantity"}": "${e
-                                      .unitQantity}", "${"Price_Calc"}": "${e
-                                      .priceCalc}", "${"Carton_weight"}": "${e
-                                      .CartonWeight}", "${"Unit_weight"}": "${e
-                                      .UnitWeight}", "${"CGST"}": "${e.gstPer! /
-                                      2}", "${"SGST"}": "${e.gstPer! /
-                                      2}", "${"IGST"}": "${e
-                                      .gstPer!}", "${"Scheme_discount"}": "${e
-                                      .schemeDisc}", "${"Trade_Disc"}": "${e
-                                      .tradeDisc}", "${"Other_Disc"}": "${e
-                                      .otherDisc}", "${"CGST_Amount"}": "${e
-                                      .CGST}", "${"SGST_Amount"}": "${e
-                                      .SGST}", "${"IGST_Amount"}": "${e
-                                      .IGST}", "${"Total_scheme_discount_Amount"}": "${e
-                                      .totalSchemeDiscountAmount}", "${"Total_Trade_discount_Amount"}": "${e
-                                      .Total_Trade_discount_Amount}", "${"Total_Other_discount_Amount"}": "${e
-                                      .Total_Other_discount_Amount}", "${"TCS"}":"${e
-                                      .TCS}", "${"HSN_CODE"}": "${e
-                                      .HSN_CODE}", "${"Freight_Amt"}": "${e
-                                      .Freight_Amt ??
-                                      0.0}", "${"Std_Amt"}": "${e.Std_Amt ??
-                                      0.0}", "${"NCC_Duty"}": "${e.NCC_Duty ??
-                                      "0"}", "${"total_after_discount"}": "${TotalAfterDiscount}" }');
-                                  String stringWithoutParentheses =
-                                  FieldString.toString()
-                                      .replaceAll('(', '')
-                                      .replaceAll(')', '');
-                                  log("stringWithoutParentheses" +
-                                      stringWithoutParentheses.toString());
-                                  //var LocalFieldString = "[{'${"CO_CODE"}':'${companyId}', '${"UR_CODE"}':'${UR_CODE}', '${"Factory_id"}':'${factoryId}', '${"business_id"}':'${""}', '${"cur_date"}':'${""}', '${"cur_time"}':'${""}', '${"URN_NO"}':${"1"}, ${"billing_address"}:'${selectedWareHouse}', ${"SR_NO"}:'${""}', ${"Remarks_dealer"}: '${""}', ${"Remarks_rsm"}:'${""}', ${"PO_Status"}:${"RSM_Approval"}, ${"Fyear"}:'${"2023-2024"}', ${"Round_Off"}:'${temp_roundoff}', ${"Order_Total"}:'${totalOrderValue}', ${"Reason"}:'${""}', ${"shipping_address"}:'${selectedWareHouse}', ${"PO_approval_date"}:'${""}', ${"ERP_URN"}:'${""}', ${"DO_NO"}:'${""}', ${"Do_Date"}:'${""}',Item: [${stringWithoutParentheses.toString()}]}]";
-                                  LocalFieldString =
-                                  '{"${"CO_CODE"}":"${companyId}", "${"UR_CODE"}":"${UR_CODE}", "${"Factory_id"}":"${factoryId}", "${"business_id"}":"${""}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}", "${"URN_NO"}":"${""}", "${"billing_address"}":"${selectedWareHouse}", "${"SR_NO"}":"${""}", "${"Remarks_dealer"}": "${""}", "${"Remarks_rsm"}":"${""}", "${"PO_Status"}":"${"RSM Approval"}", "${"Fyear"}":"${"2023-2024"}", "${"Round_Off"}":"${temp_roundoff}", "${"Order_Total"}":"${totalOrderValue}", "${"Reason"}":"${""}", "${"shipping_address"}":"${selectedWareHouse}", "${"PO_approval_date"}":"${""}", "${"ERP_URN"}":"${""}", "${"DO_NO"}":"${""}", "${"Do_Date"}":"${""}","${"Item"}": [${stringWithoutParentheses
-                                      .toString()}]}';
-                                  log(LocalFieldString);
-                                  log("FieldString" +
-                                      FieldString.toString() +
-                                      "itemList langth" +
-                                      itemList.length.toString());
-                                  log(itemList.length.toString());
+                                  _scaffoldKey.currentState!.openDrawer();
                                 });
-
-                                showSummaryDialog(
-                                    totalofcgst,
-                                    totalofsgst,
-                                    totalofIgst,
-                                    totalofgst,
-                                    totalofwsp,
-                                    totalOrderValue,
-                                    temp_roundoff,
-                                    LocalFieldString);
-                              }else{
-                                if(selectedWareHouse==""){
-                                  Fluttertoast.showToast(
-                                      msg: "Please Select Billing Address!",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.red,
-                                      timeInSecForIosWeb: 1,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                }else if(itemList.length == 0){
-                                  Fluttertoast.showToast(
-                                      msg: "Please Add item in cart for place order!",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.red,
-                                      timeInSecForIosWeb: 1,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                }else{
-                                  Fluttertoast.showToast(
-                                      msg: "Please Select Billing Address and Add item in cart for place order!",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.CENTER,
-                                      backgroundColor: Colors.red,
-                                      timeInSecForIosWeb: 1,
-                                      textColor: Colors.white,
-                                      fontSize: 16.0);
-                                }
-
-                              }
                               },
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStatePropertyAll(kMainColor)),
-                          ))),
+                              child:  Center(
+                                child: Container(
+                                  // width: 30,
+                                  // height: 30,
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        height: 30,
+                                        child: Icon(
+                                          CupertinoIcons.cart,
+                                          color: Colors.white,
+                                          // size: 30,
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 30,
+                                        height: 30,
+                                        alignment: Alignment.topRight,
+                                        margin: EdgeInsets.only(top: 0),
+                                        child: Container(
+                                          width: 15,
+                                          height: 15,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Color(0xffc32c37),
+                                              border: Border.all(color: Colors.white, width: 1)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(0.0),
+                                            child: Center(
+                                              child: Text(
+                                                itemList.length.toString(),
+                                                style: TextStyle(fontSize: 10,color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              // label:  Text(
+                              //   "Get Direction",
+                              //   style: TextStyle(
+                              //       color: Colors.white),
+                              // ),
+                            ),
+                          ),
+                        ),
+                        /*Expanded(
+                          child: Padding(
+                            padding:  EdgeInsets.all(5.0),
+                            child: SizedBox(
+                              // width: MediaQuery.of(context).size.width / 3,
+                              child: ElevatedButton.icon(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                    Colors.green),
+                                onPressed: () {
+                                  setState(() {});
+
+                                },
+                                icon:  Icon(CupertinoIcons.cart,color: Colors.white,),
+                                label:  Text(
+                                  "${offlineItem.length}",
+                                  style: TextStyle(
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),*/
+                        Padding(
+                          padding:  EdgeInsets.all(5.0),
+                          child: SizedBox(
+                            // width: MediaQuery.of(context).size.width / 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green),
+                              onPressed: () {
+                                setState(() {});
+
+                              },
+                              child:  Text(
+                                "Items:- ${offlineItem.length}",
+                                style: TextStyle(
+                                    color: Colors.white),
+                              ),
+                              // label:  Text(
+                              //   "Shop Close",
+                              //   style: TextStyle(
+                              //       color: Colors.white),
+                              // ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:  EdgeInsets.all(5.0),
+                          child: SizedBox(
+                            // width: MediaQuery.of(context).size.width / 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red),
+                              onPressed: () {
+                                setState(() {});
+                                if(selectedWareHouse!=""&&itemList.length != 0) {
+                                  var totalofwsp = 0.0;
+                                  double totalofIgst = 0.0;
+                                  double totalofcgst = 0.0;
+                                  double totalofsgst = 0.0;
+                                  double totalofgst = 0.0;
+                                  double totalofScemeDiscount = 0.0;
+                                  double totaloftredDiscount = 0.0;
+                                  double totalofotherDiscount = 0.0;
+                                  double totalOrderValue = 0.0;
+                                  double totalOFtcs = 0.0;
+                                  double temp_roundoff = 0.0;
+                                  double roundOff = 0.0;
+                                  double totalCarton = 0.0;
+                                  double total = 0.0;
+                                  var LocalFieldString;
+                                  setState(() {
+                                    for (var item in itemList) {
+                                      totalofcgst += item.CGST!;
+                                      totalofsgst += item.SGST!;
+                                      totalofIgst += item.IGST!;
+                                      totalofScemeDiscount +=
+                                      item.totalSchemeDiscountAmount!;
+                                      totaloftredDiscount +=
+                                      item.Total_Trade_discount_Amount!;
+                                      totalofotherDiscount +=
+                                      item.Total_Other_discount_Amount!;
+                                      totalOFtcs += item.TCS!;
+                                      totalofgst = totalofcgst + totalofsgst + totalofIgst;
+
+                                      totalofwsp += item.total;
+                                      totalOrderValue = totalofwsp -
+                                          (totalofScemeDiscount +
+                                              totaloftredDiscount +
+                                              totalofotherDiscount) +
+                                          totalOFtcs +
+                                          totalofcgst +
+                                          totalofsgst +
+                                          totalofIgst;
+                                      roundOff =
+                                          totalofwsp + totalofgst + totalOFtcs;
+                                      log(roundOff);
+                                      double value = roundOff;
+                                      double decimalPart = getDecimalPart(value);
+                                      log("RoundOffValue" +
+                                          decimalPart.toString());
+
+                                      if (decimalPart < 0.5) {
+                                        temp_roundoff = decimalPart;
+                                      } else {
+                                        temp_roundoff = 1 - decimalPart;
+                                      }
+                                      log("Final Round off" +
+                                          temp_roundoff.toString());
+                                    }
+                                    log("totalCarton" + totalCarton.toString());
+                                    log(itemList);
+                                    String fieldString="";
+                                    for(var e in itemList){
+
+                                      fieldString += '{"${"CO_CODE"}":"${companyId}", "${"UR_CODE"}":"${UR_CODE}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}","${"URN_NO"}": "${""}","${"IT_CODE"}": "${e
+                                          .itemCode}", "${"it_name"}":"${e
+                                          .it_name}", "${"rate"}":"${e
+                                          .rate}", "${"UOM"}": "${e
+                                          .UOM}", "${"quantity"}": "${e
+                                          .quantity}", "${"total"}":"${e
+                                          .total}", "${"Wsp_rate"}": "${e
+                                          .wspRate}", "${"GST_PER"}": "${e
+                                          .gstPer}", "${"GST_Charge"}": "${e
+                                          .GST}","${"Unit_Per_Box"}": "${e
+                                          .unitPerBox}", "${"Unit_Per_Carton"}": "${e
+                                          .unitPerCarton}", "${"Weight_Per_Unit"}": "${e
+                                          .Weight_Per_Unit}","${"Weight_Per_Carton"}": "${e
+                                          .Weight_Per_Carton}", "${"Carton_quantity"}": "${e
+                                          .cartonQantity}", "${"Box_quantity"}": "${e
+                                          .boxQantity}", "${"Unit_quantity"}": "${e
+                                          .unitQantity}", "${"Price_Calc"}": "${e
+                                          .priceCalc}", "${"Carton_weight"}": "${e
+                                          .CartonWeight}", "${"Unit_weight"}": "${e
+                                          .UnitWeight}", "${"CGST"}": "${e.gstPer! /
+                                          2}", "${"SGST"}": "${e.gstPer! /
+                                          2}", "${"IGST"}": "${e
+                                          .gstPer!}", "${"Scheme_discount"}": "${e
+                                          .schemeDisc}", "${"Trade_Disc"}": "${e
+                                          .tradeDisc}", "${"Other_Disc"}": "${e
+                                          .otherDisc}", "${"CGST_Amount"}": "${e
+                                          .CGST}", "${"SGST_Amount"}": "${e
+                                          .SGST}", "${"IGST_Amount"}": "${e
+                                          .IGST}", "${"Total_scheme_discount_Amount"}": "${e
+                                          .totalSchemeDiscountAmount}", "${"Total_Trade_discount_Amount"}": "${e
+                                          .Total_Trade_discount_Amount}", "${"Total_Other_discount_Amount"}": "${e
+                                          .Total_Other_discount_Amount}", "${"TCS"}":"${e
+                                          .TCS}", "${"HSN_CODE"}": "${e
+                                          .HSN_CODE}", "${"Freight_Amt"}": "${e
+                                          .Freight_Amt ??
+                                          0.0}", "${"Std_Amt"}": "${e.Std_Amt ??
+                                          0.0}", "${"NCC_Duty"}": "${e.NCC_Duty ??
+                                          "0"}", "${"total_after_discount"}": "${TotalAfterDiscount}" },';
+                                    }
+                                    String stringWithoutParentheses = fieldString.toString().replaceAll('(', '').replaceAll(')', '');
+                                    log("stringWithoutParentheses" + stringWithoutParentheses.toString());
+                                    String result = stringWithoutParentheses.substring(0, stringWithoutParentheses.length - 1);
+                                    LocalFieldString =
+                                    '{"${"CO_CODE"}":"${companyId}", "${"Created_by"}":"${role}", "${"UR_CODE"}":"${UR_CODE}", "${"Factory_id"}":"${factoryId}", "${"business_id"}":"${""}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}", "${"URN_NO"}":"${""}", "${"billing_address"}":"${selectedWareHouse}", "${"SR_NO"}":"${""}", "${"Remarks_dealer"}": "${""}", "${"Remarks_rsm"}":"${""}", "${"PO_Status"}":"${"RSM Approval"}", "${"Fyear"}":"${"2023-2024"}", "${"Round_Off"}":"${temp_roundoff.toDouble().toStringAsFixed(2)}", "${"Order_Total"}":"${totalOrderValue.roundToDouble()}", "${"Reason"}":"${""}", "${"shipping_address"}":"${selectedWareHouse}", "${"PO_approval_date"}":"${""}", "${"ERP_URN"}":"${""}", "${"DO_NO"}":"${""}", "${"Do_Date"}":"${""}","${"Item"}": [${result
+                                        .toString()}]}';
+                                  });
+                                  log(LocalFieldString);
+                                  showSummaryDialog(
+                                      totalofcgst,
+                                      totalofsgst,
+                                      totalofIgst,
+                                      totalofgst,
+                                      totalofwsp,
+                                      totalOrderValue,
+                                      temp_roundoff,
+                                      totalofScemeDiscount,
+                                      LocalFieldString);
+                                }else{
+                                  if(selectedWareHouse==""){
+                                    Fluttertoast.showToast(
+                                        msg: "Please Select Billing Address!",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        timeInSecForIosWeb: 1,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                  else if(itemList.length == 0){
+                                    Fluttertoast.showToast(
+                                        msg: "Please Add item in cart for place order!",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        timeInSecForIosWeb: 1,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                  else{
+                                    Fluttertoast.showToast(
+                                        msg: "Please Select Billing Address and Add item in cart for place order!",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        timeInSecForIosWeb: 1,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+
+                                }
+                              },
+                              child:  Padding(
+                                padding: EdgeInsets.all(5.0),
+                                child: Image(
+                                  color: Colors.white,
+                                  height: 30,
+                                  width: 30,
+                                  image: AssetImage('images/pendingcart.png'),
+                                ),
+                              ),
+                              // label:  Text(
+                              //   "Shop Close",
+                              //   style: TextStyle(
+                              //       color: Colors.white),
+                              // ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                 ],
               ),
             ),
@@ -1468,7 +1561,8 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
       return ((item.quantity! * item.unitPerCarton!) / item.unitPerBox!);
     } else {
       //pending
-      return (item.quantity! * item.unitPerBox!).roundToDouble();
+      log("BOX qty for unit ${item.UOM} ${item.quantity!/ item.unitPerBox!}");
+      return (item.quantity!/ item.unitPerBox!);
     }
   }
 
@@ -1836,7 +1930,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   }
 
   void showSummaryDialog(totalofcgst, totalofsgst, totalofIgst, totalofgst,
-      totalofwsp, totalOrderValue, temp_roundoff,LocalFieldString) async {
+      totalofwsp, totalOrderValue, temp_roundoff,totalofScemeDiscount,LocalFieldString) async {
     await showDialog(
         context: context,
         builder: (BuildContext context) => OrderSummaryScreen(
@@ -1848,7 +1942,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
             TCS.toString(),
             totalOrderValue,
             itmval,
-            temp_roundoff,LocalFieldString));
+            temp_roundoff,totalofScemeDiscount,LocalFieldString));
   }
 
   openHiveBoxFORfshipmasterData() async {

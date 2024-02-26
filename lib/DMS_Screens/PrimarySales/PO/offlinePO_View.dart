@@ -248,21 +248,7 @@ class _offlinePO_ViewState extends State<offlinePO_View> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Card(
-              color: Colors.white,
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              child: Container(
-                // height: 65,
-                margin: EdgeInsets.symmetric(
-                    vertical: 8, horizontal: 8),
-                child: ListTile(
-                  leading: Icon(CupertinoIcons.cart),
-                  title: Text("Total PO Cart Items : ${widget.item.length}"),
-                ),
-              )
-          ),
+
           Expanded(
             child: Container(
               padding: EdgeInsets.all(20.0),
@@ -281,6 +267,21 @@ class _offlinePO_ViewState extends State<offlinePO_View> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Card(
+                              color: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Container(
+                                // height: 65,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 8),
+                                child: ListTile(
+                                  leading: Icon(CupertinoIcons.cart),
+                                  title: Text("Total PO Cart Items : ${widget.item.length}"),
+                                ),
+                              )
+                          ),
                           Expanded(
                               child:ListView.builder(
                                   itemCount: widget.item.length,
@@ -312,326 +313,8 @@ class _offlinePO_ViewState extends State<offlinePO_View> {
                                             },
                                           ),
                                         ));
-                                  })/*FutureBuilder(
-                                  future: fetchData(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(
-                                          child:
-                                          CircularProgressIndicator());
-                                    } else if (snapshot.hasError) {
-                                      return Center(
-                                          child: Text(
-                                              "Loading.."*//*'Error: ${snapshot.error}'*//*));
-                                    } else {
-                                      List<PurchaseOrder>? items =
-                                      snapshot.data
-                                      as List<PurchaseOrder>?;
-                                      return ListView.builder(
-                                          itemCount: items!.length,
-                                          itemBuilder:
-                                              (BuildContext context,
-                                              int index) {
-                                            return InkWell(
-                                              onTap: () {},
-                                              child: Padding(
-                                                  padding:
-                                                  EdgeInsets.all(5.0),
-                                                  child: Slidable(
-                                                    startActionPane:
-                                                    ActionPane(
-                                                      motion:
-                                                      BehindMotion(),
-                                                      children: [
-                                                        SlidableAction(
-                                                          onPressed:
-                                                              (context) {
-
-                                                          },
-                                                          backgroundColor:
-                                                          Colors
-                                                              .green,
-                                                          icon:
-                                                          Icons.edit,
-                                                          label: 'Edit',
-                                                        ),
-                                                        SlidableAction(
-                                                          onPressed:
-                                                              (context) {},
-                                                          backgroundColor:
-                                                          Colors.blue,
-                                                          icon: Icons
-                                                              .timelapse_outlined,
-                                                          label:
-                                                          'Order History',
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    endActionPane:
-                                                    ActionPane(
-                                                      motion:
-                                                      BehindMotion(),
-                                                      children: [
-                                                        SlidableAction(
-                                                          onPressed:
-                                                              (context) {},
-                                                          backgroundColor:
-                                                          Colors.blue,
-                                                          icon: Icons
-                                                              .remove_red_eye,
-                                                          label: 'View',
-                                                        ),
-                                                        SlidableAction(
-                                                          onPressed:
-                                                              (context) {},
-                                                          backgroundColor:
-                                                          Colors.red,
-                                                          icon: Icons
-                                                              .delete,
-                                                          label: 'Delete',
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                      EdgeInsets.all(
-                                                          8.0),
-                                                      child: Container(
-                                                        child: Material(
-                                                          elevation: 2.0,
-                                                          child:
-                                                          Container(
-                                                            width: context
-                                                                .width(),
-                                                            padding:
-                                                            EdgeInsets
-                                                                .all(
-                                                                0.0),
-                                                            decoration:
-                                                            BoxDecoration(
-                                                              border:
-                                                              Border(
-                                                                left:
-                                                                BorderSide(
-                                                                  color: Colors
-                                                                      .grey,
-                                                                  width:
-                                                                  3.0,
-                                                                ),
-                                                              ),
-                                                              color: Colors
-                                                                  .white,
-                                                            ),
-                                                            child:
-                                                            InkWell(
-                                                              onTap:
-                                                                  () {},
-                                                              child:
-                                                              Padding(
-                                                                padding: EdgeInsets.only(
-                                                                    left:
-                                                                    8.0),
-                                                                child:
-                                                                Column(
-                                                                  mainAxisAlignment:
-                                                                  MainAxisAlignment.center,
-                                                                  crossAxisAlignment:
-                                                                  CrossAxisAlignment.center,
-                                                                  children: [
-                                                                    Row(
-                                                                      children: [
-                                                                        ///////////
-                                                                        Flexible(
-                                                                          child: Container(
-                                                                              decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                                // color: Colors.grey,
-                                                                              ),
-                                                                              alignment: Alignment.centerLeft,
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: EdgeInsets.all(0.0),
-                                                                                    child: Text(
-                                                                                      "",
-                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                      style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              )),
-                                                                        ),
-                                                                        Flexible(
-                                                                          child: Container(
-                                                                              height: 25,
-                                                                              decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
-                                                                                color: Colors.grey,
-                                                                              ),
-                                                                              alignment: Alignment.center,
-                                                                              child: Padding(
-                                                                                padding: EdgeInsets.only(left: 0),
-                                                                                child: Text("Draft",
-                                                                                    style: TextStyle(
-                                                                                        color: *//* poList[index]['PO_Status'] ==
-                                                                                    "Draft"
-                                                                                    ? Colors
-                                                                                    .red:poList[index]['PO_Status'] ==
-                                                                                    "RSM Approval"
-                                                                                    ? Colors
-                                                                                    .grey:poList[index]['PO_Status'] ==
-                                                                                    "Hold"
-                                                                                    ?Colors.blue:poList[index]['PO_Status'] ==
-                                                                                    "Reject"
-                                                                                    ?Colors.orange:*//*
-                                                                                        Colors.white,
-                                                                                        fontSize: 15,
-                                                                                        fontWeight: FontWeight.bold)),
-                                                                              )),
-                                                                        ),
-                                                                        *//*                                                              PopupMenuButton<int>(
-                                                                  itemBuilder: (context) => [
-                                                                    // PopupMenuItem 1
-                                                                    PopupMenuItem(
-                                                                      value: 1,
-                                                                      // row with 2 children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.edit),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("Edit")
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    // PopupMenuItem 2
-                                                                    PopupMenuItem(
-                                                                      value: 2,
-                                                                      // row with two children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.timelapse_outlined),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("Order History")
-                                                                        ],
-                                                                      ),
-                                                                    ),PopupMenuItem(
-                                                                      value: 2,
-                                                                      // row with two children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.remove_red_eye),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("View")
-                                                                        ],
-                                                                      ),
-                                                                    ),PopupMenuItem(
-                                                                      value: 2,
-                                                                      // row with two children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.delete),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("Delete")
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                  offset: Offset(0, 100),
-                                                                  color: Colors.grey,
-                                                                  elevation: 2,
-                                                                  // on selected we show the dialog box
-                                                                  onSelected: (value) {
-                                                                    // if value 1 show dialog
-                                                                    if (value == 1) {
-                                                                      //  _showDialog(context);
-                                                                      // if value 2 show dialog
-                                                                    } else if (value == 2) {
-                                                                      // _showDialog(context);
-                                                                    }
-                                                                  },
-                                                                )*//*
-                                                                      ],
-                                                                    ),
-                                                                    SizedBox(
-                                                                      height:
-                                                                      5,
-                                                                    ),
-                                                                    Row(
-                                                                      children: [
-                                                                        ///////////
-                                                                        Flexible(
-                                                                          child: Container(
-                                                                              decoration: BoxDecoration(
-                                                                                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                                // color: Colors.grey,
-                                                                              ),
-                                                                              alignment: Alignment.centerLeft,
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Padding(
-                                                                                    padding: EdgeInsets.all(5.0),
-                                                                                    child: Text(
-                                                                                      "PO No",
-                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                      style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              )),
-                                                                        ),
-                                                                        Flexible(
-                                                                          child: Container(
-                                                                              alignment: Alignment.centerLeft,
-                                                                              child: Padding(
-                                                                                padding: EdgeInsets.only(left: 10),
-                                                                                child: Text(
-                                                                                  items![index].curDate.toString(),
-                                                                                  overflow: TextOverflow.ellipsis,
-                                                                                  style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
-                                                                                ),
-                                                                              )),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              *//*trailing: InkWell(
-                                                          onTap: () {
-                                                            //OrderDetailsPage().launch(context);
-                                                          },
-                                                          child: Text(
-                                                              poList[index]['PO_Status'],
-                                                              style: TextStyle(
-                                                                  color: poList[index]['PO_Status'] ==
-                                                                              "Draft"
-                                                                          ? Colors
-                                                                              .red
-                                                                          : Colors
-                                                                              .green,
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold))),*//*
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )),
-                                            );
-                                          });
-                                    }
-                                  })*/)
+                                  })
+                            )
                         ]),
                   ),
                 ],

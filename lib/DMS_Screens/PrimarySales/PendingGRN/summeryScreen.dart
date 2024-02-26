@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -6,6 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../GlobalComponents/PreferenceManager.dart';
 import '../../../GlobalComponents/button_global.dart';
 import '../../../constant.dart';
+import '../PO/po_Tab_View.dart';
 import '../PO/purchaseOrderMainScreen.dart';
 
 
@@ -18,8 +21,8 @@ class OrderSummaryScreen extends StatefulWidget {
 String total;
 String gstCharge,CGST,SGST,IGST,TCS;
 double orderTotal;
-var item; double temp_roundoff; var LocalFieldString;
-   OrderSummaryScreen( this.total, this.gstCharge,this.CGST,this.SGST,this.IGST,this.TCS,this.orderTotal,this.item,this.temp_roundoff,this.LocalFieldString,
+var item; double temp_roundoff;double totalofScemeDiscount; var LocalFieldString;
+   OrderSummaryScreen( this.total, this.gstCharge,this.CGST,this.SGST,this.IGST,this.TCS,this.orderTotal,this.item,this.temp_roundoff,this.totalofScemeDiscount,this.LocalFieldString,
 
       {Key? key,
 
@@ -98,6 +101,7 @@ List selectionItems=[];
   @override
   void initState() {
     super.initState();
+
     log("FieldString"+widget.item.toString());
     PreferenceManager.instance
         .getStringValue("companyStateCode")
@@ -154,7 +158,7 @@ List selectionItems=[];
                       color: Color(0xFF555555),
                       borderRadius: BorderRadius.all(Radius.circular(5))),
                   child:  Text(
-                    'Cancel',
+                    'Back',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 18.0,
@@ -191,17 +195,27 @@ List selectionItems=[];
                 onTap: () =>
                 {
                 WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+                  log(widget.LocalFieldString);
+                  Map<String, dynamic> dataList = jsonDecode(widget.LocalFieldString);
+                  var data = dataList;
+
+                  // Modify the value for Remarks_dealer
+                  log(summary);
+                  data['Remarks_dealer'] = "$summary"??"";
+                  // Convert the modified data back to JSON string
+                  String modifiedJsonString = jsonEncode(dataList);
+                  log(modifiedJsonString);
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 existingData = prefs.getStringList("POLISTJSON") ?? [];
                 // bool timeExists = existingData!.contains([{"CO_CODE":"1a36b22bdd89ffd361644e6ea06c2394", "UR_CODE":"50c60cdef1e5286ef69f0256ab03c577", "Factory_id":"8101b2c0a710849dc04f61cc3c07cb9a", "business_id":"", "cur_date":"", "cur_time":"", "URN_NO":1, "billing_address":"null", "SR_NO":"", "Remarks_dealer": "", "Remarks_rsm":"", "PO_Status":"RSM_Approval", "Fyear":"2023-2024", "Round_Off":"0.40486", "Order_Total":"3548.40486", "Reason":"", "shipping_address":"null", "PO_approval_date":"", "ERP_URN":"", "DO_NO":"", "Do_Date":"","Item": [{"CO_CODE":"1a36b22bdd89ffd361644e6ea06c2394", "UR_CODE":"50c60cdef1e5286ef69f0256ab03c577", "cur_date":"", "cur_time":"","URN_NO":"","IT_CODE": "0b51ad7a885d3218329fada00f5618b4", "it_name":"BAGHBAN BILAS REFRESH 1.8 GMS POUCH50+10FREE =60 POUCH", "rate":50.0, "UOM": "Carton", "quantity": 1, "total":3165.06, "Wsp_rate": 31.03, "GST_PER": 12.0, "GST_Charge": 189.9,"Unit_Per_Box": 60.0, "Unit_Per_Carton": 6120.0, "Weight_Per_Unit": 1.8,"Weight_Per_Carton": 13.77, "Carton_quantity": "", "Box_quantity": "", "Unit_quantity": "", "Price_Calc": box, "Carton_weight": 200819, "Unit_weight": "", "CGST": "6.0", "SGST": "6.0", "IGST": "12.0", "Scheme_discount": 0.0, "Trade_Disc": 0.0, "Other_Disc": 0.0, "CGST_Amount": 189.9, "SGST_Amount": 189.9, "IGST_Amount": 0.0, "Total_scheme_discount_Amount": 0.0, "Total_Trade_discount_Amount": 0.0, "Total_Other_discount_Amount": 0.0, "TCS":"3.5448600000000003", "HSN_CODE": 200819, "Freight_Amt": 0.0, "Std_Amt": 0.0, "NCC_Duty": 0, "total_after_discount": 3165.06 }]}]);
                 // log(timeExists);
                 // Add new entry (current time) to the existing data
-                existingData!.add(widget.LocalFieldString);
+                existingData!.add(modifiedJsonString);
 
                 // Save the modified data back to SharedPreferences
                 prefs.setStringList("POLISTJSON", existingData!);
                 print(existingData!.length.toString());
-                Navigator.push(context,MaterialPageRoute(builder: (context) =>purchaseOrderMainScreen()));
+                Navigator.push(context,MaterialPageRoute(builder: (context) =>po_Tab_View()));
                 Fluttertoast.showToast(
                     msg: "Successfully PO added to cart",
                     textColor: Colors.white,
@@ -235,6 +249,10 @@ List selectionItems=[];
                       CrossAxisAlignment.start,
                       children:  <Widget>[
                         Text('Total Of WSP'),
+                        widget.totalofScemeDiscount!=0.00?SizedBox(
+                          height: 5.0,
+                        ):SizedBox.shrink(),
+                        widget.totalofScemeDiscount!=0.00?Text('Scheme Discount'):SizedBox.shrink(),
                         SizedBox(
                           height: 5.0,
                         ),
@@ -281,6 +299,10 @@ List selectionItems=[];
                     CrossAxisAlignment.start,
                     children:  <Widget>[
                       Text('  \u{20B9}${widget.total.toDouble().toStringAsFixed(2)}',style: TextStyle(overflow: TextOverflow.ellipsis)),
+                      widget.totalofScemeDiscount!=0.00? SizedBox(
+                        height: 5.0,
+                      ):SizedBox.shrink(),
+                      widget.totalofScemeDiscount!=0.00?Text('  \u{20B9}${widget.totalofScemeDiscount.toDouble().toStringAsFixed(2)}',style: TextStyle(overflow: TextOverflow.ellipsis)):SizedBox.shrink(),
                       SizedBox(
                         height: 5.0,
                       ),
@@ -304,17 +326,17 @@ List selectionItems=[];
                       ):SizedBox.shrink(),
                       Text('  \u{20B9}${widget.gstCharge.toDouble().toStringAsFixed(2)}'),
                       SizedBox(
-                        height: 5.0,
+                        height: 5.0
                       ),
                       Text('  \u{20B9}${widget.TCS.toDouble().toStringAsFixed(2)}'),
                       SizedBox(
                         height: 5.0,
                       ),
-                      Text('  \u{20B9}${widget.temp_roundoff}'),
+                      Text('  \u{20B9}${widget.temp_roundoff.toDouble().toStringAsFixed(2)}'),
                       SizedBox(
                         height: 5.0,
                       ),
-                      Text('  \u{20B9}${widget.orderTotal.toInt()}',style: TextStyle(overflow: TextOverflow.ellipsis)),
+                      Text('  \u{20B9}${widget.orderTotal.roundToDouble()}',style: TextStyle(overflow: TextOverflow.ellipsis)),
 
 
                     ],
@@ -675,7 +697,7 @@ List selectionItems=[];
                 decoration:  InputDecoration(
                     border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.black)),
-                    hintText: "Add Summary",
+                    hintText: "Add Remarks",
 
                     hintStyle: TextStyle(
                         fontWeight: FontWeight.w500,

@@ -12,8 +12,11 @@ import '../../../constant.dart';
 import '../../Screens/Employee management/add_employee.dart';
 import '../../Screens/Expense Management/empty_expense.dart';
 
+import '../DMS_DashBoard.dart';
 import 'PO/pendingPO.dart';
+import 'PO/po_Tab_View.dart';
 import 'PO/purchaseOrderMainScreen.dart';
+import 'PaymentDetails/payment_details_tabPage.dart';
 import 'PendingGRN/pendingGRNMainScreen.dart';
 import 'Salse Return/SalseReturnMainScreen.dart';
 
@@ -29,60 +32,93 @@ class _PRIMARY_SALES_MENUState extends State<PRIMARY_SALES_MENU> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: kMainColor,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: ()async{
+        return await Navigator.push(context,  MaterialPageRoute(builder: (context) =>
+            Dms_HomeScreen()));
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: kMainColor,
-        elevation: 0.0,
-        titleSpacing: 0.0,
-        iconTheme:  IconThemeData(color: Colors.white),
-        title: Text(
-          'Primary Sales',
-          maxLines: 2,
-          style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-           SizedBox(
-            height: 20.0,
+        appBar: AppBar(
+          backgroundColor: kMainColor,
+          elevation: 0.0,
+          titleSpacing: 0.0,
+          iconTheme:  IconThemeData(color: Colors.white),
+          title: Text(
+            'Primary Sales',
+            maxLines: 2,
+            style: kTextStyle.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
           ),
-          Expanded(
-            child: Container(
-              padding:  EdgeInsets.all(20.0),
-              decoration:  BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
-                color: Colors.white,
-              ),
-              child: Column(
-                children: [
-                   SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: GestureDetector(
-                      onTap: () {
-                         purchaseOrderMainScreen().launch(context);
-                      },
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            Expanded(
+              child: Container(
+                padding:  EdgeInsets.all(20.0),
+                decoration:  BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+
+                    Material(
+                      elevation: 2.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          po_Tab_View().launch(context);
+                        },
+                        child: Container(
+                          width: context.width(),
+                          padding:  EdgeInsets.all(10.0),
+                          decoration:  BoxDecoration(
+                            border: Border(
+                              left: BorderSide(
+                                color: Color(0xFF4CCEFA),
+                                width: 3.0,
+                              ),
+                            ),
+                            color: Colors.white,
+                          ),
+                          child: ListTile(
+                            leading:  Image(image: AssetImage('images/add-to-cart (1).png'),height: 40,width: 40,),
+                            title: Text(
+                              'Purchase Order',
+                              maxLines: 2,
+                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                            ),
+                            trailing:  Icon(Icons.arrow_forward_ios),
+                          ),
+                        ),
+                      ),
+                    ),
+                     SizedBox(
+                      height: 20.0,
+                    ),
+                    Material(
+                      elevation: 2.0,
                       child: Container(
                         width: context.width(),
                         padding:  EdgeInsets.all(10.0),
                         decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
-                              color: Color(0xFF7D6AEF),
+                              color: Color(0xFF4CCEFA),
                               width: 3.0,
                             ),
                           ),
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading:  Image(image: AssetImage('images/add-to-cart (1).png'),height: 40,width: 40,),
+                          onTap: () {
+                            payment_details_tabPage().launch(context);
+                          },
+                          leading:  Image(image: AssetImage('images/payment_details.png'),height: 40,width: 40,),
                           title: Text(
-                            'Purchase Order',
+                            'Payment Details',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
@@ -90,31 +126,30 @@ class _PRIMARY_SALES_MENUState extends State<PRIMARY_SALES_MENU> {
                         ),
                       ),
                     ),
-                  ),
-                   SizedBox(
-                    height: 20.0,
-                  ),Material(
-                    elevation: 2.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        pendingPO().launch(context);
-                      },
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Material(
+                      elevation: 2.0,
                       child: Container(
                         width: context.width(),
                         padding:  EdgeInsets.all(10.0),
                         decoration:  BoxDecoration(
                           border: Border(
                             left: BorderSide(
-                              color: Color(0xFF7D6AEF),
+                              color: Color(0xFF4CCEFA),
                               width: 3.0,
                             ),
                           ),
                           color: Colors.white,
                         ),
                         child: ListTile(
-                          leading:  Image(image: AssetImage('images/add-to-cart (1).png'),height: 40,width: 40,),
+                          onTap: () {
+                             pendingGRNMainScreen().launch(context);
+                          },
+                          leading:  Image(image: AssetImage('images/pendingGRN.png'),height: 40,width: 40,),
                           title: Text(
-                            'Pending Purchase Order',
+                            'Pending GRN',
                             maxLines: 2,
                             style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                           ),
@@ -122,77 +157,46 @@ class _PRIMARY_SALES_MENUState extends State<PRIMARY_SALES_MENU> {
                         ),
                       ),
                     ),
-                  ),
-                   SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding:  EdgeInsets.all(10.0),
-                      decoration:  BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF4CCEFA),
-                            width: 3.0,
+                     SizedBox(
+                      height: 20.0,
+                    ),
+                    Material(
+                      elevation: 2.0,
+                      child: Container(
+                        width: context.width(),
+                        padding:  EdgeInsets.all(10.0),
+                        decoration:  BoxDecoration(
+                          border: Border(
+                            left: BorderSide(
+                              color: Color(0xFF4CCEFA),
+                              width: 3.0,
+                            ),
                           ),
+                          color: Colors.white,
                         ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () {
-                           pendingGRNMainScreen().launch(context);
-                        },
-                        leading:  Image(image: AssetImage('images/pendingGRN.png'),height: 40,width: 40,),
-                        title: Text(
-                          'Pending GRN',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                        child: ListTile(
+                          onTap: () {
+                             SalseReturnMainScreen().launch(context);
+                          },
+                          leading:  Image(image: AssetImage('images/reverse.png'),height: 40,width: 40,),
+                          title: Text(
+                            'Sales Return',
+                            maxLines: 2,
+                            style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                          ),
+                          trailing:  Icon(Icons.arrow_forward_ios),
                         ),
-                        trailing:  Icon(Icons.arrow_forward_ios),
                       ),
                     ),
-                  ),
-                   SizedBox(
-                    height: 20.0,
-                  ),
-                  Material(
-                    elevation: 2.0,
-                    child: Container(
-                      width: context.width(),
-                      padding:  EdgeInsets.all(10.0),
-                      decoration:  BoxDecoration(
-                        border: Border(
-                          left: BorderSide(
-                            color: Color(0xFF4CCEFA),
-                            width: 3.0,
-                          ),
-                        ),
-                        color: Colors.white,
-                      ),
-                      child: ListTile(
-                        onTap: () {
-                           SalseReturnMainScreen().launch(context);
-                        },
-                        leading:  Image(image: AssetImage('images/reverse.png'),height: 40,width: 40,),
-                        title: Text(
-                          'Sales Return',
-                          maxLines: 2,
-                          style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                        ),
-                        trailing:  Icon(Icons.arrow_forward_ios),
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
 
-        ],
+          ],
+        ),
+
       ),
-
     );
   }
 }

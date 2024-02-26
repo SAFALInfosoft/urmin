@@ -26,6 +26,7 @@ import 'package:intl/intl.dart';
 
 import 'addNewOrder.dart';
 import 'package:http/http.dart' as http;
+
 class pendingPO extends StatefulWidget {
   pendingPO({Key? key}) : super(key: key);
 
@@ -53,7 +54,7 @@ class _pendingPOState extends State<pendingPO> {
       var jsonList = json.decode(jsonString);
 
       // Parse JSON data into a list of Item objects
-       items = jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
+      items = jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
 
       //fetchData();
     });
@@ -95,21 +96,23 @@ class _pendingPOState extends State<pendingPO> {
     super.initState();
     // openHiveBox();
   }
+
   String _formatTime(DateTime time) {
     return DateFormat.jm().format(time); // Formats time in "h:mm a" format
   }
+
   String _formatDateTime(DateTime dateTime) {
     return DateFormat('yyyy-MM-dd').format(dateTime);
-
-
   }
+
   Future<List<PurchaseOrder>> fetchData() async {
     // Fetch JSON data
     String jsonString1 = jsonString.toString();
     List<dynamic> jsonList = json.decode(jsonString);
 
     // Parse JSON data into a list of Item objects
-    List<PurchaseOrder> items = jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
+    List<PurchaseOrder> items =
+        jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
     return items;
   }
 
@@ -227,7 +230,7 @@ class _pendingPOState extends State<pendingPO> {
   ];
   String selectedType = 'All';
   var searchText;
-List items=[];
+  List items = [];
   List<String> buttonText = ["Draft", "In Process", "Completed"];
   int _selectedValueIndex = 0;
 
@@ -237,66 +240,68 @@ List items=[];
     DateTime now = DateTime.now();
     CheckUserConnection();
     String dateStr = DateFormat.yMMMEd().format(now);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: kMainColor,
-      appBar: AppBar(
-        backgroundColor: kMainColor,
-        elevation: 0.0,
-        titleSpacing: 0.0,
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          'Purchase Order',
-          maxLines: 2,
-          style: kTextStyle.copyWith(
-              color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          ActiveConnection
-              ? Container()
-              : Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: Image(
-                    color: Colors.white,
-                    height: 30,
-                    width: 30,
-                    image: AssetImage('images/wifi.png'),
-                  ),
-                ),
-        ],
-      ),
+      backgroundColor: Colors.white,
+      // appBar: AppBar(
+      //   backgroundColor: kMainColor,
+      //   elevation: 0.0,
+      //   titleSpacing: 0.0,
+      //   iconTheme: IconThemeData(color: Colors.white),
+      //   title: Text(
+      //     'Purchase Order',
+      //     maxLines: 2,
+      //     style: kTextStyle.copyWith(
+      //         color: Colors.white, fontWeight: FontWeight.bold),
+      //   ),
+      //   actions: [
+      //     ActiveConnection
+      //         ? Container()
+      //         : Padding(
+      //             padding: EdgeInsets.only(right: 20.0),
+      //             child: Image(
+      //               color: Colors.white,
+      //               height: 30,
+      //               width: 30,
+      //               image: AssetImage('images/wifi.png'),
+      //             ),
+      //           ),
+      //   ],
+      // ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Card(
-              color: Colors.white,
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              child: Container(
-                // height: 65,
-                margin: EdgeInsets.symmetric(
-                    vertical: 8, horizontal: 8),
-                child: ListTile(
-                  leading: Icon(CupertinoIcons.cart),
-                  title: Text("Total Pending PO: ${poList.length}"),
-                ),
-              )
-          ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(0.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0)),
+                    topLeft: Radius.circular(0.0),
+                    topRight: Radius.circular(0.0)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
-                 /* poList == [] || poList.isEmpty
+                  Card(
+                      color: Colors.white,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Container(
+                        // height: 65,
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                        child: ListTile(
+                          leading: Icon(CupertinoIcons.cart),
+                          title: Text("Total Pending PO: ${poList.length}"),
+                        ),
+                      )),
+                  /* poList == [] || poList.isEmpty
                       ? Center(child: CircularProgressIndicator())
-                      :*/ Expanded(
+                      :*/
+                  items!.length != 0
+                      ? Expanded(
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -305,116 +310,106 @@ List items=[];
                                     child: ListView.builder(
                                         itemCount: items!.length,
                                         itemBuilder:
-                                            (BuildContext context,
-                                            int index) {
+                                            (BuildContext context, int index) {
                                           return InkWell(
                                             onTap: () {},
                                             child: Padding(
-                                                padding:
-                                                EdgeInsets.all(5.0),
+                                                padding: EdgeInsets.all(5.0),
                                                 child: Slidable(
-                                                  startActionPane:
-                                                  ActionPane(
-                                                    motion:
-                                                    BehindMotion(),
+                                                  startActionPane: ActionPane(
+                                                    motion: BehindMotion(),
                                                     children: [
                                                       SlidableAction(
-                                                        onPressed:
-                                                            (context) {
-                                                          Navigator.push(context, MaterialPageRoute(builder: (context) => offlinePO_View(item:items![index].item),));
+                                                        onPressed: (context) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    offlinePO_View(
+                                                                        item: items![index]
+                                                                            .item),
+                                                              ));
                                                         },
                                                         backgroundColor:
-                                                        Colors
-                                                            .green,
-                                                        icon:
-                                                        Icons.edit,
+                                                            Colors.green,
+                                                        icon: Icons.edit,
                                                         label: 'Edit',
                                                       ),
                                                       SlidableAction(
-                                                        onPressed:
-                                                            (context) {},
+                                                        onPressed: (context) {},
                                                         backgroundColor:
-                                                        Colors.blue,
+                                                            Colors.blue,
                                                         icon: Icons
                                                             .timelapse_outlined,
-                                                        label:
-                                                        'Order History',
+                                                        label: 'Order History',
                                                       ),
                                                     ],
                                                   ),
-                                                  endActionPane:
-                                                  ActionPane(
-                                                    motion:
-                                                    BehindMotion(),
+                                                  endActionPane: ActionPane(
+                                                    motion: BehindMotion(),
                                                     children: [
                                                       SlidableAction(
-                                                        onPressed:
-                                                            (context) {},
+                                                        onPressed: (context) {},
                                                         backgroundColor:
-                                                        Colors.blue,
+                                                            Colors.blue,
                                                         icon: Icons
                                                             .remove_red_eye,
                                                         label: 'View',
                                                       ),
                                                       SlidableAction(
-                                                        onPressed:
-                                                            (context) {},
+                                                        onPressed: (context) {},
                                                         backgroundColor:
-                                                        Colors.red,
-                                                        icon: Icons
-                                                            .delete,
+                                                            Colors.red,
+                                                        icon: Icons.delete,
                                                         label: 'Delete',
                                                       ),
                                                     ],
                                                   ),
                                                   child: Padding(
                                                     padding:
-                                                    EdgeInsets.all(
-                                                        8.0),
+                                                        EdgeInsets.all(8.0),
                                                     child: Container(
                                                       child: Material(
                                                         elevation: 2.0,
-                                                        child:
-                                                        Container(
-                                                          width: context
-                                                              .width(),
+                                                        child: Container(
+                                                          width:
+                                                              context.width(),
                                                           padding:
-                                                          EdgeInsets
-                                                              .all(
-                                                              0.0),
+                                                              EdgeInsets.all(
+                                                                  0.0),
                                                           decoration:
-                                                          BoxDecoration(
-                                                            border:
-                                                            Border(
-                                                              left:
-                                                              BorderSide(
-                                                                color: Colors
-                                                                    .grey,
-                                                                width:
-                                                                3.0,
+                                                              BoxDecoration(
+                                                            border: Border(
+                                                              left: BorderSide(
+                                                                color:
+                                                                    Colors.red,
+                                                                width: 3.0,
                                                               ),
                                                             ),
-                                                            color: Colors
-                                                                .white,
+                                                            color: Colors.white,
                                                           ),
-                                                          child:
-                                                          InkWell(
-                                                            onTap:
-                                                                () {
-                                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => offlinePO_View(item:items![index].item),));
-
-                                                                },
-                                                            child:
-                                                            Padding(
-                                                              padding: EdgeInsets.only(
-                                                                  left:
-                                                                  8.0),
-                                                              child:
-                                                              Column(
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        offlinePO_View(
+                                                                            item: items![index].item),
+                                                                  ));
+                                                            },
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left:
+                                                                          8.0),
+                                                              child: Column(
                                                                 mainAxisAlignment:
-                                                                MainAxisAlignment.center,
+                                                                    MainAxisAlignment
+                                                                        .center,
                                                                 crossAxisAlignment:
-                                                                CrossAxisAlignment.center,
+                                                                    CrossAxisAlignment
+                                                                        .center,
                                                                 children: [
                                                                   Row(
                                                                     children: [
@@ -444,12 +439,12 @@ List items=[];
                                                                             height: 25,
                                                                             decoration: BoxDecoration(
                                                                               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
-                                                                              color: Colors.grey,
+                                                                              color: Colors.red,
                                                                             ),
                                                                             alignment: Alignment.center,
-                                                                            child: Padding(
+                                                                            child: const Padding(
                                                                               padding: EdgeInsets.only(left: 0),
-                                                                              child: Text("Draft",
+                                                                              child: Text("Pending",
                                                                                   style: TextStyle(
                                                                                       color: /* poList[index]['PO_Status'] ==
                                                                                     "Draft"
@@ -462,85 +457,15 @@ List items=[];
                                                                                     ?Colors.blue:poList[index]['PO_Status'] ==
                                                                                     "Reject"
                                                                                     ?Colors.orange:*/
-                                                                                      Colors.white,
+                                                                                          Colors.white,
                                                                                       fontSize: 15,
                                                                                       fontWeight: FontWeight.bold)),
                                                                             )),
                                                                       ),
-                                                                      /*                                                              PopupMenuButton<int>(
-                                                                  itemBuilder: (context) => [
-                                                                    // PopupMenuItem 1
-                                                                    PopupMenuItem(
-                                                                      value: 1,
-                                                                      // row with 2 children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.edit),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("Edit")
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    // PopupMenuItem 2
-                                                                    PopupMenuItem(
-                                                                      value: 2,
-                                                                      // row with two children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.timelapse_outlined),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("Order History")
-                                                                        ],
-                                                                      ),
-                                                                    ),PopupMenuItem(
-                                                                      value: 2,
-                                                                      // row with two children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.remove_red_eye),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("View")
-                                                                        ],
-                                                                      ),
-                                                                    ),PopupMenuItem(
-                                                                      value: 2,
-                                                                      // row with two children
-                                                                      child: Row(
-                                                                        children: [
-                                                                          Icon(Icons.delete),
-                                                                          SizedBox(
-                                                                            width: 10,
-                                                                          ),
-                                                                          Text("Delete")
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                  offset: Offset(0, 100),
-                                                                  color: Colors.grey,
-                                                                  elevation: 2,
-                                                                  // on selected we show the dialog box
-                                                                  onSelected: (value) {
-                                                                    // if value 1 show dialog
-                                                                    if (value == 1) {
-                                                                      //  _showDialog(context);
-                                                                      // if value 2 show dialog
-                                                                    } else if (value == 2) {
-                                                                      // _showDialog(context);
-                                                                    }
-                                                                  },
-                                                                )*/
                                                                     ],
                                                                   ),
                                                                   SizedBox(
-                                                                    height:
-                                                                    5,
+                                                                    height: 5,
                                                                   ),
                                                                   Row(
                                                                     children: [
@@ -594,6 +519,43 @@ List items=[];
                                                                                 Padding(
                                                                                   padding: EdgeInsets.all(5.0),
                                                                                   child: Text(
+                                                                                    "Order Total",
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            )),
+                                                                      ),
+                                                                      Flexible(
+                                                                        child: Container(
+                                                                            alignment: Alignment.centerLeft,
+                                                                            child: Padding(
+                                                                              padding: EdgeInsets.only(left: 10),
+                                                                              child: Text(
+                                                                                items[index].orderTotal.toString(),
+                                                                                overflow: TextOverflow.ellipsis,
+                                                                                style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
+                                                                              ),
+                                                                            )),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    children: [
+                                                                      ///////////
+                                                                      Flexible(
+                                                                        child: Container(
+                                                                            decoration: BoxDecoration(
+                                                                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                              // color: Colors.grey,
+                                                                            ),
+                                                                            alignment: Alignment.centerLeft,
+                                                                            child: Column(
+                                                                              children: [
+                                                                                Padding(
+                                                                                  padding: EdgeInsets.all(5.0),
+                                                                                  child: Text(
                                                                                     "PO Date",
                                                                                     overflow: TextOverflow.ellipsis,
                                                                                     style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
@@ -616,7 +578,7 @@ List items=[];
                                                                       ),
                                                                     ],
                                                                   ),
-Row(
+                                                                  Row(
                                                                     children: [
                                                                       ///////////
                                                                       Flexible(
@@ -645,7 +607,7 @@ Row(
                                                                             child: Padding(
                                                                               padding: EdgeInsets.only(left: 10),
                                                                               child: Text(
-                                              _formatTime(items[index].curTime)/*items[index].curTime.toString(),*/,
+                                                                                _formatTime(items[index].curTime) /*items[index].curTime.toString(),*/,
                                                                                 overflow: TextOverflow.ellipsis,
                                                                                 style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
                                                                               ),
@@ -682,6 +644,52 @@ Row(
                                           );
                                         }))
                               ]),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Container(
+                              width: context.width(),
+                              padding: EdgeInsets.all(20.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(30.0),
+                                    topRight: Radius.circular(30.0)),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Image(
+                                      height: 200,
+                                      width: 200,
+                                      image: AssetImage('images/empty.png'),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20.0,
+                                  ),
+                                  Column(
+                                    children: [
+
+                                      Text(
+                                        "Pending PO's are not available!!",
+                                        style: kTextStyle.copyWith(
+                                          fontSize: 15,
+                                            color: kGreyTextColor),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                 ],
               ),
@@ -692,70 +700,68 @@ Row(
       bottomNavigationBar: Container(
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 5.0,left: 10,right: 10),
+          padding: const EdgeInsets.only(bottom: 10.0, left: 10, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5.0,left: 10,right: 10),
+                  padding:
+                      const EdgeInsets.only(bottom: 0.0, left: 10, right: 10),
                   child: Container(
                       //width: double.infinity,
                       child: ElevatedButton(
-                        child: Text('Place Order',
-                            style: TextStyle(
-                                fontSize: 20, color: Colors.white)),
-                        onPressed: () {
-                          if (ActiveConnection == true) {
-                            if(poList.length!=0){
-                              log(jsonString);
-                              submit();
-                            }else{
-                              Fluttertoast.showToast(
-                                  msg: "All PO are already sync !",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  backgroundColor: Colors.red,
-                                  timeInSecForIosWeb: 1,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            }
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "You are offline!",
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.CENTER,
-                                backgroundColor: Colors.red,
-                                timeInSecForIosWeb: 1,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
-                          }
-
-                        },
-                        style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStatePropertyAll(kMainColor)),
-                      )),
+                    child: Text('Place Order',
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    onPressed: () {
+                      if (ActiveConnection == true) {
+                        if (poList.length != 0) {
+                          log(jsonString);
+                          submit();
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "All PO's are already sync !",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              backgroundColor: Colors.red,
+                              timeInSecForIosWeb: 1,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: "You are offline!",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            backgroundColor: Colors.red,
+                            timeInSecForIosWeb: 1,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                    },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(kMainColor)),
+                  )),
                 ),
               ),
               CircleAvatar(
                 backgroundColor: kMainColor,
                 child: IconButton(
-                    onPressed: () {
-                      /*showDialog(
+                  onPressed: () {
+                    /*showDialog(
                       context: context,
                       builder: (context) => attachmentClass(),
                     );*/
-                      //urnData();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => addNewOrderForPo(),
-                          ));
-                    },
-                     icon: Icon(CupertinoIcons.add),
-                    color:Colors.white,
+                    //urnData();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => addNewOrderForPo(),
+                        ));
+                  },
+                  icon: Icon(CupertinoIcons.add),
+                  color: Colors.white,
                 ),
               ),
             ],
@@ -771,6 +777,7 @@ Row(
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        if (!mounted) return;
         setState(() {
           ActiveConnection = true;
           T = "Turn off the data and repress again";
@@ -793,7 +800,7 @@ Row(
       isLoading = true;
     });
     var BODYDATA = {
-    "Json":jsonString.toString(),
+      "Json": jsonString.toString(),
     };
     final response = await http.post(
       Uri.parse("${clientUrl}Mobile/Mob_PO_Synch"),
@@ -814,6 +821,7 @@ Row(
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.remove("POLISTJSON");
         poList.clear();
+        items.clear();
         Fluttertoast.showToast(
             msg: DoPandingListData.message.toString(),
             toastLength: Toast.LENGTH_LONG,
@@ -829,7 +837,6 @@ Row(
         //   gravity: ToastGravity.CENTER,
         // );
       } else {
-
         if (!mounted) return;
         setState(() {
           isLoading = false;
@@ -854,5 +861,4 @@ Row(
       );
     }
   }
-
 }

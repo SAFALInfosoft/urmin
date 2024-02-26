@@ -21,6 +21,7 @@ import '../../../Screens/Authentication/sign_in.dart';
 import '../../../constant.dart';
 import 'package:intl/intl.dart';
 
+import '../PRIMARY_SALES_MENU.dart';
 import 'addNewOrder.dart';
 
 class purchaseOrderMainScreen extends StatefulWidget {
@@ -199,1107 +200,1150 @@ class _purchaseOrderMainScreenState extends State<purchaseOrderMainScreen> {
   @override
   Widget build(BuildContext context) {
 
-
     DateTime now = DateTime.now();
 
     String dateStr = DateFormat.yMMMEd().format(now);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: kMainColor,
-      appBar: AppBar(
-        backgroundColor: kMainColor,
-        elevation: 0.0,
-        titleSpacing: 0.0,
-        iconTheme:  IconThemeData(color: Colors.white),
-        title: Text(
-          'Purchase Order',
-          maxLines: 2,
-          style: kTextStyle.copyWith(
-              color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        actions:  [
-          ActiveConnection?Container():Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: Image(
-              color: Colors.white,
-              height: 30,
-              width: 30,
-              image: AssetImage('images/wifi.png'),
-            ),
-          ),
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Container(
-              padding:  EdgeInsets.all(20.0),
-              decoration:  BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0)),
-                color: Colors.white,
-              ),
-              child: Column(
-                  children: [
-
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FormField<String>(
-                            builder: (FormFieldState<String> state) {
-                              return Container(
-                                //width: MediaQuery.of(context).size.width! * 0.90,
-                                child: InputDecorator(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 15),
-                                    /*contentPadding:
-                                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),*/
-                                    isDense: true,
-                                    errorStyle: TextStyle(
-                                        color: Colors.redAccent,
-                                        fontSize: 16.0),
-                                    hintText: 'Please select expense',
-                                    labelStyle: TextStyle(
-                                        color: Colors.green),
-                                    hintStyle: TextStyle(
-                                        color: Colors.white),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      borderSide: BorderSide(
-                                        color: Colors.blueAccent,
-                                      ),
-                                    ),
-                                  ),
-                                  isEmpty: _currentSelectedValue == '',
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton<String>(
-                                      icon: Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color:  Colors.blueAccent,
-                                      ),
-                                      hint: Text(
-                                        'Please select status',
-                                        style: TextStyle(
-                                            color: Colors.blue),
-                                      ),
-                                      value: _currentSelectedValue,
-                                      isDense: true,
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          _currentSelectedValue = newValue!;
-                                          state.didChange(newValue);
-                                          setState(() {
-                                            //_selectedValueIndex = index;
-                                            if (_currentSelectedValue == "Draft") {
-                                              poList = temppoList
-                                                  .where((item) => item["PO_Status"]
-                                                  .toLowerCase()
-                                                  .contains("Draft".toLowerCase()))
-                                                  .toList();
-                                              //customerTicketData(Recordlength, selectedType, Status, searchText);
-                                            }
-                                            if (_currentSelectedValue == "In Process") {
-                                              setState(() {
-                                                poList = temppoList
-                                                    .where((item) => item["PO_Status"]
-                                                    .toLowerCase().contains("RSM_Approved".toLowerCase()) ||
-                                                    item["PO_Status"].toLowerCase().contains("Reject".toLowerCase())||
-                                                    item["PO_Status"].toLowerCase().contains("RSM Approval".toLowerCase())||
-                                                    item["PO_Status"].toLowerCase().contains("Hold".toLowerCase())||
-                                                    item["PO_Status"].toLowerCase().contains("1".toLowerCase()))
-                                                    .toList();
-                                                // isDateVisible = false;
-                                                //  customerTicketData(Recordlength, selectedType, Status, searchText);
-                                              });
-
-                                            }
-                                            if (_currentSelectedValue == "Completed") {
-                                              poList = temppoList
-                                                  .where((item) => item["PO_Status"]
-                                                  .toLowerCase().contains("....Demoo".toLowerCase()) )
-                                                  .toList();
-
-                                              //customerTicketData(Recordlength, selectedType, Status, searchText);
-                                            }
-                                          });
-                                        });
-                                      },
-                                      items: _currencies.map((String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text("${value} (${poList.length})"),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding:  EdgeInsets.only(left: 5, right: 10),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {});
-                              if (isVisible == true) {
-                                isVisible = false;
-                              } else {
-                                isVisible = true;
-                              }
-                            },
-                            child: Container(
-                              //width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(12)),
-                                border:
-                                Border.all(color: Colors.black, width: 1.1),
-                                color: Colors.white,
-                              ),
-                              child: Padding(
-                                  padding:  EdgeInsets.all(11.0),
-                                  child: Icon(Icons.date_range)),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-/*
-                    //Button Details
-                  Row(
+    return WillPopScope(
+      onWillPop: ()async{
+        return await Navigator.push(context,  MaterialPageRoute(builder: (context) =>
+            PRIMARY_SALES_MENU()));
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        // appBar: AppBar(
+        //   backgroundColor: kMainColor,
+        //   elevation: 0.0,
+        //   titleSpacing: 0.0,
+        //   iconTheme:  IconThemeData(color: Colors.white),
+        //   title: Text(
+        //     'Purchase Order',
+        //     maxLines: 2,
+        //     style: kTextStyle.copyWith(
+        //         color: Colors.white, fontWeight: FontWeight.bold),
+        //   ),
+        //   actions:  [
+        //     ActiveConnection?Container():Padding(
+        //       padding: EdgeInsets.only(right: 20.0),
+        //       child: Image(
+        //         color: Colors.white,
+        //         height: 30,
+        //         width: 30,
+        //         image: AssetImage('images/wifi.png'),
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                padding:  EdgeInsets.all(8.0),
+                decoration:  BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0)),
+                  color: Colors.white,
+                ),
+                child: Column(
                     children: [
-                      ...List.generate(
-                        buttonText.length,
-                        (index) => button(
-                          index: index,
-                          text: buttonText[index],
-                        ),
-                      ),
-                      Padding(
-                        padding:  EdgeInsets.only(left: 0, right: 10),
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {});
-                            if (isVisible == true) {
-                              isVisible = false;
-                            } else {
-                              isVisible = true;
-                            }
-                          },
-                          child: Container(
-                            //width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                   BorderRadius.all(Radius.circular(12)),
-                              border:
-                                  Border.all(color: Colors.black, width: 1.1),
-                              color: Colors.white,
-                            ),
-                            child: Padding(
-                                padding:  EdgeInsets.all(5.0),
-                                child: Icon(Icons.date_range)),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),*/
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding:  EdgeInsets.all(8.0),
-                    child: CupertinoSearchTextField(
-                      //controller: controller,
-                      onChanged: (value) {
-                        setState(() {
-
-                        });
-                        poList = temppoList
-                            .where((item) =>
-                            item["PO_Status"].toLowerCase().contains(value.toLowerCase()))
-                            .toList();
-                      },
-                      onSubmitted: (value) {},
-
-                      autocorrect: true,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Visibility(
-                    visible: isVisible,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: AppTextField(
-                            textFieldType: TextFieldType.NAME,
-                            readOnly: true,
-                            onTap: () async {
-                              var date = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100));
-                              dateController.text =
-                                  date.toString().substring(0, 10);
-                            },
-                            controller: dateController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                suffixIcon: Icon(
-                                  Icons.date_range_rounded,
-                                  color: kGreyTextColor,
-                                ),
-                                labelText: 'To Date',
-                                hintText: dateStr.toString()),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: AppTextField(
-                            textFieldType: TextFieldType.NAME,
-                            readOnly: true,
-                            onTap: () async {
-                              var date = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100));
-                              dateController.text =
-                                  date.toString().substring(0, 10);
-                            },
-                            controller: dateController,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                suffixIcon: Icon(
-                                  Icons.date_range_rounded,
-                                  color: kGreyTextColor,
-                                ),
-                                labelText: "From Date",
-                                hintText: dateStr),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(),
-                    poList==[]||poList.isEmpty?Center(child: CircularProgressIndicator()): Expanded(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      Row(
                         children: [
                           Expanded(
-                            child: ListView.builder(
-                                itemCount: poList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                    onTap: () {},
-                                    child: Padding(
-                                        padding:  EdgeInsets.all(5.0),
-                                        child: Slidable(
-                                          startActionPane: ActionPane(
-                                            motion:  BehindMotion(),
-                                            children: [
-                                              SlidableAction(
-                                                onPressed: (context) {},
-                                                backgroundColor: Colors.green,
-                                                icon: Icons.edit,
-                                                label: 'Edit',
-                                              ),
-                                              SlidableAction(
-                                                onPressed: (context) {},
-                                                backgroundColor: Colors.blue,
-                                                icon: Icons.timelapse_outlined,
-                                                label: 'Order History',
-                                              ),
-                                            ],
+                            child: Padding(
+                              padding:  EdgeInsets.only(left: 10, right: 0),
+
+                              child: FormField<String>(
+                                builder: (FormFieldState<String> state) {
+                                  return Container(
+                                    //width: MediaQuery.of(context).size.width! * 0.90,
+                                    child: InputDecorator(
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 15),
+                                        /*contentPadding:
+                                              EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),*/
+                                        isDense: true,
+                                        errorStyle: TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 16.0),
+                                        hintText: 'Please select Status',
+                                        labelStyle: TextStyle(
+                                            color: Colors.green),
+                                        hintStyle: TextStyle(
+                                            color: Colors.white),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.grey,
                                           ),
-                                          endActionPane: ActionPane(
-                                            motion:  BehindMotion(),
-                                            children: [
-                                              SlidableAction(
-                                                onPressed: (context) {},
-                                                backgroundColor: Colors.blue,
-                                                icon: Icons.remove_red_eye,
-                                                label: 'View',
-                                              ),
-                                              SlidableAction(
-                                                onPressed: (context) {},
-                                                backgroundColor: Colors.red,
-                                                icon: Icons.delete,
-                                                label: 'Delete',
-                                              ),
-                                            ],
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderSide: BorderSide(
+                                            color: Colors.blueAccent,
                                           ),
-                                          child: Padding(
-                                            padding:  EdgeInsets.all(8.0),
-                                            child: Container(
-                                              child: Material(
-                                                elevation: 2.0,
-                                                child: Container(
-                                                  width: context.width(),
-                                                  padding:  EdgeInsets.all(
-                                                      0.0),
-                                                  decoration: BoxDecoration(
-                                                    border: Border(
-                                                      left: BorderSide(
-                                                        color: poList[index]['PO_Status'] ==
-                                                            "Draft"
-                                                            ? Colors
-                                                            .red:poList[index]['PO_Status'] ==
-                                                            "RSM Approval"
-                                                            ? Colors
-                                                            .grey:poList[index]['PO_Status'] ==
-                                                            "Hold"
-                                                            ?Colors.blue:poList[index]['PO_Status'] ==
-                                                            "Reject"
-                                                            ?Colors.orange:poList[index]['PO_Status'] ==
-                                                            "1"?Colors.green:Colors.yellow,
-                                                        width: 3.0,
+                                        ),
+                                      ),
+                                      isEmpty: _currentSelectedValue == '',
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<String>(
+                                          icon: Icon(
+                                            Icons.arrow_drop_down_sharp,
+                                            color:  Colors.blueAccent,
+                                          ),
+                                          hint: Text(
+                                            'Please select status',
+                                            style: TextStyle(
+                                                color: Colors.blue),
+                                          ),
+                                          value: _currentSelectedValue,
+                                          isDense: true,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              _currentSelectedValue = newValue!;
+                                              state.didChange(newValue);
+                                              setState(() {
+                                                //_selectedValueIndex = index;
+                                                if (_currentSelectedValue == "Draft") {
+                                                  poList = temppoList
+                                                      .where((item) => item["PO_Status"]
+                                                      .toLowerCase()
+                                                      .contains("Draft".toLowerCase()))
+                                                      .toList();
+                                                }
+                                                if (_currentSelectedValue == "In Process") {
+                                                  setState(() {
+                                                    poList = temppoList
+                                                        .where((item) => item["PO_Status"]
+                                                        .toLowerCase().contains("RSM_Approved".toLowerCase()) ||
+                                                        item["PO_Status"].toLowerCase().contains("Reject".toLowerCase())||
+                                                        item["PO_Status"].toLowerCase().contains("RSM Approval".toLowerCase())||
+                                                        item["PO_Status"].toLowerCase().contains("Hold".toLowerCase())||
+                                                        item["PO_Status"].toLowerCase().contains("1".toLowerCase()))
+                                                        .toList();
+                                                    });
+                                                }
+                                                if (_currentSelectedValue == "Completed") {
+                                                  poList = temppoList
+                                                      .where((item) => item["PO_Status"]
+                                                      .toLowerCase().contains("....Demoo".toLowerCase()) )
+                                                      .toList();
+                                                }
+                                              });
+                                            });
+                                          },
+                                          items: _currencies.map((String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text("${value}"),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding:  EdgeInsets.only(left: 5, right: 10),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {});
+                                if (isVisible == true) {
+                                  isVisible = false;
+                                } else {
+                                  isVisible = true;
+                                }
+                              },
+                              child: Container(
+                                //width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                                  border:
+                                  Border.all(color: Colors.black, width: 1.1),
+                                  color: Colors.white,
+                                ),
+                                child: Padding(
+                                    padding:  EdgeInsets.all(11.0),
+                                    child: Text(poList.length.toString())),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding:  EdgeInsets.only(left: 10.0,right: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: CupertinoSearchTextField(
+                              //controller: controller,
+                              onChanged: (value) {
+                                setState(() {
+
+                                });
+                                poList = temppoList
+                                    .where((item) =>
+                                    item["PO_Status"].toLowerCase().contains(value.toLowerCase()))
+                                    .toList();
+                              },
+                              onSubmitted: (value) {},
+
+                              autocorrect: true,
+                            ),
+                          ),
+                          Padding(
+                            padding:  EdgeInsets.only(left: 5, right: 0),
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {});
+                                if (isVisible == true) {
+                                  isVisible = false;
+                                } else {
+                                  isVisible = true;
+                                }
+                              },
+                              child: Container(
+                                //width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                                  border:
+                                  Border.all(color: Colors.black, width: 1.1),
+                                  color: Colors.white,
+                                ),
+                                child: Padding(
+                                    padding:  EdgeInsets.all(5.0),
+                                    child: Icon(Icons.date_range)),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Visibility(
+                      visible: isVisible,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: AppTextField(
+                              textFieldType: TextFieldType.NAME,
+                              readOnly: true,
+                              onTap: () async {
+                                var date = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(2100));
+                                dateController.text =
+                                    date.toString().substring(0, 10);
+                              },
+                              controller: dateController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  suffixIcon: Icon(
+                                    Icons.date_range_rounded,
+                                    color: kGreyTextColor,
+                                  ),
+                                  labelText: 'To Date',
+                                  hintText: dateStr.toString()),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: AppTextField(
+                              textFieldType: TextFieldType.NAME,
+                              readOnly: true,
+                              onTap: () async {
+                                var date = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1900),
+                                    lastDate: DateTime(2100));
+                                dateController.text =
+                                    date.toString().substring(0, 10);
+                              },
+                              controller: dateController,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  suffixIcon: Icon(
+                                    Icons.date_range_rounded,
+                                    color: kGreyTextColor,
+                                  ),
+                                  labelText: "From Date",
+                                  hintText: dateStr),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(),
+                      poList==[]||poList.isEmpty?
+                      Center(child:
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Container(
+                            width: context.width(),
+                            padding: EdgeInsets.all(20.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0)),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Image(
+                                    height: 200,
+                                    width: 200,
+                                    image: AssetImage('images/empty.png'),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20.0,
+                                ),
+                                Column(
+                                  children: [
+                                    Text(
+                                      "PO not available!!",
+                                      style: kTextStyle.copyWith(
+                                          fontSize: 15,
+                                          color: kGreyTextColor),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )): Expanded(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                  itemCount: poList.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                   // poList.sort((a, b) => a["cur_date"].compareTo(b["cur_date"]));
+                                    return InkWell(
+                                      onTap: () {},
+                                      child: Padding(
+                                          padding:  EdgeInsets.all(5.0),
+                                          child: Slidable(
+                                            startActionPane: ActionPane(
+                                              motion:  BehindMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) {},
+                                                  backgroundColor: Colors.green,
+                                                  icon: Icons.edit,
+                                                  label: 'Edit',
+                                                ),
+                                                SlidableAction(
+                                                  onPressed: (context) {},
+                                                  backgroundColor: Colors.blue,
+                                                  icon: Icons.timelapse_outlined,
+                                                  label: 'Order History',
+                                                ),
+                                              ],
+                                            ),
+                                            endActionPane: ActionPane(
+                                              motion:  BehindMotion(),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) {},
+                                                  backgroundColor: Colors.blue,
+                                                  icon: Icons.remove_red_eye,
+                                                  label: 'View',
+                                                ),
+                                                SlidableAction(
+                                                  onPressed: (context) {},
+                                                  backgroundColor: Colors.red,
+                                                  icon: Icons.delete,
+                                                  label: 'Delete',
+                                                ),
+                                              ],
+                                            ),
+                                            child: Padding(
+                                              padding:  EdgeInsets.all(8.0),
+                                              child: Container(
+                                                child: Material(
+                                                  elevation: 2.0,
+                                                  child: Container(
+                                                    width: context.width(),
+                                                    padding:  EdgeInsets.all(
+                                                        0.0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                        left: BorderSide(
+                                                          color: poList[index]['PO_Status'] ==
+                                                              "Draft"
+                                                              ? Colors
+                                                              .red:poList[index]['PO_Status'] ==
+                                                              "RSM Approval"
+                                                              ? Colors
+                                                              .grey:poList[index]['PO_Status'] ==
+                                                              "Hold"
+                                                              ?Colors.blue:poList[index]['PO_Status'] ==
+                                                              "Reject"
+                                                              ?Colors.orange:poList[index]['PO_Status'] ==
+                                                              "1"?Colors.green:Colors.yellow,
+                                                          width: 3.0,
+                                                        ),
                                                       ),
+                                                      color: Colors.white,
                                                     ),
-                                                    color: Colors.white,
-                                                  ),
-                                                  // child: Column(
-                                                  //   children: [
-                                                  //     Row(
-                                                  //       mainAxisAlignment:
-                                                  //       MainAxisAlignment
-                                                  //           .end,
-                                                  //       children: [
-                                                  //         Flexible(
-                                                  //           child: Container(
-                                                  //             // width: MediaQuery.of(context).size.width / 2.5,
-                                                  //               alignment:
-                                                  //               Alignment
-                                                  //                   .center,
-                                                  //               decoration:
-                                                  //               BoxDecoration(
-                                                  //                 color:Colors.blueAccent,
-                                                  //                 borderRadius: BorderRadius.only(
-                                                  //                     topRight:
-                                                  //                     Radius.circular(
-                                                  //                         12),
-                                                  //                     topLeft: Radius
-                                                  //                         .circular(
-                                                  //                         12)),
-                                                  //               ),
-                                                  //               child: Padding(
-                                                  //                 padding:
-                                                  //                  EdgeInsets
-                                                  //                     .all(
-                                                  //                     8.0),
-                                                  //                 child: Text(
-                                                  //                   "Status",
-                                                  //                   //Approved
-                                                  //                   overflow:
-                                                  //                   TextOverflow
-                                                  //                       .ellipsis,
-                                                  //                   style:
-                                                  //                    TextStyle(
-                                                  //                     color: Colors
-                                                  //                         .white,
-                                                  //                     fontSize:
-                                                  //                     18,
-                                                  //                     fontWeight:
-                                                  //                     FontWeight
-                                                  //                         .bold,
-                                                  //                   ),
-                                                  //                 ),
-                                                  //               )),
-                                                  //         )
-                                                  //       ],
-                                                  //     ),
-                                                  //      SizedBox(
-                                                  //       height: 5,
-                                                  //     ),
-                                                  //     Container(
-                                                  //       decoration:
-                                                  //       BoxDecoration(
-                                                  //         borderRadius:
-                                                  //          BorderRadius
-                                                  //             .only(
-                                                  //             bottomLeft: Radius
-                                                  //                 .circular(
-                                                  //                 12),
-                                                  //             bottomRight: Radius
-                                                  //                 .circular(
-                                                  //                 12)),
-                                                  //         color:
-                                                  //         Colors.grey[400],
-                                                  //       ),
-                                                  //       child: Column(
-                                                  //         children: [
-                                                  //           //Urn Number
-                                                  //           Row(
-                                                  //             children: [
-                                                  //               ///////////
-                                                  //               Flexible(
-                                                  //                 child: Container(
-                                                  //                     decoration:  BoxDecoration(
-                                                  //                       borderRadius:
-                                                  //                       BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                  //                       // color: Colors.grey,
-                                                  //                     ),
-                                                  //                     alignment: Alignment.centerRight,
-                                                  //                     child: Column(
-                                                  //                       children:  [
-                                                  //                         Padding(
-                                                  //                           padding:
-                                                  //                           EdgeInsets.all(5.0),
-                                                  //                           child:
-                                                  //                           Text(
-                                                  //                             "URN NUMBER",
-                                                  //                             overflow: TextOverflow.ellipsis,
-                                                  //                             style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16),
-                                                  //                           ),
-                                                  //                         ),
-                                                  //                       ],
-                                                  //                     )),
-                                                  //               ),
-                                                  //               Flexible(
-                                                  //                 child: Container(
-                                                  //                     alignment: Alignment.centerLeft,
-                                                  //                     child:  Padding(
-                                                  //                       padding:
-                                                  //                       EdgeInsets.only(left: 10),
-                                                  //                       child:
-                                                  //                       Text(
-                                                  //                         "Hii",
-                                                  //                         overflow:
-                                                  //                         TextOverflow.ellipsis,
-                                                  //                         style: TextStyle(
-                                                  //                             fontWeight: FontWeight.w400,
-                                                  //                             color: Colors.black,
-                                                  //                             fontSize: 16),
-                                                  //                       ),
-                                                  //                     )),
-                                                  //               ),
-                                                  //             ],
-                                                  //           ),
-                                                  //
-                                                  //
-                                                  //         ],
-                                                  //       ),
-                                                  //     ),
-                                                  //   ],
-                                                  // ),
+                                                    // child: Column(
+                                                    //   children: [
+                                                    //     Row(
+                                                    //       mainAxisAlignment:
+                                                    //       MainAxisAlignment
+                                                    //           .end,
+                                                    //       children: [
+                                                    //         Flexible(
+                                                    //           child: Container(
+                                                    //             // width: MediaQuery.of(context).size.width / 2.5,
+                                                    //               alignment:
+                                                    //               Alignment
+                                                    //                   .center,
+                                                    //               decoration:
+                                                    //               BoxDecoration(
+                                                    //                 color:Colors.blueAccent,
+                                                    //                 borderRadius: BorderRadius.only(
+                                                    //                     topRight:
+                                                    //                     Radius.circular(
+                                                    //                         12),
+                                                    //                     topLeft: Radius
+                                                    //                         .circular(
+                                                    //                         12)),
+                                                    //               ),
+                                                    //               child: Padding(
+                                                    //                 padding:
+                                                    //                  EdgeInsets
+                                                    //                     .all(
+                                                    //                     8.0),
+                                                    //                 child: Text(
+                                                    //                   "Status",
+                                                    //                   //Approved
+                                                    //                   overflow:
+                                                    //                   TextOverflow
+                                                    //                       .ellipsis,
+                                                    //                   style:
+                                                    //                    TextStyle(
+                                                    //                     color: Colors
+                                                    //                         .white,
+                                                    //                     fontSize:
+                                                    //                     18,
+                                                    //                     fontWeight:
+                                                    //                     FontWeight
+                                                    //                         .bold,
+                                                    //                   ),
+                                                    //                 ),
+                                                    //               )),
+                                                    //         )
+                                                    //       ],
+                                                    //     ),
+                                                    //      SizedBox(
+                                                    //       height: 5,
+                                                    //     ),
+                                                    //     Container(
+                                                    //       decoration:
+                                                    //       BoxDecoration(
+                                                    //         borderRadius:
+                                                    //          BorderRadius
+                                                    //             .only(
+                                                    //             bottomLeft: Radius
+                                                    //                 .circular(
+                                                    //                 12),
+                                                    //             bottomRight: Radius
+                                                    //                 .circular(
+                                                    //                 12)),
+                                                    //         color:
+                                                    //         Colors.grey[400],
+                                                    //       ),
+                                                    //       child: Column(
+                                                    //         children: [
+                                                    //           //Urn Number
+                                                    //           Row(
+                                                    //             children: [
+                                                    //               ///////////
+                                                    //               Flexible(
+                                                    //                 child: Container(
+                                                    //                     decoration:  BoxDecoration(
+                                                    //                       borderRadius:
+                                                    //                       BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                    //                       // color: Colors.grey,
+                                                    //                     ),
+                                                    //                     alignment: Alignment.centerRight,
+                                                    //                     child: Column(
+                                                    //                       children:  [
+                                                    //                         Padding(
+                                                    //                           padding:
+                                                    //                           EdgeInsets.all(5.0),
+                                                    //                           child:
+                                                    //                           Text(
+                                                    //                             "URN NUMBER",
+                                                    //                             overflow: TextOverflow.ellipsis,
+                                                    //                             style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 16),
+                                                    //                           ),
+                                                    //                         ),
+                                                    //                       ],
+                                                    //                     )),
+                                                    //               ),
+                                                    //               Flexible(
+                                                    //                 child: Container(
+                                                    //                     alignment: Alignment.centerLeft,
+                                                    //                     child:  Padding(
+                                                    //                       padding:
+                                                    //                       EdgeInsets.only(left: 10),
+                                                    //                       child:
+                                                    //                       Text(
+                                                    //                         "Hii",
+                                                    //                         overflow:
+                                                    //                         TextOverflow.ellipsis,
+                                                    //                         style: TextStyle(
+                                                    //                             fontWeight: FontWeight.w400,
+                                                    //                             color: Colors.black,
+                                                    //                             fontSize: 16),
+                                                    //                       ),
+                                                    //                     )),
+                                                    //               ),
+                                                    //             ],
+                                                    //           ),
+                                                    //
+                                                    //
+                                                    //         ],
+                                                    //       ),
+                                                    //     ),
+                                                    //   ],
+                                                    // ),
 
-                                                  child: InkWell(
-                                                    onTap: () {},
-                                                    child: Padding(
-                                                      padding:  EdgeInsets.only(left: 8.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              ///////////
-                                                              Flexible(
-                                                                child: Container(
-                                                                    decoration:
-                                                                         BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.only(
-                                                                              bottomLeft:
-                                                                                  Radius.circular(0)),
-                                                                      // color: Colors.grey,
-                                                                    ),
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child: Column(
-                                                                      children:  [
-                                                                        Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(0.0),
-                                                                          child:
-                                                                              Text(
-                                                                            "",
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: TextStyle(
-                                                                                fontWeight: FontWeight.w500,
-                                                                                color: Colors.black,
-                                                                                fontSize: 16),
+                                                    child: InkWell(
+                                                      onTap: () {},
+                                                      child: Padding(
+                                                        padding:  EdgeInsets.only(left: 8.0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Row(
+                                                              children: [
+                                                                ///////////
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      decoration:
+                                                                           BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                                bottomLeft:
+                                                                                    Radius.circular(0)),
+                                                                        // color: Colors.grey,
+                                                                      ),
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child: Column(
+                                                                        children:  [
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.all(0.0),
+                                                                            child:
+                                                                                Text(
+                                                                              "",
+                                                                              overflow:
+                                                                                  TextOverflow.ellipsis,
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 16),
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                              ),
-                                                              Flexible(
-                                                                child: Container(
-                                                                  height: 25,
-                                                                   decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
-                                                                     color: poList[index]['PO_Status'] ==
-                                                                       "Draft"
-                                                                       ? Colors
-                                                                       .red:poList[index]['PO_Status'] ==
-                                                                       "RSM Approval"
-                                                                       ? Colors
-                                                                       .grey:poList[index]['PO_Status'] ==
-                                                                       "Hold"
-                                                                       ?Colors.blue:poList[index]['PO_Status'] ==
-                                                                       "Reject"
-                                                                       ?Colors.orange:poList[index]['PO_Status'] ==
-                                                                     "1"?Colors.green:Colors.yellow,
-                                                                   ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Container(
+                                                                    height: 25,
+                                                                     decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
+                                                                       color: poList[index]['PO_Status'] ==
+                                                                         "Draft"
+                                                                         ? Colors
+                                                                         .red:poList[index]['PO_Status'] ==
+                                                                         "RSM Approval"
+                                                                         ? Colors
+                                                                         .grey:poList[index]['PO_Status'] ==
+                                                                         "Hold"
+                                                                         ?Colors.blue:poList[index]['PO_Status'] ==
+                                                                         "Reject"
+                                                                         ?Colors.orange:poList[index]['PO_Status'] ==
+                                                                       "1"?Colors.green:Colors.yellow,
+                                                                     ),
 
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets
-                                                                          .only(
-                                                                              left:
-                                                                                  0),
-                                                                      child: Text(
-                                                                          poList[index]['PO_Status'] ==
-                                                                              "RSM Approval"?"RSM Approval":poList[index]['PO_Status']=="RSM_Approved"?"Do Pending":poList[index]['PO_Status']=="HOld"?"Hold":poList[index]['PO_Status']=="1"?"DO Created":poList[index]['PO_Status'],
-                                                                          style: TextStyle(
-                                                                              color:/* poList[index]['PO_Status'] ==
-                                                                                  "Draft"
-                                                                                  ? Colors
-                                                                                  .red:poList[index]['PO_Status'] ==
-                                                                                  "RSM Approval"
-                                                                                  ? Colors
-                                                                                  .grey:poList[index]['PO_Status'] ==
-                                                                                  "Hold"
-                                                                                  ?Colors.blue:poList[index]['PO_Status'] ==
-                                                                                  "Reject"
-                                                                                  ?Colors.orange:*/Colors.white,
-                                                                              fontSize: 15,
-                                                                              fontWeight:
-                                                                              FontWeight
-                                                                                  .bold)),
-                                                                    )),
-                                                              ),
-                                                              PopupMenuButton<int>(
-                                                                itemBuilder: (context) => [
-                                                                  // PopupMenuItem 1
-                                                                  PopupMenuItem(
-                                                                    value: 1,
-                                                                    // row with 2 children
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Icon(Icons.edit),
-                                                                        SizedBox(
-                                                                          width: 10,
-                                                                        ),
-                                                                        Text("Edit")
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  // PopupMenuItem 2
-                                                                  PopupMenuItem(
-                                                                    value: 2,
-                                                                    // row with two children
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Icon(Icons.timelapse_outlined),
-                                                                        SizedBox(
-                                                                          width: 10,
-                                                                        ),
-                                                                        Text("Order History")
-                                                                      ],
-                                                                    ),
-                                                                  ),PopupMenuItem(
-                                                                    value: 2,
-                                                                    // row with two children
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Icon(Icons.remove_red_eye),
-                                                                        SizedBox(
-                                                                          width: 10,
-                                                                        ),
-                                                                        Text("View")
-                                                                      ],
-                                                                    ),
-                                                                  ),PopupMenuItem(
-                                                                    value: 2,
-                                                                    // row with two children
-                                                                    child: Row(
-                                                                      children: [
-                                                                        Icon(Icons.delete),
-                                                                        SizedBox(
-                                                                          width: 10,
-                                                                        ),
-                                                                        Text("Delete")
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                                offset: Offset(0, 100),
-                                                                color: Colors.grey,
-                                                                elevation: 2,
-                                                                // on selected we show the dialog box
-                                                                onSelected: (value) {
-                                                                  // if value 1 show dialog
-                                                                  if (value == 1) {
-                                                                  //  _showDialog(context);
-                                                                    // if value 2 show dialog
-                                                                  } else if (value == 2) {
-                                                                   // _showDialog(context);
-                                                                  }
-                                                                },
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          SizedBox(
-                                                            height: 5,
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              ///////////
-                                                              Flexible(
-                                                                child: Container(
-                                                                    decoration:
-                                                                         BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.only(
-                                                                              bottomLeft:
-                                                                                  Radius.circular(0)),
-                                                                      // color: Colors.grey,
-                                                                    ),
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child: Column(
-                                                                      children:  [
-                                                                        Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(5.0),
-                                                                          child:
-                                                                              Text(
-                                                                            "PO No",
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: TextStyle(
-                                                                                fontWeight: FontWeight.w500,
-                                                                                color: Colors.black,
-                                                                                fontSize: 16),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                              ),
-                                                              Flexible(
-                                                                child: Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets
-                                                                          .only(
-                                                                              left:
-                                                                                  10),
-                                                                      child: Text(
-                                                                        poList[index]
-                                                                            [
-                                                                            'URN_NO'],
-                                                                        overflow:
-                                                                            TextOverflow
-                                                                                .ellipsis,
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .w400,
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                16),
-                                                                      ),
-                                                                    )),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              ///////////
-                                                              Flexible(
-                                                                child: Container(
-                                                                    decoration:
-                                                                         BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.only(
-                                                                              bottomLeft:
-                                                                                  Radius.circular(0)),
-                                                                      // color: Colors.grey,
-                                                                    ),
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child: Column(
-                                                                      children:  [
-                                                                        Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(5.0),
-                                                                          child:
-                                                                              Text(
-                                                                            "Date",
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: TextStyle(
-                                                                                fontWeight: FontWeight.w500,
-                                                                                color: Colors.black,
-                                                                                fontSize: 16),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                              ),
-                                                              Flexible(
-                                                                child: Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets
-                                                                          .only(
-                                                                              left:
-                                                                                  10),
-                                                                      child: Text(
-                                                                        poList[index]
-                                                                            [
-                                                                            'cur_date'],
-                                                                        overflow:
-                                                                            TextOverflow
-                                                                                .ellipsis,
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .w400,
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                16),
-                                                                      ),
-                                                                    )),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          /*    Row(
-                                                            children: [
-                                                              ///////////
-                                                              Flexible(
-                                                                child: Container(
-                                                                    decoration:  BoxDecoration(
-                                                                      borderRadius:
-                                                                      BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                      // color: Colors.grey,
-                                                                    ),
-                                                                    alignment: Alignment.centerLeft,
-                                                                    child: Column(
-                                                                      children:  [
-                                                                        Padding(
-                                                                          padding:
-                                                                          EdgeInsets.all(5.0),
-                                                                          child:
-                                                                          Text(
-                                                                            "Created By",
-                                                                            overflow: TextOverflow.ellipsis,
-                                                                            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                              ),
-                                                              Flexible(
-                                                                child: Container(
-                                                                    alignment: Alignment.centerLeft,
-                                                                    child:  Padding(
-                                                                      padding:
-                                                                      EdgeInsets.only(left: 10),
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .center,
                                                                       child:
-                                                                      Text(
-                                                                        _selectedValueIndex ==
-                                                                            0?' Self':"System",
-                                                                        overflow:
-                                                                        TextOverflow.ellipsis,
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight.w400,
-                                                                            color:_selectedValueIndex ==
-                                                                                0? Colors
-                                                                                .blue:Colors.red,
-                                                                            fontSize: 16),
-                                                                      ),
-                                                                    )),
-                                                              ),
-                                                            ],
-                                                          ),*/
-                                                          Row(
-                                                            children: [
-                                                              ///////////
-                                                              Flexible(
-                                                                child: Container(
-                                                                    decoration:
-                                                                         BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.only(
-                                                                              bottomLeft:
-                                                                                  Radius.circular(0)),
-                                                                      // color: Colors.grey,
-                                                                    ),
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child: Column(
-                                                                      children:  [
-                                                                        Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(5.0),
-                                                                          child:
-                                                                              Text(
-                                                                            "Total Amount",
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
+                                                                          Padding(
+                                                                        padding: EdgeInsets
+                                                                            .only(
+                                                                                left:
+                                                                                    0),
+                                                                        child: Text(
+                                                                            poList[index]['PO_Status'] ==
+                                                                                "RSM Approval"?"RSM Approval":poList[index]['PO_Status']=="RSM_Approved"?"Do Pending":poList[index]['PO_Status']=="HOld"?"Hold":poList[index]['PO_Status']=="1"?"DO Created":poList[index]['PO_Status'],
                                                                             style: TextStyle(
-                                                                                fontWeight: FontWeight.w500,
-                                                                                color: Colors.black,
-                                                                                fontSize: 16),
+                                                                                color:/* poList[index]['PO_Status'] ==
+                                                                                    "Draft"
+                                                                                    ? Colors
+                                                                                    .red:poList[index]['PO_Status'] ==
+                                                                                    "RSM Approval"
+                                                                                    ? Colors
+                                                                                    .grey:poList[index]['PO_Status'] ==
+                                                                                    "Hold"
+                                                                                    ?Colors.blue:poList[index]['PO_Status'] ==
+                                                                                    "Reject"
+                                                                                    ?Colors.orange:*/Colors.white,
+                                                                                fontSize: 15,
+                                                                                fontWeight:
+                                                                                FontWeight
+                                                                                    .bold)),
+                                                                      )),
+                                                                ),
+                                                                PopupMenuButton<int>(
+                                                                  itemBuilder: (context) => [
+                                                                    // PopupMenuItem 1
+                                                                    PopupMenuItem(
+                                                                      value: 1,
+                                                                      // row with 2 children
+                                                                      child: Row(
+                                                                        children: [
+                                                                          Icon(Icons.edit),
+                                                                          SizedBox(
+                                                                            width: 10,
                                                                           ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                              ),
-                                                              Flexible(
-                                                                child: Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets
-                                                                          .only(
-                                                                              left:
-                                                                                  10),
-                                                                      child: Text(
-                                                                        poList[index]
-                                                                                [
-                                                                                'total']
-                                                                            .toString(),
-                                                                        overflow:
-                                                                            TextOverflow
-                                                                                .ellipsis,
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .w400,
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                16),
+                                                                          Text("Edit")
+                                                                        ],
                                                                       ),
-                                                                    )),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              ///////////
-                                                              Flexible(
-                                                                child: Container(
-                                                                    decoration:
-                                                                         BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.only(
-                                                                              bottomLeft:
-                                                                                  Radius.circular(0)),
-                                                                      // color: Colors.grey,
                                                                     ),
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child: Column(
-                                                                      children:  [
-                                                                        Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(5.0),
-                                                                          child:
-                                                                              Text(
-                                                                            "Total Tax",
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: TextStyle(
-                                                                                fontWeight: FontWeight.w500,
-                                                                                color: Colors.black,
-                                                                                fontSize: 16),
+                                                                    // PopupMenuItem 2
+                                                                    PopupMenuItem(
+                                                                      value: 2,
+                                                                      // row with two children
+                                                                      child: Row(
+                                                                        children: [
+                                                                          Icon(Icons.timelapse_outlined),
+                                                                          SizedBox(
+                                                                            width: 10,
                                                                           ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                              ),
-                                                              Flexible(
-                                                                child: Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets
-                                                                          .only(
-                                                                              left:
-                                                                                  10),
-                                                                      child: Text(
-                                                                        poList[index]
-                                                                                [
-                                                                                'total_tax']
-                                                                            .toString(),
-                                                                        overflow:
-                                                                            TextOverflow
-                                                                                .ellipsis,
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .w400,
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                16),
+                                                                          Text("Order History")
+                                                                        ],
                                                                       ),
-                                                                    )),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            children: [
-                                                              ///////////
-                                                              Flexible(
-                                                                child: Container(
-                                                                    decoration:
-                                                                         BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.only(
-                                                                              bottomLeft:
-                                                                                  Radius.circular(0)),
-                                                                      // color: Colors.grey,
+                                                                    ),PopupMenuItem(
+                                                                      value: 2,
+                                                                      // row with two children
+                                                                      child: Row(
+                                                                        children: [
+                                                                          Icon(Icons.remove_red_eye),
+                                                                          SizedBox(
+                                                                            width: 10,
+                                                                          ),
+                                                                          Text("View")
+                                                                        ],
+                                                                      ),
+                                                                    ),PopupMenuItem(
+                                                                      value: 2,
+                                                                      // row with two children
+                                                                      child: Row(
+                                                                        children: [
+                                                                          Icon(Icons.delete),
+                                                                          SizedBox(
+                                                                            width: 10,
+                                                                          ),
+                                                                          Text("Delete")
+                                                                        ],
+                                                                      ),
                                                                     ),
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child: Column(
-                                                                      children:  [
-                                                                        Padding(
-                                                                          padding:
-                                                                              EdgeInsets.all(5.0),
-                                                                          child:
-                                                                              Text(
-                                                                            "Total",
-                                                                            overflow:
-                                                                                TextOverflow.ellipsis,
-                                                                            style: TextStyle(
-                                                                                fontWeight: FontWeight.w500,
-                                                                                color: Colors.black,
-                                                                                fontSize: 16),
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    )),
-                                                              ),
-                                                              Flexible(
-                                                                child: Container(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .centerLeft,
-                                                                    child:
-                                                                        Padding(
-                                                                      padding: EdgeInsets
-                                                                          .only(
-                                                                              left:
-                                                                                  10),
-                                                                      child: Text(
-                                                                        poList[index]
-                                                                                [
-                                                                                'Final_total']
-                                                                            .toString(),
-                                                                        overflow:
-                                                                            TextOverflow
-                                                                                .ellipsis,
-                                                                        style: TextStyle(
-                                                                            fontWeight: FontWeight
-                                                                                .w400,
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                16),
+                                                                  ],
+                                                                  offset: Offset(0, 100),
+                                                                  color: Colors.grey,
+                                                                  elevation: 2,
+                                                                  // on selected we show the dialog box
+                                                                  onSelected: (value) {
+                                                                    // if value 1 show dialog
+                                                                    if (value == 1) {
+                                                                    //  _showDialog(context);
+                                                                      // if value 2 show dialog
+                                                                    } else if (value == 2) {
+                                                                     // _showDialog(context);
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                ///////////
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      decoration:
+                                                                           BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                                bottomLeft:
+                                                                                    Radius.circular(0)),
+                                                                        // color: Colors.grey,
                                                                       ),
-                                                                    )),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child: Column(
+                                                                        children:  [
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.all(5.0),
+                                                                            child:
+                                                                                Text(
+                                                                              "PO No",
+                                                                              overflow:
+                                                                                  TextOverflow.ellipsis,
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 16),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsets
+                                                                            .only(
+                                                                                left:
+                                                                                    10),
+                                                                        child: Text(
+                                                                          poList[index]
+                                                                              [
+                                                                              'URN_NO'],
+                                                                          overflow:
+                                                                              TextOverflow
+                                                                                  .ellipsis,
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight
+                                                                                  .w400,
+                                                                              color: Colors
+                                                                                  .black,
+                                                                              fontSize:
+                                                                                  16),
+                                                                        ),
+                                                                      )),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                ///////////
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      decoration:
+                                                                           BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                                bottomLeft:
+                                                                                    Radius.circular(0)),
+                                                                        // color: Colors.grey,
+                                                                      ),
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child: Column(
+                                                                        children:  [
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.all(5.0),
+                                                                            child:
+                                                                                Text(
+                                                                              "Date",
+                                                                              overflow:
+                                                                                  TextOverflow.ellipsis,
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 16),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsets
+                                                                            .only(
+                                                                                left:
+                                                                                    10),
+                                                                        child: Text(
+                                                                          poList[index]
+                                                                              [
+                                                                              'cur_date'],
+                                                                          overflow:
+                                                                              TextOverflow
+                                                                                  .ellipsis,
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight
+                                                                                  .w400,
+                                                                              color: Colors
+                                                                                  .black,
+                                                                              fontSize:
+                                                                                  16),
+                                                                        ),
+                                                                      )),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            /*    Row(
+                                                              children: [
+                                                                ///////////
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      decoration:  BoxDecoration(
+                                                                        borderRadius:
+                                                                        BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                        // color: Colors.grey,
+                                                                      ),
+                                                                      alignment: Alignment.centerLeft,
+                                                                      child: Column(
+                                                                        children:  [
+                                                                          Padding(
+                                                                            padding:
+                                                                            EdgeInsets.all(5.0),
+                                                                            child:
+                                                                            Text(
+                                                                              "Created By",
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      alignment: Alignment.centerLeft,
+                                                                      child:  Padding(
+                                                                        padding:
+                                                                        EdgeInsets.only(left: 10),
+                                                                        child:
+                                                                        Text(
+                                                                          _selectedValueIndex ==
+                                                                              0?' Self':"System",
+                                                                          overflow:
+                                                                          TextOverflow.ellipsis,
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.w400,
+                                                                              color:_selectedValueIndex ==
+                                                                                  0? Colors
+                                                                                  .blue:Colors.red,
+                                                                              fontSize: 16),
+                                                                        ),
+                                                                      )),
+                                                                ),
+                                                              ],
+                                                            ),*/
+                                                            Row(
+                                                              children: [
+                                                                ///////////
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      decoration:
+                                                                           BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                                bottomLeft:
+                                                                                    Radius.circular(0)),
+                                                                        // color: Colors.grey,
+                                                                      ),
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child: Column(
+                                                                        children:  [
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.all(5.0),
+                                                                            child:
+                                                                                Text(
+                                                                              "Order Value",
+                                                                              overflow:
+                                                                                  TextOverflow.ellipsis,
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 16),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsets
+                                                                            .only(
+                                                                                left:
+                                                                                    10),
+                                                                        child: Text(
+                                                                          poList[index]
+                                                                                  [
+                                                                                  'Final_total']
+                                                                              .toString(),
+                                                                          overflow:
+                                                                              TextOverflow
+                                                                                  .ellipsis,
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight
+                                                                                  .w400,
+                                                                              color: Colors
+                                                                                  .black,
+                                                                              fontSize:
+                                                                                  16),
+                                                                        ),
+                                                                      )),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                ///////////
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      decoration:
+                                                                           BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                                bottomLeft:
+                                                                                    Radius.circular(0)),
+                                                                        // color: Colors.grey,
+                                                                      ),
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child: Column(
+                                                                        children:  [
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.all(5.0),
+                                                                            child:
+                                                                                Text(
+                                                                              "Boxes",
+                                                                              overflow:
+                                                                                  TextOverflow.ellipsis,
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 16),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsets
+                                                                            .only(
+                                                                                left:
+                                                                                    10),
+                                                                        child: Text(
+                                                                          poList[index]
+                                                                                  [
+                                                                                  'box']
+                                                                              .toString(),
+                                                                          overflow:
+                                                                              TextOverflow
+                                                                                  .ellipsis,
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight
+                                                                                  .w400,
+                                                                              color: Colors
+                                                                                  .black,
+                                                                              fontSize:
+                                                                                  16),
+                                                                        ),
+                                                                      )),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Row(
+                                                              children: [
+                                                                ///////////
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      decoration:
+                                                                           BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.only(
+                                                                                bottomLeft:
+                                                                                    Radius.circular(0)),
+                                                                        // color: Colors.grey,
+                                                                      ),
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child: Column(
+                                                                        children:  [
+                                                                          Padding(
+                                                                            padding:
+                                                                                EdgeInsets.all(5.0),
+                                                                            child:
+                                                                                Text(
+                                                                              "Cartons",
+                                                                              overflow:
+                                                                                  TextOverflow.ellipsis,
+                                                                              style: TextStyle(
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                  color: Colors.black,
+                                                                                  fontSize: 16),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                                ),
+                                                                Flexible(
+                                                                  child: Container(
+                                                                      alignment:
+                                                                          Alignment
+                                                                              .centerLeft,
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: EdgeInsets
+                                                                            .only(
+                                                                                left:
+                                                                                    10),
+                                                                        child: Text(
+                                                                          poList[index]
+                                                                                  [
+                                                                                  'Total_quantity']
+                                                                              .toString(),
+                                                                          overflow:
+                                                                              TextOverflow
+                                                                                  .ellipsis,
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight
+                                                                                  .w400,
+                                                                              color: Colors
+                                                                                  .black,
+                                                                              fontSize:
+                                                                                  16),
+                                                                        ),
+                                                                      )),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
+                                                      /*trailing: InkWell(
+                                                          onTap: () {
+                                                            //OrderDetailsPage().launch(context);
+                                                          },
+                                                          child: Text(
+                                                              poList[index]['PO_Status'],
+                                                              style: TextStyle(
+                                                                  color: poList[index]['PO_Status'] ==
+                                                                              "Draft"
+                                                                          ? Colors
+                                                                              .red
+                                                                          : Colors
+                                                                              .green,
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold))),*/
                                                     ),
-                                                    /*trailing: InkWell(
-                                                        onTap: () {
-                                                          //OrderDetailsPage().launch(context);
-                                                        },
-                                                        child: Text(
-                                                            poList[index]['PO_Status'],
-                                                            style: TextStyle(
-                                                                color: poList[index]['PO_Status'] ==
-                                                                            "Draft"
-                                                                        ? Colors
-                                                                            .red
-                                                                        : Colors
-                                                                            .green,
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold))),*/
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        )),
-                                  );
-                                }),
-                          )
-                        ]),
-                  ),
-                ],
+                                          )),
+                                    );
+                                  }),
+                            )
+                          ]),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          /*showDialog(
-            context: context,
-            builder: (context) => attachmentClass(),
-          );*/
-          //urnData();
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => addNewOrderForPo(),
-              ));
-        },
-        elevation: 10,
-        backgroundColor: kMainColor,
-        child:  Icon(Icons.add,color: Colors.white,),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            /*showDialog(
+              context: context,
+              builder: (context) => attachmentClass(),
+            );*/
+            //urnData();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => addNewOrderForPo(),
+                ));
+          },
+          elevation: 10,
+          backgroundColor: kMainColor,
+          child:  Icon(Icons.add,color: Colors.white,),
+        ),
       ),
     );
   }
