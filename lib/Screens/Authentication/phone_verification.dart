@@ -244,7 +244,6 @@ log(response.body.toString());
       var map = Map<String, dynamic>.from(jsonData);
       log(map.toString());
       var response1 = OtpVerificationResponse.fromJson(map);
-
       if (response1.settings.success == "1") {
         PreferenceManager.instance.setBooleanValue("Login", true);
         PreferenceManager.instance

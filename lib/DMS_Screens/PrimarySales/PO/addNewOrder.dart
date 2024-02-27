@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, avoid_print
 
 import 'dart:convert';
 import 'dart:core';
@@ -89,6 +89,9 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   List<String> ? existingData;
 
   String? role;
+
+  int? urnNO;
+
   openHiveBox() async {
     var box = await Hive.openBox('erpApiMainData');
     var bookmark = box.get('erpApiMainData');
@@ -128,6 +131,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
   String formattedDateTime="";
   @override
   void initState() {
+    urnNO = new DateTime.now().millisecondsSinceEpoch;
     DateTime now = DateTime.now();
 
      formattedDate = DateFormat('yyyy-MM-dd').format(now);
@@ -330,7 +334,7 @@ leading: Icon(CupertinoIcons.cart),
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text("UNIT: "+itemList[index].unitQantity.toString()),
-                                  Text("WEIGHT: 0.0 KG"/*+itemList[index].Weight_Per_Carton.toString()*/,overflow: TextOverflow.ellipsis,),
+                                  Text("WEIGHT: ${itemList[index].CartonWeight!/1000} KG"/*+itemList[index].Weight_Per_Carton.toString()*/,overflow: TextOverflow.ellipsis,),
                                 ],
                               ),
                               ],
@@ -817,109 +821,38 @@ leading: Icon(CupertinoIcons.cart),
                                                   onChanged: (value) async {
                                                     String str = value;
                                                     if (value == '') {
-                                                      print(
-                                                          'removed!! ${itemList.map((e) => e.UOM)}');
-                                                      print(
-                                                          'removed 11 !! ${itemList.map((e) => e.quantity)}');
+                                                      print('removed!! ${itemList.map((e) => e.UOM)}');
+                                                      print('removed 11 !! ${itemList.map((e) => e.quantity)}');
                                                       itemList.removeWhere((element) =>
                                                           (element.itemCode == offlineItem[itemIndex]["Item_id"]) &&
                                                           (element.UOM == dropdownValue0[itemIndex]));
                                                       print('removed!! ${itemList.map((e) => e.UOM)}');
                                                       print('removed 11 !! ${itemList.map((e) => e.quantity)}');
-
-                                                      log("FieldString" +
-                                                          FieldString
-                                                              .toString() +
-                                                          "itemList langth" +
-                                                          itemList.length
-                                                              .toString());
-                                                      log("itemList langth" +
-                                                          itemList.length
-                                                              .toString());
+                                                      log("FieldString" + FieldString.toString() + "itemList langth" + itemList.length.toString());
+                                                      log("itemList langth" + itemList.length.toString());
                                                     }
                                                     if (value.isNotEmpty) {
-
                                                         log(str.toString());
-                                                        int qty =
-                                                        int.parse(value);
-                                                        // cartArray.add(offlineItem[
-                                                        //     itemIndex]);
-                                                        // cart.add(offlineItem[
-                                                        //     itemIndex]);
-                                                        log("CartArray" +
-                                                            cart.toString());
-                                                        log(dropdownValue0[
-                                                        itemIndex]);
-                                                        var scdc = offlineItem[
-                                                        itemIndex]
-                                                        [
-                                                        'Trade_Disc'] ==
-                                                            ""
-                                                            ? 0.0
-                                                            : offlineItem[
-                                                        itemIndex]
-                                                        ['Trade_Disc'];
-                                                        var scmdc = offlineItem[
-                                                        itemIndex]
-                                                        [
-                                                        'Scheme_Disc'] ==
-                                                            ""
-                                                            ? 0.0
-                                                            : offlineItem[
-                                                        itemIndex]
-                                                        ['Scheme_Disc'];
-                                                        var otrdc = offlineItem[
-                                                        itemIndex]
-                                                        [
-                                                        'Other_Disc'] ==
-                                                            ""
-                                                            ? 0.0
-                                                            : offlineItem[
-                                                        itemIndex]
-                                                        ['Other_Disc'];
-                                                        double WSP = double.parse(
-                                                            offlineItem[itemIndex]
-                                                            ['WSP']);
+                                                        int qty = int.parse(value);
+                                                        var scdc = offlineItem[itemIndex]['Trade_Disc'] == "" ? 0.0
+                                                            : offlineItem[itemIndex]['Trade_Disc'];
+                                                        var scmdc = offlineItem[itemIndex]['Scheme_Disc'] == "" ? 0.0
+                                                            : offlineItem[itemIndex]['Scheme_Disc'];
+                                                        var otrdc = offlineItem[itemIndex]['Other_Disc'] == "" ? 0.0
+                                                            : offlineItem[itemIndex]['Other_Disc'];
+                                                        double WSP = double.parse(offlineItem[itemIndex]['WSP']);
                                                         double Tax_Rate =
-                                                        double.parse(
-                                                            offlineItem[
-                                                            itemIndex]
-                                                            ['Tax_Rate']);
+                                                        double.parse(offlineItem[itemIndex]['Tax_Rate']);
                                                         double Unit_Per_Carton =
-                                                        double.parse(offlineItem[
-                                                        itemIndex][
-                                                        'Unit_Per_Carton']);
-                                                        double Unit_Per_Box = double
-                                                            .parse(offlineItem[
-                                                        itemIndex]
-                                                        ['Unit_Per_Box']);
-                                                        double Scheme_Disc =
-                                                        double.parse(
-                                                            scmdc.toString());
-                                                        double Trade_Disc =
-                                                        double.parse(
-                                                            scdc.toString());
-                                                        double Other_Disc =
-                                                        double.parse(
-                                                            otrdc.toString());
-                                                        double Weight_Per_Carton =
-                                                        double.parse(offlineItem[
-                                                        itemIndex]
-                                                        [
-                                                        'Weight_Per_Carton']
-                                                            .toString());
-                                                        double MRP = double.parse(
-                                                            offlineItem[itemIndex]
-                                                            ['MRP']
-                                                                .toString());
-                                                        double Weight_Per_Unit =
-                                                        double.parse(offlineItem[
-                                                        itemIndex]
-                                                        [
-                                                        'Weight_Per_Unit']
-                                                            .toString());
-                                                        log("WSP" +
-                                                            WSP.toString());
+                                                        double.parse(offlineItem[itemIndex]['Unit_Per_Carton']);
+                                                        double Unit_Per_Box = double.parse(offlineItem[itemIndex]['Unit_Per_Box']);
+                                                        double Scheme_Disc = double.parse(scmdc.toString());
+                                                        double Trade_Disc = double.parse(scdc.toString());
+                                                        double Other_Disc = double.parse(otrdc.toString());
+                                                        double Weight_Per_Carton = double.parse(offlineItem[itemIndex]['Weight_Per_Carton'].toString());
+                                                        double MRP = double.parse(offlineItem[itemIndex]['MRP'].toString());
+                                                        double Weight_Per_Unit = double.parse(offlineItem[itemIndex]['Weight_Per_Unit'].toString());
+                                                        log("WSP" + WSP.toString());
                                                         Item item = Item(
                                                           itemCode: offlineItem[
                                                           itemIndex]
@@ -969,32 +902,22 @@ leading: Icon(CupertinoIcons.cart),
                                                             cartonQantity:cartonQantity,
                                                             unitQantity:unitQantity
                                                         );
-                                                        item.UOM =dropdownValue0[itemIndex];
-
-                                                        //   SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                        //   prefs.setStringList("cartProducts", item as List<String>);
-
-                                                        /*var box = Hive.box('PO_OfflineJson');
-                                                      box.put('added_itemjsonData', itmval);
-                                                      await Hive.openBox('added_itemjsonData');
-                                                      var List=box.get('added_itemjsonData');
-                                                      log(List);*/
 
                                                         total = calculateTotal(item);
                                                        unitQantity = calculateUnitQuantity(item);
                                                        cartonQantity= calculateCartonQuantity(item);
                                                        boxQantity= calculateBoxQuantity(item);
-                                                        CartonWeight=  calculateCartonWeight(item);
+                                                        CartonWeight =  calculateCartonWeight(item);
                                                         UnitWeight= calculateUnitWeight(item);
                                                         if (item.UOM.toString() ==
                                                             "Carton") {
                                                           Carton_weight = (item
                                                               .quantity! *
                                                               item.Weight_Per_Carton!);
-                                                          unit_weight = ((item
+                                                          unit_weight = (((item
                                                               .quantity! *
                                                               item.unitPerCarton!) *
-                                                              item.Weight_Per_Unit!);
+                                                              item.Weight_Per_Unit!));
                                                         } else {
                                                           Carton_weight = ((item
                                                               .quantity! /
@@ -1004,7 +927,6 @@ leading: Icon(CupertinoIcons.cart),
                                                               .quantity! *
                                                               item.Weight_Per_Unit!));
                                                         }
-
                                                         if (item.UOM.toString() ==
                                                             "Carton") {
                                                           totalSchemeDiscountAmount = (item
@@ -1171,7 +1093,7 @@ leading: Icon(CupertinoIcons.cart),
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].unitQantity = unitQantity;
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].cartonQantity = cartonQantity;
                                                           itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].boxQantity = boxQantity;
-
+                                                       //   itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].UOM = item.UOM;
                                                         } else {
                                                           itemList.add(item);
 
@@ -1377,7 +1299,7 @@ leading: Icon(CupertinoIcons.cart),
                                     String fieldString="";
                                     for(var e in itemList){
 
-                                      fieldString += '{"${"CO_CODE"}":"${companyId}", "${"UR_CODE"}":"${UR_CODE}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}","${"URN_NO"}": "${""}","${"IT_CODE"}": "${e
+                                      fieldString += '{"${"CO_CODE"}":"${companyId}", "${"UR_CODE"}":"${UR_CODE}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}","${"URN_NO"}": "${urnNO}","${"IT_CODE"}": "${e
                                           .itemCode}", "${"it_name"}":"${e
                                           .it_name}", "${"rate"}":"${e
                                           .rate}", "${"UOM"}": "${e
@@ -1391,11 +1313,11 @@ leading: Icon(CupertinoIcons.cart),
                                           .unitPerCarton}", "${"Weight_Per_Unit"}": "${e
                                           .Weight_Per_Unit}","${"Weight_Per_Carton"}": "${e
                                           .Weight_Per_Carton}", "${"Carton_quantity"}": "${e
-                                          .cartonQantity}", "${"Box_quantity"}": "${e
+                                          .cartonQantity!}", "${"Box_quantity"}": "${e
                                           .boxQantity}", "${"Unit_quantity"}": "${e
                                           .unitQantity}", "${"Price_Calc"}": "${e
                                           .priceCalc}", "${"Carton_weight"}": "${e
-                                          .CartonWeight}", "${"Unit_weight"}": "${e
+                                          .CartonWeight!/ 1000}", "${"Unit_weight"}": "${e
                                           .UnitWeight}", "${"CGST"}": "${e.gstPer! /
                                           2}", "${"SGST"}": "${e.gstPer! /
                                           2}", "${"IGST"}": "${e
@@ -1420,7 +1342,7 @@ leading: Icon(CupertinoIcons.cart),
                                     log("stringWithoutParentheses" + stringWithoutParentheses.toString());
                                     String result = stringWithoutParentheses.substring(0, stringWithoutParentheses.length - 1);
                                     LocalFieldString =
-                                    '{"${"CO_CODE"}":"${companyId}", "${"Created_by"}":"${role}", "${"UR_CODE"}":"${UR_CODE}", "${"Factory_id"}":"${factoryId}", "${"business_id"}":"${""}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}", "${"URN_NO"}":"${""}", "${"billing_address"}":"${selectedWareHouse}", "${"SR_NO"}":"${""}", "${"Remarks_dealer"}": "${""}", "${"Remarks_rsm"}":"${""}", "${"PO_Status"}":"${"RSM Approval"}", "${"Fyear"}":"${"2023-2024"}", "${"Round_Off"}":"${temp_roundoff.toDouble().toStringAsFixed(2)}", "${"Order_Total"}":"${totalOrderValue.roundToDouble()}", "${"Reason"}":"${""}", "${"shipping_address"}":"${selectedWareHouse}", "${"PO_approval_date"}":"${""}", "${"ERP_URN"}":"${""}", "${"DO_NO"}":"${""}", "${"Do_Date"}":"${""}","${"Item"}": [${result
+                                    '{"${"CO_CODE"}":"${companyId}", "${"Created_by"}":"${role}", "${"UR_CODE"}":"${UR_CODE}", "${"Factory_id"}":"${factoryId}", "${"business_id"}":"${""}", "${"cur_date"}":"${formattedDate}", "${"cur_time"}":"${formattedDateTime}", "${"URN_NO"}":"${"$urnNO"}", "${"billing_address"}":"${selectedWareHouse}", "${"SR_NO"}":"${""}", "${"Remarks_dealer"}": "${""}", "${"Remarks_rsm"}":"${""}", "${"PO_Status"}":"${"RSM Approval"}", "${"Fyear"}":"${"2023-2024"}", "${"Round_Off"}":"${temp_roundoff.toDouble().toStringAsFixed(2)}", "${"Order_Total"}":"${totalOrderValue.roundToDouble()}", "${"Reason"}":"${""}", "${"shipping_address"}":"${selectedWareHouse}", "${"PO_approval_date"}":"${""}", "${"ERP_URN"}":"${""}", "${"DO_NO"}":"${""}", "${"Do_Date"}":"${""}","${"Item"}": [${result
                                         .toString()}]}';
                                   });
                                   log(LocalFieldString);
@@ -1529,9 +1451,9 @@ leading: Icon(CupertinoIcons.cart),
     if (item.UOM.toString() ==
         "Carton") {
 
-    return (item.quantity!  * item.Weight_Per_Carton!).roundToDouble();
+    return ((item.quantity!  * item.Weight_Per_Carton!)/1000);
     } else {
-      return ((item.quantity! / item.unitPerCarton!) * item.Weight_Per_Carton!).roundToDouble();
+      return (((item.quantity! / item.unitPerCarton!) * item.Weight_Per_Carton!)/1000);
     }
 
   }

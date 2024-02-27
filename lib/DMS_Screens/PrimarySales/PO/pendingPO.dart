@@ -496,7 +496,7 @@ class _pendingPOState extends State<pendingPO> {
                                                                             child: Padding(
                                                                               padding: EdgeInsets.only(left: 10),
                                                                               child: Text(
-                                                                                index.toString(),
+                                                                                items[index].urnNo.toString(),
                                                                                 overflow: TextOverflow.ellipsis,
                                                                                 style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
                                                                               ),
