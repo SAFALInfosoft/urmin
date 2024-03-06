@@ -24,6 +24,7 @@ import '../../../Screens/Authentication/sign_in.dart';
 import '../../../constant.dart';
 import 'package:intl/intl.dart';
 
+import 'EditPO.dart';
 import 'addNewOrder.dart';
 import 'package:http/http.dart' as http;
 
@@ -51,10 +52,15 @@ class _pendingPOState extends State<pendingPO> {
       log(poList.toList().toString());
       jsonString = "${poList.toString()}";
       log(jsonString.toString());
+
       var jsonList = json.decode(jsonString);
 
       // Parse JSON data into a list of Item objects
       items = jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
+      int desiredIndex = 0; // Replace 0 with the index you want to calculate total box quantity for
+      List<PurchaseOrder> purchaseOrders = List<PurchaseOrder>.from(items);
+      double totalBoxQuantity = calculateTotalBoxQuantity(purchaseOrders, desiredIndex);
+
 
       //fetchData();
     });
@@ -65,6 +71,9 @@ class _pendingPOState extends State<pendingPO> {
         kMainColor = Colors.red;
       }
     });
+
+    double totalBoxQuantity = 0.0;
+
 
     //openHiveBox();
 
@@ -115,6 +124,8 @@ class _pendingPOState extends State<pendingPO> {
         jsonList.map((json) => PurchaseOrder.fromJson(json)).toList();
     return items;
   }
+
+
 
   openHiveBox() async {
     var box = await Hive.openBox('poList');
@@ -315,334 +326,432 @@ class _pendingPOState extends State<pendingPO> {
                                             onTap: () {},
                                             child: Padding(
                                                 padding: EdgeInsets.all(5.0),
-                                                child: Slidable(
-                                                  startActionPane: ActionPane(
-                                                    motion: BehindMotion(),
-                                                    children: [
-                                                      SlidableAction(
-                                                        onPressed: (context) {
-                                                          Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    offlinePO_View(
-                                                                        item: items![index]
-                                                                            .item),
-                                                              ));
-                                                        },
-                                                        backgroundColor:
-                                                            Colors.green,
-                                                        icon: Icons.edit,
-                                                        label: 'Edit',
-                                                      ),
-                                                      SlidableAction(
-                                                        onPressed: (context) {},
-                                                        backgroundColor:
-                                                            Colors.blue,
-                                                        icon: Icons
-                                                            .timelapse_outlined,
-                                                        label: 'Order History',
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  endActionPane: ActionPane(
-                                                    motion: BehindMotion(),
-                                                    children: [
-                                                      SlidableAction(
-                                                        onPressed: (context) {},
-                                                        backgroundColor:
-                                                            Colors.blue,
-                                                        icon: Icons
-                                                            .remove_red_eye,
-                                                        label: 'View',
-                                                      ),
-                                                      SlidableAction(
-                                                        onPressed: (context) {},
-                                                        backgroundColor:
-                                                            Colors.red,
-                                                        icon: Icons.delete,
-                                                        label: 'Delete',
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Container(
-                                                      child: Material(
-                                                        elevation: 2.0,
-                                                        child: Container(
-                                                          width:
-                                                              context.width(),
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  0.0),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border(
-                                                              left: BorderSide(
-                                                                color:
-                                                                    Colors.red,
-                                                                width: 3.0,
-                                                              ),
-                                                            ),
-                                                            color: Colors.white,
-                                                          ),
-                                                          child: InkWell(
-                                                            onTap: () {
+                                                child: Column(
+                                                  children: [
+                                                    Slidable(
+                                                      startActionPane: ActionPane(
+                                                        motion: BehindMotion(),
+                                                        children: [
+                                                          SlidableAction(
+                                                            onPressed: (context) {
                                                               Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
                                                                     builder: (context) =>
-                                                                        offlinePO_View(
-                                                                            item: items![index].item),
+                                                                        EditPo(
+                                                                            item1: items![index]
+                                                                                .item),
                                                                   ));
                                                             },
-                                                            child: Padding(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left:
-                                                                          8.0),
-                                                              child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Row(
-                                                                    children: [
-                                                                      ///////////
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                              // color: Colors.grey,
-                                                                            ),
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Column(
-                                                                              children: [
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.all(0.0),
-                                                                                  child: Text(
-                                                                                    "",
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                    style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            )),
-                                                                      ),
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            height: 25,
-                                                                            decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
-                                                                              color: Colors.red,
-                                                                            ),
-                                                                            alignment: Alignment.center,
-                                                                            child: const Padding(
-                                                                              padding: EdgeInsets.only(left: 0),
-                                                                              child: Text("Pending",
-                                                                                  style: TextStyle(
-                                                                                      color: /* poList[index]['PO_Status'] ==
-                                                                                    "Draft"
-                                                                                    ? Colors
-                                                                                    .red:poList[index]['PO_Status'] ==
-                                                                                    "RSM Approval"
-                                                                                    ? Colors
-                                                                                    .grey:poList[index]['PO_Status'] ==
-                                                                                    "Hold"
-                                                                                    ?Colors.blue:poList[index]['PO_Status'] ==
-                                                                                    "Reject"
-                                                                                    ?Colors.orange:*/
-                                                                                          Colors.white,
-                                                                                      fontSize: 15,
-                                                                                      fontWeight: FontWeight.bold)),
-                                                                            )),
-                                                                      ),
-                                                                    ],
+                                                            backgroundColor:
+                                                                Colors.green,
+                                                            icon: Icons.edit,
+                                                            label: 'Edit',
+                                                          ),
+                                                          SlidableAction(
+                                                            onPressed: (context) {},
+                                                            backgroundColor:
+                                                                Colors.blue,
+                                                            icon: Icons
+                                                                .timelapse_outlined,
+                                                            label: 'Order History',
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      endActionPane: ActionPane(
+                                                        motion: BehindMotion(),
+                                                        children: [
+                                                          SlidableAction(
+                                                            onPressed: (context) {},
+                                                            backgroundColor:
+                                                                Colors.blue,
+                                                            icon: Icons
+                                                                .remove_red_eye,
+                                                            label: 'View',
+                                                          ),
+                                                          SlidableAction(
+                                                            //key: Key('delete_${poList[index]}'), // Use a unique key for each item
+                                                            onPressed: (context) {
+                                                              setState(() {
+                                                                deleteItem(index);
+                                                              });
+                                                            },
+                                                            backgroundColor: Colors.red,
+                                                            icon: Icons.delete,
+                                                            label: 'Delete',
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.all(8.0),
+                                                        child: Container(
+                                                          //width: context.width(),
+                                                          child: Material(
+                                                            elevation: 2.0,
+                                                            child: Container(
+                                                              width: context.width(),
+                                                              //height: context.height(),// Use the maximum width available
+                                                              padding: EdgeInsets.all(0.0),
+                                                              decoration: BoxDecoration(
+                                                                border: Border(
+                                                                  left: BorderSide(
+                                                                    color: Colors.red,
+                                                                    width: 3.0,
                                                                   ),
-                                                                  SizedBox(
-                                                                    height: 5,
-                                                                  ),
-                                                                  Row(
+                                                                ),
+                                                                color: Colors.white,
+                                                              ),
+                                                              child: InkWell(
+                                                                onTap: () {
+                                                                  // Navigator.push(
+                                                                  //     context,
+                                                                  //     MaterialPageRoute(
+                                                                  //       builder: (context) =>
+                                                                  //           offlinePO_View(
+                                                                  //               item: items![index].item),
+                                                                  //     ));
+                                                                },
+                                                                child: Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
+                                                                          left:
+                                                                              8.0),
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
                                                                     children: [
-                                                                      ///////////
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                              // color: Colors.grey,
-                                                                            ),
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Column(
-                                                                              children: [
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.all(5.0),
-                                                                                  child: Text(
-                                                                                    "PO No",
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                    style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                                  ),
+                                                                      Row(
+                                                                        children: [
+                                                                          ///////////
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                                  // color: Colors.grey,
                                                                                 ),
-                                                                              ],
-                                                                            )),
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: EdgeInsets.all(0.0),
+                                                                                      child: Text(
+                                                                                        "",
+                                                                                        overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                )),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                height: 25,
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20)),
+                                                                                  color: Colors.red,
+                                                                                ),
+                                                                                alignment: Alignment.center,
+                                                                                child: const Padding(
+                                                                                  padding: EdgeInsets.only(left: 0),
+                                                                                  child: Text("Pending",
+                                                                                      style: TextStyle(
+                                                                                          color: /* poList[index]['PO_Status'] ==
+                                                                                        "Draft"
+                                                                                        ? Colors
+                                                                                        .red:poList[index]['PO_Status'] ==
+                                                                                        "RSM Approval"
+                                                                                        ? Colors
+                                                                                        .grey:poList[index]['PO_Status'] ==
+                                                                                        "Hold"
+                                                                                        ?Colors.blue:poList[index]['PO_Status'] ==
+                                                                                        "Reject"
+                                                                                        ?Colors.orange:*/
+                                                                                              Colors.white,
+                                                                                          fontSize: 15,
+                                                                                          fontWeight: FontWeight.bold)),
+                                                                                )),
+                                                                          ),
+                                                                        ],
                                                                       ),
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Padding(
-                                                                              padding: EdgeInsets.only(left: 10),
-                                                                              child: Text(
-                                                                                items[index].urnNo.toString(),
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
+                                                                      SizedBox(
+                                                                        height: 5,
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          ///////////
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                                  // color: Colors.grey,
+                                                                                ),
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: EdgeInsets.all(5.0),
+                                                                                      child: Text(
+                                                                                        "PO No",
+                                                                                        overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                )),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Padding(
+                                                                                  padding: EdgeInsets.only(left: 10),
+                                                                                  child: Text(
+                                                                                    items[index].urnNo.toString(),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
+                                                                                  ),
+                                                                                )),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          ///////////
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                                  // color: Colors.grey,
+                                                                                ),
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: EdgeInsets.all(5.0),
+                                                                                      child: Text(
+                                                                                        "Order Total",
+                                                                                        overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                )),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Padding(
+                                                                                  padding: EdgeInsets.only(left: 10),
+                                                                                  child: Text(
+                                                                                    items[index].orderTotal.toString(),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
+                                                                                  ),
+                                                                                )),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          ///////////
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                                  // color: Colors.grey,
+                                                                                ),
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: EdgeInsets.all(5.0),
+                                                                                      child: Text(
+                                                                                        "PO Date",
+                                                                                        overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                )),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Padding(
+                                                                                  padding: EdgeInsets.only(left: 10),
+                                                                                  child: Text(
+                                                                                    _formatDateTime(items[index].curDate).toString(),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
+                                                                                  ),
+                                                                                )),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          ///////////
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
+                                                                                  // color: Colors.grey,
+                                                                                ),
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Column(
+                                                                                  children: [
+                                                                                    Padding(
+                                                                                      padding: EdgeInsets.all(5.0),
+                                                                                      child: Text(
+                                                                                        "PO Time",
+                                                                                        overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                )),
+                                                                          ),
+                                                                          Flexible(
+                                                                            child: Container(
+                                                                                alignment: Alignment.centerLeft,
+                                                                                child: Padding(
+                                                                                  padding: EdgeInsets.only(left: 10),
+                                                                                  child: Text(
+                                                                                    _formatTime(items[index].curTime) /*items[index].curTime.toString(),*/,
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
+                                                                                  ),
+                                                                                )),
+                                                                          ),
+
+                                                                        ],
+
+                                                                      ),
+                                                                      ExpansionTile(
+                                                                        title:  Text(
+                                                                            "Show More",
+                                                                            overflow: TextOverflow.ellipsis,
+                                                                            style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16)),
+                                                                        children: [
+                                                                          //Divider(),
+                                                                          Column(
+                                                                            children: [
+                                                                              //Divider(),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(5.0),
+                                                                                child: Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                  children: [
+
+                                                                                    Text(
+                                                                                        "PO Date: "+DateFormat('yyyy-MM-dd').format(items[index].curDate),
+                                                                                        overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 14)),
+
+                                                                                    Text(
+                                                                                        "Order Value: "+items[index].orderTotal.toString(),
+                                                                                        overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 14)
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
                                                                               ),
-                                                                            )),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      ///////////
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                              // color: Colors.grey,
-                                                                            ),
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Column(
-                                                                              children: [
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.all(5.0),
-                                                                                  child: Text(
-                                                                                    "Order Total",
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                    style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                                  ),
+                                                                              //Divider(),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(5.0),
+                                                                                child: Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      "Carton: " + calculateTotalCartonQuantity(List<PurchaseOrder>.from(items), index).toStringAsFixed(2),
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                      style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 14),
+                                                                                    ),
+                                                                                    Text("No Of Items: "+  items[index].item.length.toString(),
+                                                                                       overflow: TextOverflow.ellipsis,
+                                                                                        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 14)
+                                                                                    ),
+                                                                                  ],
                                                                                 ),
-                                                                              ],
-                                                                            )),
-                                                                      ),
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Padding(
-                                                                              padding: EdgeInsets.only(left: 10),
-                                                                              child: Text(
-                                                                                items[index].orderTotal.toString(),
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
                                                                               ),
-                                                                            )),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      ///////////
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                              // color: Colors.grey,
-                                                                            ),
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Column(
-                                                                              children: [
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.all(5.0),
-                                                                                  child: Text(
-                                                                                    "PO Date",
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                    style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                                  ),
+                                                                              //Divider(),
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(5.0),
+                                                                                child: Row(
+                                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                  children: [
+
+                                                                                    Text(
+                                                                                      "BOX: " + calculateTotalBoxQuantity(List<PurchaseOrder>.from(items), index).toStringAsFixed(4),
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                      style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 14),
+                                                                                    ),
+                                                                                    Text(
+                                                                                      "Total Weight: " + calculateTotalWeight(List<PurchaseOrder>.from(items), index).toStringAsFixed(2),
+                                                                                      overflow: TextOverflow.ellipsis,
+                                                                                      style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 14),
+                                                                                    ),
+                                                                                  ],
                                                                                 ),
-                                                                              ],
-                                                                            )),
-                                                                      ),
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Padding(
-                                                                              padding: EdgeInsets.only(left: 10),
-                                                                              child: Text(
-                                                                                _formatDateTime(items[index].curDate).toString(),
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
                                                                               ),
-                                                                            )),
-                                                                      ),
+
+                                                                              //Divider(),
+                                                                              // Padding(
+                                                                              //   padding: const EdgeInsets.all(5.0),
+                                                                              //   child: Row(
+                                                                              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              //     children: [
+                                                                              //       Text("UNIT: "+items[index].item[0].unitQuantity.toString(),
+                                                                              //           overflow: TextOverflow.ellipsis,
+                                                                              //           style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 14)
+                                                                              //       ),
+                                                                              //
+                                                                              //     ],
+                                                                              //   ),
+                                                                              // ),
+                                                                              //Divider(),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      )
                                                                     ],
                                                                   ),
-                                                                  Row(
-                                                                    children: [
-                                                                      ///////////
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0)),
-                                                                              // color: Colors.grey,
-                                                                            ),
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Column(
-                                                                              children: [
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.all(5.0),
-                                                                                  child: Text(
-                                                                                    "PO Time",
-                                                                                    overflow: TextOverflow.ellipsis,
-                                                                                    style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black, fontSize: 16),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            )),
-                                                                      ),
-                                                                      Flexible(
-                                                                        child: Container(
-                                                                            alignment: Alignment.centerLeft,
-                                                                            child: Padding(
-                                                                              padding: EdgeInsets.only(left: 10),
-                                                                              child: Text(
-                                                                                _formatTime(items[index].curTime) /*items[index].curTime.toString(),*/,
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                style: TextStyle(fontWeight: FontWeight.w400, color: Colors.black, fontSize: 16),
-                                                                              ),
-                                                                            )),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ],
+                                                                ),
+                                                                /*trailing: InkWell(
+                                                              onTap: () {
+                                                                //OrderDetailsPage().launch(context);
+                                                              },
+                                                              child: Text(
+                                                                  poList[index]['PO_Status'],
+                                                                  style: TextStyle(
+                                                                      color: poList[index]['PO_Status'] ==
+                                                                                  "Draft"
+                                                                              ? Colors
+                                                                                  .red
+                                                                              : Colors
+                                                                                  .green,
+                                                                      fontSize: 15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold))),*/
                                                               ),
                                                             ),
-                                                            /*trailing: InkWell(
-                                                          onTap: () {
-                                                            //OrderDetailsPage().launch(context);
-                                                          },
-                                                          child: Text(
-                                                              poList[index]['PO_Status'],
-                                                              style: TextStyle(
-                                                                  color: poList[index]['PO_Status'] ==
-                                                                              "Draft"
-                                                                          ? Colors
-                                                                              .red
-                                                                          : Colors
-                                                                              .green,
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold))),*/
                                                           ),
                                                         ),
+
                                                       ),
                                                     ),
-                                                  ),
+
+                                                  ],
                                                 )),
                                           );
-                                        }))
+                                        })
+                                )
                               ]),
                         )
                       : Column(
@@ -793,6 +902,21 @@ class _pendingPOState extends State<pendingPO> {
     }
   }
 
+  void deleteItem(int index) {
+    setState(() {
+      poList.removeAt(index);
+      items.removeAt(index);
+      _saveData(); // Save the updated data
+    });
+  }
+
+  // Function to save data to SharedPreferences
+  void _saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList("POLISTJSON", poList.map((e) => e.toString()).toList());
+  }
+
+
   var token, coCode, userId;
 
   Future<void> submit() async {
@@ -862,3 +986,48 @@ class _pendingPOState extends State<pendingPO> {
     }
   }
 }
+
+double calculateTotalBoxQuantity(List<PurchaseOrder> items, int index) {
+  double totalBoxQuantity = 0.0;
+
+  // Ensure the index is within a valid range
+  if (index >= 0 && index < items.length) {
+    // Use null-aware operators to handle null or empty boxQuantity values
+    for (var subItem in items[index].item) {
+      totalBoxQuantity += double.tryParse(subItem.boxQuantity ?? '') ?? 0.0;
+    }
+  }
+
+  return totalBoxQuantity;
+}
+
+double calculateTotalWeight(List<PurchaseOrder> items, int index) {
+  double totalWeight = 0.0;
+
+  if (index >= 0 && index < items.length) {
+    for (var subItem in items[index].item) {
+      double itemWeight = double.tryParse(subItem.cartonWeight ?? '0.0') ?? 0.0;
+      totalWeight += itemWeight;
+    }
+  }
+
+  return totalWeight;
+}
+
+double calculateTotalCartonQuantity(List<PurchaseOrder> items, int index) {
+  double totalCartonQuantity = 0.0;
+
+  if (index >= 0 && index < items.length) {
+    for (var subItem in items[index].item) {
+      double cartonQuantity = double.tryParse(subItem.cartonQuantity ?? '0.0') ?? 0.0;
+      totalCartonQuantity += cartonQuantity;
+    }
+  }
+
+  return totalCartonQuantity;
+}
+
+
+
+
+

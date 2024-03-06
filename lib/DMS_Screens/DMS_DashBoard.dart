@@ -456,6 +456,26 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
                   color: kGreyTextColor,
                 ),
               ),
+              ListTile(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignIn()),
+                  );
+                },
+                leading: Icon(
+                  FontAwesomeIcons.signOutAlt,
+                  color: kGreyTextColor,
+                ),
+                title: Text(
+                  'Logout',
+                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  color: kGreyTextColor,
+                ),
+              ),
               // ListTile(
               //   onTap: () {
               //      PricingScreen().launch(context);

@@ -8,25 +8,25 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../GlobalComponents/PreferenceManager.dart';
 import '../../../GlobalComponents/button_global.dart';
 import '../../../constant.dart';
-import '../PO/po_Tab_View.dart';
-import '../PO/purchaseOrderMainScreen.dart';
+import 'PO/RSM_Order_Approval_Main_Screen.dart';
 
 
 
-class OrderSummaryScreen extends StatefulWidget {
+
+class SummaryScreen extends StatefulWidget {
   // final OrderDetailsListData data;
   // final String? routeName;
   // final Function(String) onSubmitCallBack;
   // final Function onCancelCallBack;
-String total;
-String gstCharge,CGST,SGST,IGST,TCS;
-double orderTotal;
-var item; double temp_roundoff;double totalofScemeDiscount; var LocalFieldString;
-   OrderSummaryScreen( this.total, this.gstCharge,this.CGST,this.SGST,this.IGST,this.TCS,this.orderTotal,this.item,this.temp_roundoff,this.totalofScemeDiscount,this.LocalFieldString,
+  String total;
+  String gstCharge,CGST,SGST,IGST,TCS;
+  double orderTotal;
+  var item; double temp_roundoff;double totalofScemeDiscount; var LocalFieldString;
+  SummaryScreen( this.total, this.gstCharge,this.CGST,this.SGST,this.IGST,this.TCS,this.orderTotal,this.item,this.temp_roundoff,this.totalofScemeDiscount,this.LocalFieldString,
 
       {Key? key,
 
-       /* required this.data,
+        /* required this.data,
         required this.routeName,
         required this.onSubmitCallBack*/
         /*required this.onCancelCallBack*/})
@@ -36,7 +36,7 @@ var item; double temp_roundoff;double totalofScemeDiscount; var LocalFieldString
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<OrderSummaryScreen> {
+class _MyHomePageState extends State<SummaryScreen> {
   String summary = '';
   String purpose = 'Address';
   bool selection = false;
@@ -50,7 +50,7 @@ class _MyHomePageState extends State<OrderSummaryScreen> {
   var DayType="Full Day";
 
   var roundoff;
-List selectionItems=[];
+  List selectionItems=[];
 
   var selectedWareHouse;
   List<String>? existingData;
@@ -96,7 +96,7 @@ List selectionItems=[];
       }
     });
   }
-   TextEditingController compneyNameController = TextEditingController();
+  TextEditingController compneyNameController = TextEditingController();
 
   @override
   void initState() {
@@ -109,32 +109,32 @@ List selectionItems=[];
       companyStateCode = value;
       print(value);
     }));
-    openHiveBoxFORfshipmasterData();
-    openHiveBox();
+    //openHiveBoxFORfshipmasterData();
+    //openHiveBox();
     log((widget.item.length));
 //     for (var i = 0; i < widget.item.length; i++) {
 // log(i.toString());
 //     }
-     grandTotal = (widget.total.toDouble() + widget.gstCharge.toDouble()).ceil();
+    grandTotal = (widget.total.toDouble() + widget.gstCharge.toDouble()).ceil();
     print(grandTotal); // Output: 354397
 
     // Calculate the round-off value
-     roundOff = (grandTotal - widget.total.toDouble() - widget.gstCharge.toDouble());
+    roundOff = (grandTotal - widget.total.toDouble() - widget.gstCharge.toDouble());
     print(roundOff); // Output: 0.28 (Note: Dart does not remove trailing zeros)
 
     double orderTotal= double.parse(widget.orderTotal.toStringAsFixed(2));
 
     log(orderTotal.toString());
-   var roundoff1=orderTotal-orderTotal.toInt();
-   // roundoff=roundoff1.toStringAsFixed(2);
+    var roundoff1=orderTotal-orderTotal.toInt();
+    // roundoff=roundoff1.toStringAsFixed(2);
     //var round=calculateroundOFF();
-  // var roundOFF= calculateroundOFF();
-  //  log(round.toString());
+    // var roundOFF= calculateroundOFF();
+    //  log(round.toString());
   }
   double calculateroundOFF() {
     double orderTotalDouble = double.parse("${widget.orderTotal}");
-   // int orderTotalInt = int.parse("${widget.orderTotal}");
- //   log(orderTotalInt);
+    // int orderTotalInt = int.parse("${widget.orderTotal}");
+    //   log(orderTotalInt);
     double roundOFF = orderTotalDouble;
     return roundOFF.roundToDouble();
   }
@@ -146,7 +146,7 @@ List selectionItems=[];
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       elevation: 0.0,
       actions: <Widget>[
-         SizedBox(height: 20.0),
+        SizedBox(height: 20.0),
         Row(
           children: [
             Flexible(
@@ -167,12 +167,12 @@ List selectionItems=[];
                   ),
                 ),
                 onTap: () {
-                 // widget.onCancelCallBack();
+                  // widget.onCancelCallBack();
                   Navigator.pop(context);
                 },
               ),
             ),
-             SizedBox(
+            SizedBox(
               width: 5,
             ),
             Flexible(
@@ -194,34 +194,36 @@ List selectionItems=[];
                 ),
                 onTap: () =>
                 {
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-                  log(widget.LocalFieldString);
-                  Map<String, dynamic> dataList = jsonDecode(widget.LocalFieldString);
-                  var data = dataList;
+                  WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+                    log(widget.LocalFieldString);
+                    Map<String, dynamic> dataList = jsonDecode(widget.LocalFieldString);
+                    var data = dataList;
 
-                  // Modify the value for Remarks_dealer
-                  log(summary);
-                  data['Remarks_dealer'] = "$summary"??"";
-                  // Convert the modified data back to JSON string
-                  String modifiedJsonString = jsonEncode(dataList);
-                  log(modifiedJsonString);
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                existingData = prefs.getStringList("POLISTJSON") ?? [];
+                    // Modify the value for Remarks_dealer
+                    log(summary);
+                    data['Remarks_dealer'] = "$summary"??"";
+                    // Convert the modified data back to JSON string
+                    String modifiedJsonString = jsonEncode(dataList);
+                    log(modifiedJsonString);
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    existingData = prefs.getStringList("POLISTJSON") ?? [];
+                    // bool timeExists = existingData!.contains([{"CO_CODE":"1a36b22bdd89ffd361644e6ea06c2394", "UR_CODE":"50c60cdef1e5286ef69f0256ab03c577", "Factory_id":"8101b2c0a710849dc04f61cc3c07cb9a", "business_id":"", "cur_date":"", "cur_time":"", "URN_NO":1, "billing_address":"null", "SR_NO":"", "Remarks_dealer": "", "Remarks_rsm":"", "PO_Status":"RSM_Approval", "Fyear":"2023-2024", "Round_Off":"0.40486", "Order_Total":"3548.40486", "Reason":"", "shipping_address":"null", "PO_approval_date":"", "ERP_URN":"", "DO_NO":"", "Do_Date":"","Item": [{"CO_CODE":"1a36b22bdd89ffd361644e6ea06c2394", "UR_CODE":"50c60cdef1e5286ef69f0256ab03c577", "cur_date":"", "cur_time":"","URN_NO":"","IT_CODE": "0b51ad7a885d3218329fada00f5618b4", "it_name":"BAGHBAN BILAS REFRESH 1.8 GMS POUCH50+10FREE =60 POUCH", "rate":50.0, "UOM": "Carton", "quantity": 1, "total":3165.06, "Wsp_rate": 31.03, "GST_PER": 12.0, "GST_Charge": 189.9,"Unit_Per_Box": 60.0, "Unit_Per_Carton": 6120.0, "Weight_Per_Unit": 1.8,"Weight_Per_Carton": 13.77, "Carton_quantity": "", "Box_quantity": "", "Unit_quantity": "", "Price_Calc": box, "Carton_weight": 200819, "Unit_weight": "", "CGST": "6.0", "SGST": "6.0", "IGST": "12.0", "Scheme_discount": 0.0, "Trade_Disc": 0.0, "Other_Disc": 0.0, "CGST_Amount": 189.9, "SGST_Amount": 189.9, "IGST_Amount": 0.0, "Total_scheme_discount_Amount": 0.0, "Total_Trade_discount_Amount": 0.0, "Total_Other_discount_Amount": 0.0, "TCS":"3.5448600000000003", "HSN_CODE": 200819, "Freight_Amt": 0.0, "Std_Amt": 0.0, "NCC_Duty": 0, "total_after_discount": 3165.06 }]}]);
+                    // log(timeExists);
+                    // Add new entry (current time) to the existing data
+                    existingData!.add(modifiedJsonString);
 
-                existingData!.add(modifiedJsonString);
-
-                // Save the modified data back to SharedPreferences
-                prefs.setStringList("POLISTJSON", existingData!);
-                print(existingData!.length.toString());
-                Navigator.push(context,MaterialPageRoute(builder: (context) =>po_Tab_View()));
-                Fluttertoast.showToast(
-                    msg: "Successfully PO added to cart",
-                    textColor: Colors.white,
-                    backgroundColor: Colors.green,
-                    gravity: ToastGravity.CENTER,
-                    toastLength: Toast.LENGTH_LONG);
-                })
-                  },
+                    // Save the modified data back to SharedPreferences
+                    prefs.setStringList("POLISTJSON", existingData!);
+                    print(existingData!.length.toString());
+                    Navigator.push(context,MaterialPageRoute(builder: (context) =>RSMOrderApprovalMainScreen()));
+                    Fluttertoast.showToast(
+                        msg: "Successfully PO added to cart",
+                        textColor: Colors.white,
+                        backgroundColor: Colors.green,
+                        gravity: ToastGravity.CENTER,
+                        toastLength: Toast.LENGTH_LONG);
+                  })
+                },
               ),
             ),
           ],
@@ -234,7 +236,7 @@ List selectionItems=[];
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-               Divider(),
+              Divider(),
               Row(
                 mainAxisAlignment:
                 MainAxisAlignment.spaceBetween,
@@ -276,17 +278,17 @@ List selectionItems=[];
                         SizedBox(
                           height: 5.0,
                         ),
-                         Text(
+                        Text(
                             'TCS'),SizedBox(
                           height: 5.0,
                         ),
-                         Text(
+                        Text(
                             'Roundoff'),SizedBox(
                           height: 5.0,
                         ),
-                         Text(
+                        Text(
                             'Order Total'),
-                    
+
                         // Text('Sub Total'),
                       ],
                     ),
@@ -324,7 +326,7 @@ List selectionItems=[];
                       ):SizedBox.shrink(),
                       Text('  \u{20B9}${widget.gstCharge.toDouble().toStringAsFixed(2)}'),
                       SizedBox(
-                        height: 5.0
+                          height: 5.0
                       ),
                       Text('  \u{20B9}${widget.TCS.toDouble().toStringAsFixed(2)}'),
                       SizedBox(
@@ -341,8 +343,8 @@ List selectionItems=[];
                   ),
                 ],
               ),
-               Divider(),
-                    /*Align(
+              Divider(),
+              /*Align(
                         alignment: Alignment.center,
                         child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -369,7 +371,7 @@ List selectionItems=[];
                         ),
                       ),*/
 
-             //  Divider(),
+              //  Divider(),
               // ConstrainedBox(
               //   constraints: BoxConstraints(
               //     maxHeight: MediaQuery.of(context).size.height * 0.4,
@@ -574,7 +576,7 @@ List selectionItems=[];
               //   ),
               // ),
               Container(
-               // height: context.height(),
+                // height: context.height(),
                 //padding:  EdgeInsets.all(20.0),
                 decoration:  BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -584,7 +586,7 @@ List selectionItems=[];
                 ),
                 child: Column(
                   children: [
-                     SizedBox(
+                    SizedBox(
                       height: 20.0,
                     ),
                     Row(
@@ -676,7 +678,7 @@ List selectionItems=[];
                   ],
                 ),
               ),
-               SizedBox(
+              SizedBox(
                 height: 20.0,
               ),
               TextFormField(
@@ -686,25 +688,22 @@ List selectionItems=[];
                   summary = value;
                   setState(() {});
                 },
-                keyboardType: TextInputType.multiline,  // Set keyboardType to TextInputType.multiline
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  hintText: "Add Remarks",
-                  hintStyle: TextStyle(
+                inputFormatters: [
+                  FilteringTextInputFormatter(RegExp("[a-zA-Z0-9]"), allow: true),],
+                style:  TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
+                    color: Colors.black),
+                decoration:  InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)),
+                    hintText: "Add Remarks",
 
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: Colors.grey)),
+              ),
               Divider(),
             ],
           ),

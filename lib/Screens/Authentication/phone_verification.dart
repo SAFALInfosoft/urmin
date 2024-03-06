@@ -10,6 +10,7 @@ import 'package:maan_hrm/GlobalComponents/otp_form.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../GlobalComponents/PreferenceManager.dart';
 import '../../RESPONSE/otpVerificationResponse.dart';
+import '../../RSM_Screens/RSM_DashBoard.dart';
 import '../../constant.dart';
 import '../../DMS_Screens/DMS_DashBoard.dart';
 import '../Home/SFA_DashBoard.dart';
@@ -268,8 +269,17 @@ log(response.body.toString());
             .setStringValue("businessName", response1.message[0].businessName);
         PreferenceManager.instance
             .setStringValue("role", response1.message[0].role);
-        ErpMainDataFetch(response1.message[0].distributorId).then((value) => Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) =>  Dms_HomeScreen())));
+        if (response1.message[0].distributorId == "RSM2") {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => RSM_HomeScreen()
+          ));
+        } else {
+          ErpMainDataFetch(response1.message[0].distributorId).then((value) =>
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => Dms_HomeScreen()
+              ))
+          );
+        }
 
       } else {
         Fluttertoast.showToast(

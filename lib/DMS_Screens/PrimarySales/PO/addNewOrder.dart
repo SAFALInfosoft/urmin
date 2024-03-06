@@ -229,7 +229,7 @@ class _addNewOrderForPoState extends State<addNewOrderForPo> {
       resizeToAvoidBottomInset: false,
       backgroundColor: kMainColor,
       appBar: AppBar(
-leading: Icon(CupertinoIcons.cart),
+        leading: Icon(CupertinoIcons.back),
         backgroundColor: kMainColor,
         elevation: 0.0,
         titleSpacing: 0.0,
@@ -305,10 +305,21 @@ leading: Icon(CupertinoIcons.cart),
                                   selectedTile = -1;
                                 });
                               }),
-                            title: Text("${itemList[index].it_name.toString()} (QTY: ${itemList[index].quantity.toString()})"),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(child: Text("${itemList[index].it_name.toString()}")),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    itemList.remove(itemList[index]);
+                                  },
+                                ),
+                              ],
+                            ),
                             children: [
                               Divider(),
-                            Row(
+                              Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("QTY: "+itemList[index].quantity.toString()),
@@ -326,15 +337,17 @@ leading: Icon(CupertinoIcons.cart),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("CARTON: "+itemList[index].cartonQantity.toString()),
-                                  Text("BOX: "+itemList[index].boxQantity.toString(),overflow: TextOverflow.ellipsis,),
+                                  Text("CARTON: "+itemList[index].cartonQantity!.toStringAsFixed(2)),
+                                  Text("BOX: "+itemList[index].boxQantity!.toStringAsFixed(2),overflow: TextOverflow.ellipsis,),
                                 ],
                               ), Divider(),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text("UNIT: "+itemList[index].unitQantity.toString()),
-                                  Text("WEIGHT: ${itemList[index].CartonWeight!/1000} KG"/*+itemList[index].Weight_Per_Carton.toString()*/,overflow: TextOverflow.ellipsis,),
+                                  Text("UNIT: "+itemList[index].unitQantity!.toStringAsFixed(0)),
+                                  Text("WEIGHT: ${itemList[index].
+                                  CartonWeight!.toStringAsFixed(3)} KG"
+                                    /*+itemList[index].Weight_Per_Carton.toString()*/,overflow: TextOverflow.ellipsis,),
                                 ],
                               ),
                               ],
@@ -355,7 +368,7 @@ leading: Icon(CupertinoIcons.cart),
           Expanded(
             child: Container(
               width: context.width(),
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(7.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
@@ -366,7 +379,7 @@ leading: Icon(CupertinoIcons.cart),
                 children: <Widget>[
 
                   Padding(
-                    padding: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(4.0),
                     child: CupertinoSearchTextField(
                       //controller: controller,
                       onChanged: (value) {
@@ -405,217 +418,246 @@ leading: Icon(CupertinoIcons.cart),
                         child: Column(
                           children: [
                             SizedBox(
-                              height: 3,
+                              height: MediaQuery.of(context).size.height * 0.002,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    readOnly: true,
-                                    decoration: InputDecoration(
-                                        label: Text("Billing Address"),
-                                        hintText: "Select Billing Address",
-                                        border: InputBorder.none),
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.black),
-                                    controller: compneyNameController,
-                                    // decoration: InputDecoration(
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              child: Row(
+                                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      readOnly: true,
+                                      decoration: InputDecoration(
+                                          //label: Text("Billing Address"),
+                                          hintText: "Select Billing Address",
+                                          border: InputBorder.none),
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.black),
+                                      controller: compneyNameController,
+                                      // decoration: InputDecoration(
+                                    ),
                                   ),
-                                ),
-                                selectionItems.length > 1
-                                    ? PopupMenuButton(
-                                        icon: Icon(Icons.arrow_drop_down),
-                                        onSelected: (value) {
-                                          setState(() {
-                                            var selectedItem = selectionItems
-                                                .firstWhere((item) =>
-                                                    item["Warehouse_Name"] ==
-                                                    value);
-                                            compneyNameController.text =
-                                                value.toString();
-                                            selectedWareHouse =
-                                                selectedItem["Warehouse_id"];
-                                            log(selectedWareHouse);
-                                          });
-                                        },
-                                        itemBuilder: (BuildContext context) {
-                                          return selectionItems
-                                              .map<PopupMenuItem>((value) {
-                                            return PopupMenuItem(
-                                                height: 50,
-                                                value: value['Warehouse_Name'],
-                                                child: Row(
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: 8.0),
-                                                      child: Text(
-                                                          value[
-                                                              'Warehouse_Name'],
-                                                          style: TextStyle(
-                                                              fontSize: 12)),
-                                                    ),
-                                                  ],
-                                                ));
-                                          }).toList();
-                                        },
-                                      )
-                                    : Container(),
-                              ],
+                                  selectionItems.length > 1
+                                      ? PopupMenuButton(
+                                          icon: Icon(Icons.arrow_drop_down),
+                                          onSelected: (value) {
+                                            setState(() {
+                                              var selectedItem = selectionItems
+                                                  .firstWhere((item) =>
+                                                      item["Warehouse_Name"] ==
+                                                      value);
+                                              compneyNameController.text =
+                                                  value.toString();
+                                              selectedWareHouse =
+                                                  selectedItem["Warehouse_id"];
+                                              log(selectedWareHouse);
+                                            });
+                                          },
+                                          itemBuilder: (BuildContext context) {
+                                            return selectionItems
+                                                .map<PopupMenuItem>((value) {
+                                              return PopupMenuItem(
+                                                  height: 50,
+                                                  value: value['Warehouse_Name'],
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: 8.0),
+                                                        child: Text(
+                                                            value[
+                                                                'Warehouse_Name'],
+                                                            style: TextStyle(
+                                                                fontSize: 12)),
+                                                      ),
+                                                    ],
+                                                  ));
+                                            }).toList();
+                                          },
+                                        )
+                                      : Container(),
+                                ],
+                              ),
                             ),
-                            Divider(),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    readOnly: true,
-                                    decoration: InputDecoration(
-                                        label: Text("Category"),
-                                        border: InputBorder.none),
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.black),
-                                    controller: Parent_NameController,
-                                    // decoration: InputDecoration(
-                                  ),
-                                ),
-                                PopupMenuButton(
-                                  icon: Icon(Icons.arrow_drop_down),
-                                  onSelected: (value) {
-                                    setState(() {
+                            Divider(
+                              height: 0,
+                            ),
+                            Container(
+                              height: MediaQuery.of(context).size.height * 0.07,
+                              child: Row(
+                                // crossAxisAlignment: CrossAxisAlignment.center,
+                                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Expanded(
 
-                                      // var selectedItem = offlineItem.firstWhere(
-                                      //       (item) => item["Parent_Name"] == value,
-                                      // );
-                                      Parent_NameController.text =
-                                          value.toString();
-                                      //selectedCode = selectedItem["Select_Value_Code"];
-                                      //log(selectedCode);
-                                    });
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    offlineItem.sort((a, b) => a["Parent_Name"]
-                                        .compareTo(b["Parent_Name"]));
-                                    return offlineItem
-                                        .where((value) => uniqueValues
-                                            .add(value["Parent_Name"]))
-                                        .map<PopupMenuItem>((value) {
-                                      return PopupMenuItem(
-                                          height: 50,
-                                          value: value["Parent_Name"],
-                                          child: Row(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 8.0),
-                                                child: Text(
-                                                    value["Parent_Name"],
-                                                    style: TextStyle(
-                                                        fontSize: 12)),
-                                              ),
-                                            ],
-                                          ));
-                                    }).toList();
-                                  },
-                                ),
-                                Expanded(
-                                  child: TextField(
-                                    readOnly: true,
-                                    decoration: InputDecoration(
-                                        label: Text(
-                                            SubCategory_NameController.text ==
-                                                    ""
-                                                ? "Sub Category"
-                                                : ""),
-                                        border: InputBorder.none),
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.black),
-                                    controller: SubCategory_NameController,
-                                    // decoration: InputDecoration(
+                                    child: TextField(
+                                      readOnly: true,
+                                      decoration: InputDecoration(
+                                          hintText: ("Category"),
+                                          border: InputBorder.none),
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.black),
+                                      controller: Parent_NameController,
+                                      // decoration: InputDecoration(
+                                    ),
                                   ),
-                                ),
-                                Visibility(
-                                  visible: Parent_NameController.text == ""
-                                      ? false
-                                      : true,
-                                  child: PopupMenuButton(
+                                  PopupMenuButton(
                                     icon: Icon(Icons.arrow_drop_down),
-                                    onCanceled: () {
-                                      // SubCategory_NameController.clear();
-                                    },
                                     onSelected: (value) {
                                       setState(() {
+
                                         // var selectedItem = offlineItem.firstWhere(
                                         //       (item) => item["Parent_Name"] == value,
                                         // );
-                                        _controllers.clear();
-                                        if (SubCategory_NameController.text ==
-                                            "") {
-                                          SubCategory_NameController.text =
-                                              value.toString();
-                                          offlineItem = tempItem
-                                              .where((item) => item[
-                                                      "Category_Name"]
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      SubCategory_NameController
-                                                          .text
-                                                          .toLowerCase()))
-                                              .toList();
-                                        } else {
-                                          //  SubCategory_NameController.clear();
-                                          offlineItem = tempItem;
-                                        }
-
+                                        Parent_NameController.text =
+                                            value.toString();
                                         //selectedCode = selectedItem["Select_Value_Code"];
                                         //log(selectedCode);
                                       });
                                     },
                                     itemBuilder: (BuildContext context) {
-                                      offlineItem.sort((a, b) =>
-                                          a["Category_Name"]
-                                              .compareTo(b["Category_Name"]));
+                                      offlineItem.sort((a, b) => a["Parent_Name"]
+                                          .compareTo(b["Parent_Name"]));
                                       return offlineItem
-                                          .where((value) => uniqueValues2.add(
-                                              Parent_NameController.text ==
-                                                      value["Parent_Name"]
-                                                  ? value["Category_Name"]
-                                                  : "No Data"))
+                                          .where((value) => uniqueValues
+                                              .add(value["Parent_Name"]))
                                           .map<PopupMenuItem>((value) {
                                         return PopupMenuItem(
                                             height: 50,
-                                            value: value["Category_Name"],
+                                            value: value["Parent_Name"],
                                             child: Row(
                                               children: [
                                                 Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 8.0),
+                                                  padding:
+                                                      EdgeInsets.only(left: 8.0),
                                                   child: Text(
-                                                      value["Category_Name"],
+                                                      value["Parent_Name"],
                                                       style: TextStyle(
-                                                          fontSize: 12,
-                                                          overflow: TextOverflow
-                                                              .visible)),
+                                                          fontSize: 12)),
                                                 ),
                                               ],
                                             ));
                                       }).toList();
                                     },
                                   ),
-                                ),
-                                InkWell(
-                                    onTap: () {
-                                      setState(() {});
-                                      SubCategory_NameController.clear();
-                                      Parent_NameController.clear();
-                                      offlineItem = tempItem;
-                                      offlineItem.sort((a, b) => a["Item_name"]
-                                          .compareTo(b["Item_name"]));
-                                    },
-                                    child: Icon(CupertinoIcons.delete))
-                              ],
+                                  Visibility(
+                                    visible: Parent_NameController.text.isNotEmpty,
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          SubCategory_NameController.clear();
+                                          Parent_NameController.clear();
+                                          offlineItem = tempItem;
+                                          offlineItem.sort((a, b) => a["Item_name"]
+                                              .compareTo(b["Item_name"]));
+                                        });
+                                      },
+                                      child: Icon(CupertinoIcons.delete),
+                                    ),
+                                  ),
+                                  SizedBox(width: 15,),
+                                  Expanded(
+                                    child: TextField(
+                                      readOnly: true,
+                                      decoration: InputDecoration(
+                                          hintText: (
+                                              SubCategory_NameController.text ==
+                                                      ""
+                                                  ? "Sub Category"
+                                                  : ""),
+                                          border: InputBorder.none),
+                                      style: TextStyle(
+                                          fontSize: 15, color: Colors.black),
+                                      controller: SubCategory_NameController,
+                                      // decoration: InputDecoration(
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: Parent_NameController.text == ""
+                                        ? false
+                                        : true,
+                                    child: PopupMenuButton(
+                                      icon: Icon(Icons.arrow_drop_down),
+                                      onCanceled: () {
+                                        // SubCategory_NameController.clear();
+                                      },
+                                      // onOpened: (){
+                                      //   setState(() {
+                                      //     //tempItem.clear();
+                                      //     // Clear subcategory list and show whole subcategory list based on the selected category
+                                      //     // offlineItem = tempItem
+                                      //     //     .where((item) => item["Parent_Name"] == Parent_NameController.text)
+                                      //     //     .toList();
+                                      //   });
+                                      // },
+                                      onSelected: (value) {
+                                        setState(() {
+                                          _controllers.clear();
+                                          SubCategory_NameController.text = value.toString();
+
+                                          if (SubCategory_NameController.text.isNotEmpty) {
+                                            // Filter subcategories based on the selected category and entered text
+                                            offlineItem = tempItem
+                                                .where((item) =>
+                                            item["Parent_Name"] == Parent_NameController.text &&
+                                                item["Category_Name"]
+                                                    .toLowerCase()
+                                                    .contains(SubCategory_NameController.text.toLowerCase()))
+                                                .toList();
+                                          } else {
+                                            // If no text is entered, show all subcategories for the selected category
+                                            offlineItem = tempItem
+                                                .where((item) => item["Parent_Name"] == Parent_NameController.text)
+                                                .toList();
+                                          }
+                                        });
+                                      },
+                                      itemBuilder: (BuildContext context) {
+                                        offlineItem.sort((a, b) => a["Category_Name"].compareTo(b["Category_Name"]));
+                                        return offlineItem
+                                            .where((value) => uniqueValues2.add(
+                                            Parent_NameController.text == value["Parent_Name"]
+                                                ? value["Category_Name"]
+                                                : "No Data"))
+                                            .map<PopupMenuItem>((value) {
+                                          if (Parent_NameController.text == value["Parent_Name"]) {
+                                            return PopupMenuItem(
+                                              height: 50,
+                                              value: value["Category_Name"],
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding: EdgeInsets.only(left: 8.0),
+                                                    child: Text(value["Category_Name"],
+                                                        style: TextStyle(fontSize: 12, overflow: TextOverflow.visible)),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            return PopupMenuItem(height: 0, value: null, child: null,);
+                                          }
+                                        }).toList();
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: SubCategory_NameController.text.isNotEmpty,
+                                    child: InkWell(
+                                        onTap: () {
+                                          setState(() {});
+                                          _controllers.clear();
+                                          SubCategory_NameController.clear();
+                                          //Parent_NameController.clear();
+                                          offlineItem = tempItem;
+                                          offlineItem.sort((a, b) => a["Item_name"]
+                                              .compareTo(b["Item_name"]));
+                                        },
+                                        child: Icon(CupertinoIcons.delete)),
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -652,34 +694,39 @@ leading: Icon(CupertinoIcons.cart),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15)),
                                   child: Container(
-                                    // height: 65,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 8),
+                                    height: MediaQuery.of(context).size.height*0.11,
+                                    // margin: EdgeInsets.symmetric(
+                                    //     vertical: 3, horizontal: 3),
                                     child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Row(
+                                          //mainAxisAlignment: MainAxisAlignment.start,
                                           children: <Widget>[
                                             ActiveConnection
-                                                ? Container(
-                                                    width: 60,
-                                                    height: 60,
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: NetworkImage(
-                                                                "http://docs.urmingroup.co.in/images/${offlineItem[itemIndex]['Item_code']}.jpg"),onError: (exception, stackTrace) {
-                                                                  Icon(Icons.signal_cellular_connected_no_internet_0_bar);
-                                                                },),
-                                                        border: Border.all(
-                                                            color: Colors.grey,
-                                                            width: 1),
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10))),
-                                                  )
+                                                ? Padding(
+                                                  padding: const EdgeInsets.only(left: 4),
+                                                  child: Container(
+                                                      width: 55,
+                                                      height: 55,
+                                                      decoration: BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                  "http://docs.urmingroup.co.in/images/${offlineItem[itemIndex]['Item_code']}.jpg"),onError: (exception, stackTrace) {
+                                                                    Icon(Icons.signal_cellular_connected_no_internet_0_bar);
+                                                                  },),
+                                                          border: Border.all(
+                                                              color: Colors.grey,
+                                                              width: 1),
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      10))),
+                                                    ),
+                                                )
                                                 : Container(
-                                                    width: 60,
-                                                    height: 60,
+                                                    width: 55,
+                                                    height: 55,
                                                     decoration: BoxDecoration(
                                                         image: DecorationImage(
                                                             image: AssetImage(
@@ -694,30 +741,366 @@ leading: Icon(CupertinoIcons.cart),
                                                   ),
                                             Expanded(
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.start, // Align items at the top
+                                                // crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: <Widget>[
                                                   Padding(
-                                                    padding: EdgeInsets.only(
-                                                        left: 10, right: 0),
+                                                    padding: EdgeInsets.only(left: 10, right: 0),
+                                                    child: Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Text(
+                                                        offlineItem[itemIndex]['Item_name'],
+                                                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                                      ),
+
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(left: 10, right: 0),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
+                                                      // mainAxisAlignment:
+                                                      //     MainAxisAlignment.spaceEvenly,
+                                                      children: [
                                                         Flexible(
-                                                          child: Text(
-                                                              offlineItem[
-                                                                      itemIndex]
-                                                                  ['Item_name'],
-                                                              style: TextStyle(
-                                                                  fontSize: 14,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
+                                                          child: DropdownButtonHideUnderline(
+                                                            child: DropdownButtonFormField(
+                                                              value: dropdownValue0[itemIndex],
+                                                              onChanged: (String? newValue) {
+                                                                _controllers[itemIndex].clear();
+                                                                setState(() {
+                                                                  dropdownValue0[itemIndex] = newValue!;
+                                                                  log(dropdownValue0[itemIndex]);
+                                                                });
+                                                              },
+                                                              items: (() {
+                                                                try {
+                                                                  double mrp = double.tryParse(offlineItem[itemIndex]['MRP'] ?? '') ?? 0.0;
+                                                                  return generateDropdownItems(mrp,offlineItem[itemIndex]['Price_Calc']);
+                                                                } catch (e) {
+                                                                  print('Error parsing MRP: $e');
+                                                                  // Handle the error, provide a default value, or return an empty list
+                                                                  // For example, you might want to set a default value for 'mrp' or return an empty list.
+                                                                  //return <DropdownMenuItem<String>>[];
+                                                                }
+                                                              })(),
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Flexible(
+                                                          child: TextFormField(
+                                                            controller:
+                                                            _controllers[itemIndex],
+                                                            keyboardType:
+                                                            TextInputType.number,
+                                                            decoration: InputDecoration(
+                                                                enabled: true,
+                                                                border: InputBorder.none,
+                                                                // enabledBorder: OutlineInputBorder(),
+                                                                // labelText: 'Nos',
+                                                                hintText: 'Nos',
+                                                                hintStyle: TextStyle( fontSize: 13)
+                                                            ),
+                                                            onChanged: (value) async {
+                                                              String str = value;
+                                                              if (value == '') {
+                                                                print('removed!! ${itemList.map((e) => e.UOM)}');
+                                                                print('removed 11 !! ${itemList.map((e) => e.quantity)}');
+                                                                itemList.removeWhere((element) =>
+                                                                (element.itemCode == offlineItem[itemIndex]["Item_id"]) &&
+                                                                    (element.UOM == dropdownValue0[itemIndex]));
+                                                                print('removed!! ${itemList.map((e) => e.UOM)}');
+                                                                print('removed 11 !! ${itemList.map((e) => e.quantity)}');
+                                                                log("FieldString" + FieldString.toString() + "itemList langth" + itemList.length.toString());
+                                                                log("itemList langth" + itemList.length.toString());
+                                                              }
+                                                              if (value.isNotEmpty) {
+                                                                log(str.toString());
+                                                                int qty = int.parse(value);
+                                                                var scdc = offlineItem[itemIndex]['Trade_Disc'] == "" ? 0.0
+                                                                    : offlineItem[itemIndex]['Trade_Disc'];
+                                                                var scmdc = offlineItem[itemIndex]['Scheme_Disc'] == "" ? 0.0
+                                                                    : offlineItem[itemIndex]['Scheme_Disc'];
+                                                                var otrdc = offlineItem[itemIndex]['Other_Disc'] == "" ? 0.0
+                                                                    : offlineItem[itemIndex]['Other_Disc'];
+                                                                double WSP = double.parse(offlineItem[itemIndex]['WSP']);
+                                                                double Tax_Rate =
+                                                                double.parse(offlineItem[itemIndex]['Tax_Rate']);
+                                                                double Unit_Per_Carton =
+                                                                double.parse(offlineItem[itemIndex]['Unit_Per_Carton']);
+                                                                double Unit_Per_Box = double.parse(offlineItem[itemIndex]['Unit_Per_Box']);
+                                                                double Scheme_Disc = double.parse(scmdc.toString());
+                                                                double Trade_Disc = double.parse(scdc.toString());
+                                                                double Other_Disc = double.parse(otrdc.toString());
+                                                                double Weight_Per_Carton = double.parse(offlineItem[itemIndex]['Item_Weight'].toString());
+                                                                double MRP = double.tryParse(offlineItem[itemIndex]['MRP'] ?? '') ?? 0.0;
+                                                                double Weight_Per_Unit = double.parse(offlineItem[itemIndex]['Weight_Per_Unit'].toString());
+                                                                log("WSP" + WSP.toString());
+                                                                Item item = Item(
+                                                                    itemCode: offlineItem[
+                                                                    itemIndex]
+                                                                    ['Item_id'],
+                                                                    it_name: offlineItem[
+                                                                    itemIndex]
+                                                                    ['Item_name'],
+                                                                    UOM: dropdownValue0[
+                                                                    itemIndex],
+                                                                    rate: MRP,
+                                                                    wspRate: WSP,
+                                                                    gstPer: Tax_Rate,
+                                                                    priceCalc: offlineItem[
+                                                                    itemIndex]
+                                                                    ['Price_Calc'],
+                                                                    unitPerCarton:
+                                                                    Unit_Per_Carton,
+                                                                    Weight_Per_Carton:
+                                                                    Weight_Per_Carton,
+                                                                    Weight_Per_Unit:
+                                                                    Weight_Per_Unit,
+                                                                    quantity: qty,
+                                                                    HSN_CODE: offlineItem[
+                                                                    itemIndex]['HSN'],
+                                                                    unitPerBox:
+                                                                    Unit_Per_Box,
+                                                                    schemeDisc: Scheme_Disc,
+                                                                    tradeDisc: Trade_Disc,
+                                                                    otherDisc: Other_Disc,
+                                                                    total: total,
+                                                                    totalSchemeDiscountAmount:
+                                                                    totalSchemeDiscountAmount,
+                                                                    Total_Trade_discount_Amount:
+                                                                    Total_Trade_discount_Amount,
+                                                                    Total_Other_discount_Amount:
+                                                                    Total_Other_discount_Amount,
+                                                                    TotalAfterDiscount:
+                                                                    TotalAfterDiscount,
+                                                                    GST: GST,
+                                                                    SGST: SGST,
+                                                                    IGST: IGST,
+                                                                    CGST: CGST,
+                                                                    TCS: TCS,
+                                                                    UnitWeight:UnitWeight,
+                                                                    CartonWeight:CartonWeight,
+                                                                    boxQantity:boxQantity,
+                                                                    cartonQantity:cartonQantity,
+                                                                    unitQantity:unitQantity
+                                                                );
+
+                                                                total = calculateTotal(item);
+                                                                unitQantity = calculateUnitQuantity(item);
+                                                                cartonQantity= calculateCartonQuantity(item);
+                                                                boxQantity= calculateBoxQuantity(item);
+                                                                CartonWeight =  calculateCartonWeight(item);
+                                                                UnitWeight= calculateUnitWeight(item);
+                                                                // if (item.UOM.toString() ==
+                                                                //     "Carton") {
+                                                                //   Carton_weight = (item
+                                                                //       .quantity! *
+                                                                //       item.Weight_Per_Carton!);
+                                                                //   print(item
+                                                                //       .quantity! );
+                                                                //   print(item.Weight_Per_Carton!);
+                                                                //   print(Carton_weight);
+                                                                //   unit_weight = (((item
+                                                                //       .quantity! *
+                                                                //       item.unitPerCarton!) *
+                                                                //       item.Weight_Per_Unit!));
+                                                                // } else {
+                                                                //   Carton_weight = ((item
+                                                                //       .quantity! /
+                                                                //       item.unitPerCarton!) *
+                                                                //       item.Weight_Per_Carton!);
+                                                                //   print(item
+                                                                //       .quantity! );
+                                                                //   print(item.Weight_Per_Carton!);
+                                                                //   print(item.unitPerCarton!);
+                                                                //   print(Carton_weight);
+                                                                //   unit_weight = ((item
+                                                                //       .quantity! *
+                                                                //       item.Weight_Per_Unit!));
+                                                                // }
+                                                                if (item.UOM.toString() ==
+                                                                    "Carton") {
+                                                                  totalSchemeDiscountAmount = (item
+                                                                      .quantity! *
+                                                                      item.unitPerCarton! /
+                                                                      item.unitPerBox! *
+                                                                      item.schemeDisc!) ??
+                                                                      0;
+                                                                  Total_Trade_discount_Amount = (item
+                                                                      .quantity! *
+                                                                      item.unitPerCarton! /
+                                                                      item.unitPerBox! *
+                                                                      item.tradeDisc!) ??
+                                                                      0;
+                                                                  Total_Other_discount_Amount = (item
+                                                                      .quantity! *
+                                                                      item.unitPerCarton! /
+                                                                      item.unitPerBox! *
+                                                                      item.otherDisc!) ??
+                                                                      0;
+                                                                } else {
+                                                                  totalSchemeDiscountAmount = (item
+                                                                      .quantity! /
+                                                                      item.unitPerBox! *
+                                                                      item.schemeDisc!) ??
+                                                                      0;
+                                                                  Total_Trade_discount_Amount = (item
+                                                                      .quantity! /
+                                                                      item.unitPerBox! *
+                                                                      item.tradeDisc!) ??
+                                                                      0;
+                                                                  Total_Other_discount_Amount = (item
+                                                                      .quantity! /
+                                                                      item.unitPerBox! *
+                                                                      item.otherDisc!) ??
+                                                                      0;
+                                                                }
+                                                                TotalAfterDiscount =
+                                                                    calculateTotalAfterDiscount(
+                                                                        item);
+
+                                                                var GST1 =
+                                                                calculateGstCharge(
+                                                                    item,
+                                                                    item.gstPer);
+                                                                GST = double.parse(GST1
+                                                                    .toStringAsFixed(2));
+
+                                                                log("companyStateCode ${companyStateCode} Distributor_state_code ${Distributor_state_code}");
+
+                                                                if (companyStateCode ==
+                                                                    Distributor_state_code ||
+                                                                    (Distributor_state_code ==
+                                                                        "24" &&
+                                                                        companyStateCode ==
+                                                                            "24")) {
+                                                                  log("CGST---SGST");
+                                                                  CGST =
+                                                                      calculateGstCharge(
+                                                                          item,
+                                                                          item.gstPer);
+                                                                  CGST = double.parse(CGST
+                                                                      .toStringAsFixed(
+                                                                      2));
+                                                                  SGST =
+                                                                      calculateGstCharge(
+                                                                          item,
+                                                                          item.gstPer);
+                                                                  SGST = double.parse(SGST
+                                                                      .toStringAsFixed(
+                                                                      2));
+                                                                  log("CGST ${CGST}---SGST${SGST}");
+                                                                  if (TCS_Applicable ==
+                                                                      "Yes") {
+                                                                    TCS = calculateRowTCS(
+                                                                        totalSchemeDiscountAmount,
+                                                                        Total_Trade_discount_Amount,
+                                                                        Total_Other_discount_Amount,
+                                                                        SGST,
+                                                                        CGST,
+                                                                        IGST);
+                                                                    TCS = double.parse(
+                                                                        TCS.toString());
+                                                                  }
+                                                                  calculateOrderTotal(
+                                                                      totalSchemeDiscountAmount,
+                                                                      Total_Trade_discount_Amount,
+                                                                      Total_Other_discount_Amount,
+                                                                      SGST,
+                                                                      CGST,
+                                                                      IGST);
+                                                                } else {
+                                                                  log("IGST");
+                                                                  IGST =
+                                                                      calculateIGSTAmount(
+                                                                          item,
+                                                                          item.gstPer);
+                                                                  IGST = double.parse(IGST
+                                                                      .toStringAsFixed(
+                                                                      2));
+                                                                  log("TCS_Applicable" +
+                                                                      TCS_Applicable
+                                                                          .toString());
+                                                                  if (TCS_Applicable ==
+                                                                      "Yes") {
+                                                                    TCS = calculateRowTCS(
+                                                                        totalSchemeDiscountAmount,
+                                                                        Total_Trade_discount_Amount,
+                                                                        Total_Other_discount_Amount,
+                                                                        SGST,
+                                                                        CGST,
+                                                                        IGST);
+                                                                    log("TCS" +
+                                                                        TCS.toString());
+                                                                  }
+                                                                  orderTotal = calculateOrderTotal(
+                                                                      totalSchemeDiscountAmount,
+                                                                      Total_Trade_discount_Amount,
+                                                                      Total_Other_discount_Amount,
+                                                                      SGST,
+                                                                      CGST,
+                                                                      IGST);
+                                                                  log(orderTotal);
+                                                                  //orderTotal= double.parse(orderTotal.toStringAsFixed(2));
+
+                                                                  //CGST = calculateCGSTAmount(item,item.gstPer);
+                                                                  //SGST = calculateSGSTAmount(item,item.gstPer);
+                                                                  //log("SGST"+SGST.toString());
+                                                                  //log("CGST"+CGST.toString());
+                                                                }
+                                                                setState(() {
+                                                                  item.total = total;
+                                                                  item.totalSchemeDiscountAmount = totalSchemeDiscountAmount;
+                                                                  item.Total_Trade_discount_Amount = Total_Trade_discount_Amount;
+                                                                  item.Total_Other_discount_Amount = Total_Other_discount_Amount;
+                                                                  item.TotalAfterDiscount = TotalAfterDiscount;
+                                                                  item.GST = GST;
+                                                                  item.SGST = SGST;
+                                                                  item.IGST = IGST;
+                                                                  item.CGST = CGST;
+                                                                  item.TCS = TCS;
+                                                                  item.UOM=dropdownValue0[itemIndex];
+                                                                  item.UnitWeight=unit_weight;
+                                                                  item.
+                                                                  CartonWeight=CartonWeight;
+                                                                  item.unitQantity=unitQantity;
+                                                                  item.cartonQantity=cartonQantity;
+                                                                  item.boxQantity=boxQantity;
+                                                                });
+
+                                                                if ((itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"]) != -1) && (itemList.indexWhere((element) => element.UOM == dropdownValue0[itemIndex])) != -1) {
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].quantity = int.parse(value);
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].total = total;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].totalSchemeDiscountAmount = totalSchemeDiscountAmount;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Trade_discount_Amount = Total_Trade_discount_Amount;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Other_discount_Amount = Total_Other_discount_Amount;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].TotalAfterDiscount = TotalAfterDiscount;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].GST = GST;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].SGST = SGST;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].IGST = IGST;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].CGST = CGST;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].TCS = TCS;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].UnitWeight = UnitWeight;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].CartonWeight = CartonWeight;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].unitQantity = unitQantity;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].cartonQantity = cartonQantity;
+                                                                  itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].boxQantity = boxQantity;
+                                                                  //   itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].UOM = item.UOM;
+                                                                } else {
+                                                                  itemList.add(item);
+
+                                                                }
+                                                              }
+                                                            },
+                                                            inputFormatters: [
+                                                              FilteringTextInputFormatter
+                                                                  .digitsOnly
+                                                            ],
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -725,34 +1108,36 @@ leading: Icon(CupertinoIcons.cart),
                                                 ],
                                               ),
                                             ),
+
                                             Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 5, right: 7, top: 5),
+                                                      left: 5, right: 7, top: 1),
                                                   child: Text(
                                                     '\u{20B9}${offlineItem[itemIndex]['MRP']}',
-                                                    style: TextStyle(fontSize: 15,color: Colors.green),
+                                                    style: TextStyle(fontSize: 13,color: Colors.green),
                                                   ),
-                                                ), Padding(
+                                                ),
+                                                Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 5, right: 7, top: 5),
+                                                      left: 5, right: 7, top: 1),
                                                   child: Text(
                                                     '\u{20B9}${offlineItem[itemIndex]['WSP']}',
-                                                    style: TextStyle(fontSize: 15,color: kMainColor),
+                                                    style: TextStyle(fontSize: 13,color: kMainColor),
                                                   ),
                                                 ), Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: 5, right: 7, top: 5),
+                                                      left: 5, right: 7, top: 1),
                                                   child: Text(
                                                     'Per ${
                                                       offlineItem[itemIndex]
                                                               ['Price_Calc']
                                                           .toUpperCase()
                                                     }',
-                                                    style: TextStyle(fontSize: 15,color: Colors.red),
+                                                    style: TextStyle(fontSize: 13,color: Colors.red),
                                                   ),
                                                 ),
                                               ],
@@ -761,353 +1146,8 @@ leading: Icon(CupertinoIcons.cart),
                                         ),
                                         Container(
                                           margin: EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 5),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Flexible(
-                                                child:
-                                                    DropdownButtonHideUnderline(
-                                                  child:
-                                                      DropdownButtonFormField(
-                                                    value: dropdownValue0[
-                                                        itemIndex],
-                                                    onChanged:
-                                                        (String? newValue) {
-                                                      _controllers[itemIndex]
-                                                          .clear();
-                                                      setState(() {
-                                                        dropdownValue0[
-                                                                itemIndex] =
-                                                            newValue!;
-                                                        log(dropdownValue0[
-                                                            itemIndex]);
-                                                      });
-                                                    },
-                                                    items: <String>[
-                                                      'Carton',
-                                                      'Unit'
-                                                    ].map<
-                                                        DropdownMenuItem<
-                                                            String>>(
-                                                      (String value) {
-                                                        return DropdownMenuItem<
-                                                            String>(
-                                                          value: value,
-                                                          child: Text(value),
-                                                        );
-                                                      },
-                                                    ).toList(),
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Flexible(
-                                                child: TextFormField(
-                                                  controller:
-                                                      _controllers[itemIndex],
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  decoration: InputDecoration(
-                                                    enabled: true,
-                                                    border: InputBorder.none,
-                                                    // enabledBorder: OutlineInputBorder(),
-                                                    // labelText: 'Nos',
-                                                    hintText: 'Nos',
-                                                  ),
-                                                  onChanged: (value) async {
-                                                    String str = value;
-                                                    if (value == '') {
-                                                      print('removed!! ${itemList.map((e) => e.UOM)}');
-                                                      print('removed 11 !! ${itemList.map((e) => e.quantity)}');
-                                                      itemList.removeWhere((element) =>
-                                                          (element.itemCode == offlineItem[itemIndex]["Item_id"]) &&
-                                                          (element.UOM == dropdownValue0[itemIndex]));
-                                                      print('removed!! ${itemList.map((e) => e.UOM)}');
-                                                      print('removed 11 !! ${itemList.map((e) => e.quantity)}');
-                                                      log("FieldString" + FieldString.toString() + "itemList langth" + itemList.length.toString());
-                                                      log("itemList langth" + itemList.length.toString());
-                                                    }
-                                                    if (value.isNotEmpty) {
-                                                        log(str.toString());
-                                                        int qty = int.parse(value);
-                                                        var scdc = offlineItem[itemIndex]['Trade_Disc'] == "" ? 0.0
-                                                            : offlineItem[itemIndex]['Trade_Disc'];
-                                                        var scmdc = offlineItem[itemIndex]['Scheme_Disc'] == "" ? 0.0
-                                                            : offlineItem[itemIndex]['Scheme_Disc'];
-                                                        var otrdc = offlineItem[itemIndex]['Other_Disc'] == "" ? 0.0
-                                                            : offlineItem[itemIndex]['Other_Disc'];
-                                                        double WSP = double.parse(offlineItem[itemIndex]['WSP']);
-                                                        double Tax_Rate =
-                                                        double.parse(offlineItem[itemIndex]['Tax_Rate']);
-                                                        double Unit_Per_Carton =
-                                                        double.parse(offlineItem[itemIndex]['Unit_Per_Carton']);
-                                                        double Unit_Per_Box = double.parse(offlineItem[itemIndex]['Unit_Per_Box']);
-                                                        double Scheme_Disc = double.parse(scmdc.toString());
-                                                        double Trade_Disc = double.parse(scdc.toString());
-                                                        double Other_Disc = double.parse(otrdc.toString());
-                                                        double Weight_Per_Carton = double.parse(offlineItem[itemIndex]['Weight_Per_Carton'].toString());
-                                                        double MRP = double.parse(offlineItem[itemIndex]['MRP'].toString());
-                                                        double Weight_Per_Unit = double.parse(offlineItem[itemIndex]['Weight_Per_Unit'].toString());
-                                                        log("WSP" + WSP.toString());
-                                                        Item item = Item(
-                                                          itemCode: offlineItem[
-                                                          itemIndex]
-                                                          ['Item_id'],
-                                                          it_name: offlineItem[
-                                                          itemIndex]
-                                                          ['Item_name'],
-                                                          UOM: dropdownValue0[
-                                                          itemIndex],
-                                                          rate: MRP,
-                                                          wspRate: WSP,
-                                                          gstPer: Tax_Rate,
-                                                          priceCalc: offlineItem[
-                                                          itemIndex]
-                                                          ['Price_Calc'],
-                                                          unitPerCarton:
-                                                          Unit_Per_Carton,
-                                                          Weight_Per_Carton:
-                                                          Weight_Per_Carton,
-                                                          Weight_Per_Unit:
-                                                          Weight_Per_Unit,
-                                                          quantity: qty,
-                                                          HSN_CODE: offlineItem[
-                                                          itemIndex]['HSN'],
-                                                          unitPerBox:
-                                                          Unit_Per_Box,
-                                                          schemeDisc: Scheme_Disc,
-                                                          tradeDisc: Trade_Disc,
-                                                          otherDisc: Other_Disc,
-                                                          total: total,
-                                                          totalSchemeDiscountAmount:
-                                                          totalSchemeDiscountAmount,
-                                                          Total_Trade_discount_Amount:
-                                                          Total_Trade_discount_Amount,
-                                                          Total_Other_discount_Amount:
-                                                          Total_Other_discount_Amount,
-                                                          TotalAfterDiscount:
-                                                          TotalAfterDiscount,
-                                                          GST: GST,
-                                                          SGST: SGST,
-                                                          IGST: IGST,
-                                                          CGST: CGST,
-                                                          TCS: TCS,
-                                                          UnitWeight:UnitWeight,
-                                                          CartonWeight:CartonWeight,
-                                                            boxQantity:boxQantity,
-                                                            cartonQantity:cartonQantity,
-                                                            unitQantity:unitQantity
-                                                        );
+                                              vertical: 0, horizontal: 7),
 
-                                                        total = calculateTotal(item);
-                                                       unitQantity = calculateUnitQuantity(item);
-                                                       cartonQantity= calculateCartonQuantity(item);
-                                                       boxQantity= calculateBoxQuantity(item);
-                                                        CartonWeight =  calculateCartonWeight(item);
-                                                        UnitWeight= calculateUnitWeight(item);
-                                                        if (item.UOM.toString() ==
-                                                            "Carton") {
-                                                          Carton_weight = (item
-                                                              .quantity! *
-                                                              item.Weight_Per_Carton!);
-                                                          unit_weight = (((item
-                                                              .quantity! *
-                                                              item.unitPerCarton!) *
-                                                              item.Weight_Per_Unit!));
-                                                        } else {
-                                                          Carton_weight = ((item
-                                                              .quantity! /
-                                                              item.unitPerCarton!) *
-                                                              item.Weight_Per_Carton!);
-                                                          unit_weight = ((item
-                                                              .quantity! *
-                                                              item.Weight_Per_Unit!));
-                                                        }
-                                                        if (item.UOM.toString() ==
-                                                            "Carton") {
-                                                          totalSchemeDiscountAmount = (item
-                                                              .quantity! *
-                                                              item.unitPerCarton! /
-                                                              item.unitPerBox! *
-                                                              item.schemeDisc!) ??
-                                                              0;
-                                                          Total_Trade_discount_Amount = (item
-                                                              .quantity! *
-                                                              item.unitPerCarton! /
-                                                              item.unitPerBox! *
-                                                              item.tradeDisc!) ??
-                                                              0;
-                                                          Total_Other_discount_Amount = (item
-                                                              .quantity! *
-                                                              item.unitPerCarton! /
-                                                              item.unitPerBox! *
-                                                              item.otherDisc!) ??
-                                                              0;
-                                                        } else {
-                                                          totalSchemeDiscountAmount = (item
-                                                              .quantity! /
-                                                              item.unitPerBox! *
-                                                              item.schemeDisc!) ??
-                                                              0;
-                                                          Total_Trade_discount_Amount = (item
-                                                              .quantity! /
-                                                              item.unitPerBox! *
-                                                              item.tradeDisc!) ??
-                                                              0;
-                                                          Total_Other_discount_Amount = (item
-                                                              .quantity! /
-                                                              item.unitPerBox! *
-                                                              item.otherDisc!) ??
-                                                              0;
-                                                        }
-                                                        TotalAfterDiscount =
-                                                            calculateTotalAfterDiscount(
-                                                                item);
-
-                                                        var GST1 =
-                                                        calculateGstCharge(
-                                                            item,
-                                                            item.gstPer);
-                                                        GST = double.parse(GST1
-                                                            .toStringAsFixed(2));
-
-                                                        log("companyStateCode ${companyStateCode} Distributor_state_code ${Distributor_state_code}");
-
-                                                        if (companyStateCode ==
-                                                            Distributor_state_code ||
-                                                            (Distributor_state_code ==
-                                                                "24" &&
-                                                                companyStateCode ==
-                                                                    "24")) {
-                                                          log("CGST---SGST");
-                                                          CGST =
-                                                              calculateGstCharge(
-                                                                  item,
-                                                                  item.gstPer);
-                                                          CGST = double.parse(CGST
-                                                              .toStringAsFixed(
-                                                              2));
-                                                          SGST =
-                                                              calculateGstCharge(
-                                                                  item,
-                                                                  item.gstPer);
-                                                          SGST = double.parse(SGST
-                                                              .toStringAsFixed(
-                                                              2));
-                                                          log("CGST ${CGST}---SGST${SGST}");
-                                                          if (TCS_Applicable ==
-                                                              "Yes") {
-                                                            TCS = calculateRowTCS(
-                                                                totalSchemeDiscountAmount,
-                                                                Total_Trade_discount_Amount,
-                                                                Total_Other_discount_Amount,
-                                                                SGST,
-                                                                CGST,
-                                                                IGST);
-                                                            TCS = double.parse(
-                                                                TCS.toString());
-                                                          }
-                                                          calculateOrderTotal(
-                                                              totalSchemeDiscountAmount,
-                                                              Total_Trade_discount_Amount,
-                                                              Total_Other_discount_Amount,
-                                                              SGST,
-                                                              CGST,
-                                                              IGST);
-                                                        } else {
-                                                          log("IGST");
-                                                          IGST =
-                                                              calculateIGSTAmount(
-                                                                  item,
-                                                                  item.gstPer);
-                                                          IGST = double.parse(IGST
-                                                              .toStringAsFixed(
-                                                              2));
-                                                          log("TCS_Applicable" +
-                                                              TCS_Applicable
-                                                                  .toString());
-                                                          if (TCS_Applicable ==
-                                                              "Yes") {
-                                                            TCS = calculateRowTCS(
-                                                                totalSchemeDiscountAmount,
-                                                                Total_Trade_discount_Amount,
-                                                                Total_Other_discount_Amount,
-                                                                SGST,
-                                                                CGST,
-                                                                IGST);
-                                                            log("TCS" +
-                                                                TCS.toString());
-                                                          }
-                                                          orderTotal = calculateOrderTotal(
-                                                              totalSchemeDiscountAmount,
-                                                              Total_Trade_discount_Amount,
-                                                              Total_Other_discount_Amount,
-                                                              SGST,
-                                                              CGST,
-                                                              IGST);
-                                                          log(orderTotal);
-                                                          //orderTotal= double.parse(orderTotal.toStringAsFixed(2));
-
-                                                          //CGST = calculateCGSTAmount(item,item.gstPer);
-                                                          //SGST = calculateSGSTAmount(item,item.gstPer);
-                                                          //log("SGST"+SGST.toString());
-                                                          //log("CGST"+CGST.toString());
-                                                        }
-                                                        setState(() {
-                                                          item.total = total;
-                                                          item.totalSchemeDiscountAmount = totalSchemeDiscountAmount;
-                                                          item.Total_Trade_discount_Amount = Total_Trade_discount_Amount;
-                                                          item.Total_Other_discount_Amount = Total_Other_discount_Amount;
-                                                          item.TotalAfterDiscount = TotalAfterDiscount;
-                                                          item.GST = GST;
-                                                          item.SGST = SGST;
-                                                          item.IGST = IGST;
-                                                          item.CGST = CGST;
-                                                          item.TCS = TCS;
-                                                          item.UOM=dropdownValue0[itemIndex];
-                                                          item.UnitWeight=unit_weight;
-                                                          item.CartonWeight=unit_weight;
-                                                          item.unitQantity=unitQantity;
-                                                          item.cartonQantity=cartonQantity;
-                                                          item.boxQantity=boxQantity;
-                                                        });
-
-                                                        if ((itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"]) != -1) && (itemList.indexWhere((element) => element.UOM == dropdownValue0[itemIndex])) != -1) {
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].quantity = int.parse(value);
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].total = total;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].totalSchemeDiscountAmount = totalSchemeDiscountAmount;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Trade_discount_Amount = Total_Trade_discount_Amount;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].Total_Other_discount_Amount = Total_Other_discount_Amount;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].TotalAfterDiscount = TotalAfterDiscount;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].GST = GST;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].SGST = SGST;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].IGST = IGST;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].CGST = CGST;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].TCS = TCS;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].UnitWeight = UnitWeight;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].CartonWeight = CartonWeight;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].unitQantity = unitQantity;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].cartonQantity = cartonQantity;
-                                                          itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].boxQantity = boxQantity;
-                                                       //   itemList[itemList.indexWhere((element) => element.itemCode == offlineItem[itemIndex]["Item_id"])].UOM = item.UOM;
-                                                        } else {
-                                                          itemList.add(item);
-
-                                                        }
-                                                      }
-                                                  },
-                                                  inputFormatters: [
-                                                    FilteringTextInputFormatter
-                                                        .digitsOnly
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
                                         ),
                                       ],
                                     ),
@@ -1122,7 +1162,7 @@ leading: Icon(CupertinoIcons.cart),
                       CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding:  EdgeInsets.all(5.0),
+                          padding:  EdgeInsets.all(0.0),
                           child: SizedBox(
                             // width: MediaQuery.of(context).size.width / 3,
                             child: ElevatedButton(
@@ -1149,8 +1189,8 @@ leading: Icon(CupertinoIcons.cart),
                                         ),
                                       ),
                                       Container(
-                                        width: 30,
-                                        height: 30,
+                                        width: 20,
+                                        height: 20,
                                         alignment: Alignment.topRight,
                                         margin: EdgeInsets.only(top: 0),
                                         child: Container(
@@ -1254,6 +1294,7 @@ leading: Icon(CupertinoIcons.cart),
                                   double roundOff = 0.0;
                                   double totalCarton = 0.0;
                                   double total = 0.0;
+                                  double totalofquantity =0.0;
                                   var LocalFieldString;
                                   setState(() {
                                     for (var item in itemList) {
@@ -1268,6 +1309,7 @@ leading: Icon(CupertinoIcons.cart),
                                       item.Total_Other_discount_Amount!;
                                       totalOFtcs += item.TCS!;
                                       totalofgst = totalofcgst + totalofsgst + totalofIgst;
+                                      totalofquantity =
 
                                       totalofwsp += item.total;
                                       totalOrderValue = totalofwsp -
@@ -1317,7 +1359,7 @@ leading: Icon(CupertinoIcons.cart),
                                           .boxQantity}", "${"Unit_quantity"}": "${e
                                           .unitQantity}", "${"Price_Calc"}": "${e
                                           .priceCalc}", "${"Carton_weight"}": "${e
-                                          .CartonWeight!/ 1000}", "${"Unit_weight"}": "${e
+                                          .CartonWeight!}", "${"Unit_weight"}": "${e
                                           .UnitWeight}", "${"CGST"}": "${e.gstPer! /
                                           2}", "${"SGST"}": "${e.gstPer! /
                                           2}", "${"IGST"}": "${e
@@ -1451,9 +1493,9 @@ leading: Icon(CupertinoIcons.cart),
     if (item.UOM.toString() ==
         "Carton") {
 
-    return ((item.quantity!  * item.Weight_Per_Carton!)/1000);
+    return ((item.quantity!  * item.Weight_Per_Carton!));
     } else {
-      return (((item.quantity! / item.unitPerCarton!) * item.Weight_Per_Carton!)/1000);
+      return (((item.quantity! / item.unitPerCarton!) * item.Weight_Per_Carton!));
     }
 
   }
@@ -1850,6 +1892,30 @@ leading: Icon(CupertinoIcons.cart),
     }
     return total;
   }
+
+  List<DropdownMenuItem<String>> generateDropdownItems(double mrp, String priceCalc) {
+    // Check the condition and disable 'Unit' option if needed
+    bool isUnitDisabled = mrp <= 20 || priceCalc == 'box';
+
+    return ['Carton', if (!isUnitDisabled) 'Unit']
+        .map<DropdownMenuItem<String>>(
+          (String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value,
+          style: TextStyle(fontSize: 13),),
+          // Disable the 'Unit' option if isUnitDisabled is true
+          onTap: isUnitDisabled && value == 'Unit'
+              ? null
+              : () {
+            print('Item selected: $value');
+          },
+        );
+      },
+    )
+        .toList();
+  }
+
 
   void showSummaryDialog(totalofcgst, totalofsgst, totalofIgst, totalofgst,
       totalofwsp, totalOrderValue, temp_roundoff,totalofScemeDiscount,LocalFieldString) async {

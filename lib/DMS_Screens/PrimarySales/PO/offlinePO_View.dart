@@ -19,6 +19,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../../../GlobalComponents/PreferenceManager.dart';
 import '../../../RESPONSE/offline_PODATA_Response.dart';
 import '../../../RESPONSE/posync_Response.dart';
+import '../../../RSM_Screens/Approval/PO/POEditPage.dart';
 import '../../../Screens/Authentication/sign_in.dart';
 import '../../../constant.dart';
 import 'package:intl/intl.dart';
@@ -322,6 +323,23 @@ class _offlinePO_ViewState extends State<offlinePO_View> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          /*showDialog(
+              context: context,
+              builder: (context) => attachmentClass(),
+            );*/
+          //urnData();
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => POEditPage(distributor_id: '',),
+          //     ));
+        },
+        elevation: 10,
+        backgroundColor: kMainColor,
+        child:  Icon(Icons.add,color: Colors.white,),
       ),
     );
   }
