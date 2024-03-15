@@ -1449,7 +1449,7 @@ class _POEditPageState extends State<POEditPage> {
     });
 
     // Replace with your actual API URL
-    String apiUrl = 'http://api.urmingroup.co.in/fshipmaster/_find';
+    String apiUrl = 'https://api.urmingroup.co.in/fshipmaster/_find';
 
     // Replace with your actual authorization key
     String authorizationKey =
@@ -1521,7 +1521,7 @@ class _POEditPageState extends State<POEditPage> {
       idLoading = true;
     });
 
-    String apiUrl = 'http://api.urmingroup.co.in/fcustomer/_find';
+    String apiUrl = 'https://api.urmingroup.co.in/fcustomer/_find';
 
     String authorizationKey =
         'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';
@@ -1591,7 +1591,7 @@ class _POEditPageState extends State<POEditPage> {
       idLoading = true;
     });
 
-    String apiUrl = 'http://api.urmingroup.co.in/fpricelist/_find';
+    String apiUrl = 'https://api.urmingroup.co.in/fpricelist/_find';
 
     String authorizationKey =
         'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.cyGXfFZCzNNbY49K2LdTtbfGYSzGmoLYrSwfYWq-wEQ';

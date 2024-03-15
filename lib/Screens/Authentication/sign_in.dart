@@ -53,7 +53,7 @@ class _SignInState extends State<SignIn> {
 
   void ErpMainDataFetch() async {
     // Replace with your actual API URL
-    String apiUrl = 'http://api.urmingroup.co.in/fcustomer/_find';
+    String apiUrl = 'https://api.urmingroup.co.in/fcustomer/_find';
 
     // Replace with your actual authorization key
     String authorizationKey =

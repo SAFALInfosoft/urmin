@@ -6,6 +6,7 @@ import 'package:maan_hrm/DMS_Screens/PrimarySales/PO/purchaseOrderMainScreen.dar
 import 'package:maan_hrm/constant.dart';
 
 import '../PRIMARY_SALES_MENU.dart';
+import 'DraftPO.dart';
 
 class po_Tab_View extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _po_Tab_ViewState extends State<po_Tab_View>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     CheckUserConnection().then((value) {
       if (ActiveConnection == true) {
       } else {
@@ -113,6 +114,9 @@ class _po_Tab_ViewState extends State<po_Tab_View>
                   Tab(
                     text: 'Pending PO',
                   ),
+                  Tab(
+                    text: 'Draft PO',
+                  ),
                   //second tab [you can add an icon using the icon property]
                   Tab(
                     text: 'Web PO',
@@ -125,6 +129,7 @@ class _po_Tab_ViewState extends State<po_Tab_View>
                   controller: _tabController,
                   children: [
                     pendingPO() ,
+                    DraftPO(),
                     purchaseOrderMainScreen()
                     ],
                 ),

@@ -362,7 +362,15 @@ class _pendingPOState extends State<pendingPO> {
                                                         motion: BehindMotion(),
                                                         children: [
                                                           SlidableAction(
-                                                            onPressed: (context) {},
+                                                            onPressed: (context) {
+                                                              Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        offlinePO_View(
+                                                                            item: items![index].item,summery:items![index].remarksDealer),
+                                                                  ));
+                                                            },
                                                             backgroundColor:
                                                                 Colors.blue,
                                                             icon: Icons
@@ -373,7 +381,7 @@ class _pendingPOState extends State<pendingPO> {
                                                             //key: Key('delete_${poList[index]}'), // Use a unique key for each item
                                                             onPressed: (context) {
                                                               setState(() {
-                                                                deleteItem(index);
+                                                                confirmationDialog(context,index);
                                                               });
                                                             },
                                                             backgroundColor: Colors.red,
@@ -900,6 +908,44 @@ class _pendingPOState extends State<pendingPO> {
         T = "Turn On the data and repress again";
       });
     }
+  }
+
+  void confirmationDialog(BuildContext context,index) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Delete!"),
+          content: Text("Are you sure you want to delete?", style: TextStyle(fontSize: 15)),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Sure"),
+              onPressed: () {
+                // Perform delete action here
+                deleteAction(index);
+                Navigator.of(context).pop(); // Close the dialog
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void deleteAction(int index) {
+    // Perform the deletion logic here
+    setState(() {
+      poList.removeAt(index);
+      items.removeAt(index);
+      _saveData(); //
+    });
   }
 
   void deleteItem(int index) {

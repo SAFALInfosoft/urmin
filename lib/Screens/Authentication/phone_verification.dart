@@ -241,7 +241,7 @@ class _PhoneVerificationState extends State<PhoneVerification> {
     var jsonData;
     if (response.statusCode == 200) {
       jsonData = json.decode(response.body);
-log(response.body.toString());
+      log(response.body.toString());
       var map = Map<String, dynamic>.from(jsonData);
       log(map.toString());
       var response1 = OtpVerificationResponse.fromJson(map);
@@ -302,7 +302,7 @@ log(response.body.toString());
  Future <void> ErpMainDataFetch(distributorId) async {
     // Replace with your actual API URL
 
-    String apiUrl = 'http://api.urmingroup.co.in/fcustomer/_find';
+    String apiUrl = 'https://api.urmingroup.co.in/fcustomer/_find';
 
     // Replace with your actual authorization key
     String authorizationKey =

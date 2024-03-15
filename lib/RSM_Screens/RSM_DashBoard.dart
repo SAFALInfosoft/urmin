@@ -1130,7 +1130,7 @@ class _RSM_HomeScreenState extends State<RSM_HomeScreen> {
         });
 
         // Replace with your actual API URL
-        String apiUrl = 'http://api.urmingroup.co.in/fshipmaster/_find';
+        String apiUrl = 'https://api.urmingroup.co.in/fshipmaster/_find';
 
         // Replace with your actual authorization key
         String authorizationKey =

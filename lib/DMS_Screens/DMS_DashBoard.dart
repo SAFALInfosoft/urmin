@@ -1134,7 +1134,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
     });
 
     // Replace with your actual API URL
-    String apiUrl = 'http://api.urmingroup.co.in/fshipmaster/_find';
+    String apiUrl = 'https://api.urmingroup.co.in/fshipmaster/_find';
 
     // Replace with your actual authorization key
     String authorizationKey =
@@ -1200,7 +1200,7 @@ class _Dms_HomeScreenState extends State<Dms_HomeScreen> {
     });
 
     // Replace with your actual API URL
-    String apiUrl = 'http://api.urmingroup.co.in/fpricelist/_find';
+    String apiUrl = 'https://api.urmingroup.co.in/fpricelist/_find';
 
     // Replace with your actual authorization key
     String authorizationKey =

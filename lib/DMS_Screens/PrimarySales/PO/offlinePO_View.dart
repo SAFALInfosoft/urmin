@@ -28,7 +28,8 @@ import 'addNewOrder.dart';
 import 'package:http/http.dart' as http;
 class offlinePO_View extends StatefulWidget {
   List item;
-  offlinePO_View({required this.item,Key? key}) : super(key: key);
+  var summery;
+  offlinePO_View({required this.item,this.summery,Key? key}) : super(key: key);
 
   @override
   _offlinePO_ViewState createState() => _offlinePO_ViewState();
@@ -42,6 +43,7 @@ class _offlinePO_ViewState extends State<offlinePO_View> {
   List temppoList = [];
   // List? poList;
   String jsonString = "";
+  int selectedTile = -1;
   @override
   void initState() {
 
@@ -284,38 +286,109 @@ class _offlinePO_ViewState extends State<offlinePO_View> {
                               )
                           ),
                           Expanded(
-                              child:ListView.builder(
-                                  itemCount: widget.item.length,
-                                  itemBuilder:
-                                      (BuildContext context,
-                                      int index) {
-                                    return Card(
-                                        color: Colors.white,
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(15)),
-                                        child: Container(
-                                          // height: 65,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: 8, horizontal: 5),
-                                          child: ListTile(
-                                            title: Text(widget.item![index].itName.toString(),),
-                                            subtitle: Row(
+                            child: ListView.builder(
+                              itemCount: widget.item!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  child: Card(
+                                      color: Colors.white,
+                                      elevation: 3,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15)),
+                                      child: Container(
+                                        // height: 65,
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 8, horizontal: 8),
+                                        child: Theme(
+                                          data: ThemeData().copyWith(dividerColor: Colors.transparent),
+                                          child: ExpansionTile(
+
+                                            key: Key(selectedTile.toString()), //attention
+                                            initiallyExpanded: index == selectedTile,
+                                            onExpansionChanged: ((newState){
+                                              if(newState)
+                                                setState(() {
+                                                  Duration(seconds:  20000);
+                                                  selectedTile = index;
+                                                });
+                                              else setState(() {
+                                                selectedTile = -1;
+                                              });
+                                            }),
+                                            title: Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text("QTY: "+widget.item![index].quantity.toString()),
-                                                Text("UOM: "+widget.item![index].uom.toString(),),
+                                                Expanded(child: Text("${widget.item![index].itName.toString()}")),
+                                                // IconButton(
+                                                //   icon: Icon(Icons.delete),
+                                                //   onPressed: () {
+                                                //     widget.item!.remove(widget.item![index]);
+                                                //   },
+                                                // ),
                                               ],
                                             ),
-                                            onTap: () {
-                                              // Handle tap on drawer item
-                                             // Navigator.pop(context); // Close the drawer
-                                              // You can add additional functionality here when an item is tapped
-                                            },
+                                            children: [
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("QTY: "+widget.item![index].quantity.toString()),
+                                                  Text("UOM: "+widget.item![index].uom.toString()),
+                                                ],
+                                              ),
+                                              Divider(),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("WSP: "+widget.item![index].wspRate.toString()),
+                                                  Text(
+                                                    "VALUE OF SUPPLY: ${double.parse(widget.item![index].total).toStringAsFixed(2)}",
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                ],
+                                              ), Divider(),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "CARTON: ${double.parse(widget.item![index].cartonQuantity).toStringAsFixed(2)}",
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  Text("BOX: ${double.parse(widget.item![index].boxQuantity).toStringAsFixed(2)}",
+                                                    overflow: TextOverflow.ellipsis,),
+                                                ],
+                                              ), Divider(),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text("UNIT: ${double.parse(widget.item![index].unitQuantity).toStringAsFixed(2)}",
+                                                    overflow: TextOverflow.ellipsis,),
+                                                  Text("WEIGHT: ${double.parse(widget.item![index].cartonQuantity).toStringAsFixed(2)} KG",
+                                                    overflow: TextOverflow.ellipsis,),
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                        ));
-                                  })
-                            )
+                                        ),
+                                      )),
+                                );
+                              },
+                            ),
+                          ),
+                          Card(
+                              color: Colors.white,
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Container(
+                                // height: 65,
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 8),
+                                child: ListTile(
+                                  title: Text("Summary : ${widget.summery}"),
+                                ),
+                              )
+                          ),
                         ]),
                   ),
                 ],
@@ -324,23 +397,24 @@ class _offlinePO_ViewState extends State<offlinePO_View> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          /*showDialog(
-              context: context,
-              builder: (context) => attachmentClass(),
-            );*/
-          //urnData();
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => POEditPage(distributor_id: '',),
-          //     ));
-        },
-        elevation: 10,
-        backgroundColor: kMainColor,
-        child:  Icon(Icons.add,color: Colors.white,),
-      ),
+
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     /*showDialog(
+      //         context: context,
+      //         builder: (context) => attachmentClass(),
+      //       );*/
+      //     //urnData();
+      //     // Navigator.push(
+      //     //     context,
+      //     //     MaterialPageRoute(
+      //     //       builder: (context) => POEditPage(distributor_id: '',),
+      //     //     ));
+      //   },
+      //   elevation: 10,
+      //   backgroundColor: kMainColor,
+      //   child:  Icon(Icons.add,color: Colors.white,),
+      // ),
     );
   }
 

@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     PreferenceManager.instance.setStringValue(
-        "ClintUrl", "https://demo.datanote.co.in/urminapi/");
+        "ClintUrl", "https://dms.urmingroup.co.in/urminapi/");
     PreferenceManager.instance
         .getBooleanValue("Login")
         .then((value) => setState(() {
